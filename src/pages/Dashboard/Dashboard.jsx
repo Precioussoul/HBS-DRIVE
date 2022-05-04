@@ -5,6 +5,7 @@ import File from "../../components/File/File";
 import Filter from "../../components/Filter/Filter";
 import Folder from "../../components/Folders/Folder";
 import "./Dashboard.scss";
+import useFolder from "../../hooks/useFolder";
 
 export default function Dashboard() {
   return (

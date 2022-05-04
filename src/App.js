@@ -10,11 +10,45 @@ import Layout from "./Layouts/Layout";
 import { theme } from "./theme";
 import Search from "./pages/Search/Search.jsx";
 import AddButton from "./components/AddButton/AddButton.jsx";
+import Login from "./Authentication/Login/Login.jsx";
+import SignUp from "./Authentication/Signup/SignUp.jsx";
+import ForgetPassword from "./Authentication/ForgetPassword/ForgetPassword.jsx";
+import ProtectedRoute from "./Authentication/ProtectedRoute.js";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+        <AuthProvider>
+          <Routes>
+            {/* Authentication */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgot-password" element={<ForgetPassword />} />
+            <Route element={<ProtectedRoute />}>
+              <React.Fragment>
+                <Layout>
+                  <Route exact path="/" element={<Dashboard />} />
+                  <Route path="/trash" element={<Trash />} />
+                  <Route path="/recents" element={<Recents />} />
+                  <Route path="/favorite" element={<Favorites />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/search" element={<Search />} />
+                  <AddButton />
+                </Layout>
+              </React.Fragment>
+            </Route>
+          </Routes>
+        </AuthProvider>
+      </Router>
+    </ThemeProvider>
+  );
+}
+
+export default App;
+
+{
+  /* <Router>
         <React.Fragment>
           <Layout>
             <Routes>
@@ -28,9 +62,11 @@ function App() {
             <AddButton />
           </Layout>
         </React.Fragment>
-      </Router>
-    </ThemeProvider>
-  );
+      </Router> */
 }
 
-export default App;
+// <Route exact path="/" element={<Dashboard />} />
+// <Route exact path="/folder/:folderId" element={<Dashboard />} />
+// {/* user profile */}
+// <Route path="/user" element={<Profile />} />
+// <Route path="/update_profile" element={<UpdateProfile />} />
