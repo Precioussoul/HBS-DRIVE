@@ -1,0 +1,16 @@
+.trash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 80%;
+    margin: 20px auto;
+
+    @media (min-width: 700px) {
+      width: 40%;
+      margin: 10px auto;
+    }
+  }
+}

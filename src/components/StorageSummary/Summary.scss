@@ -1,0 +1,39 @@
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 0px;
+
+  @media (min-width: 1440px) {
+    padding: 10px 0px;
+  }
+  &-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // padding: 5px;
+  }
+
+  &-img {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+
+    img {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &-type {
+    display: block;
+    margin-left: 20px;
+  }
+  &-size {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1a22fc;
+  }
+}

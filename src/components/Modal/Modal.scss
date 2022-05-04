@@ -1,0 +1,27 @@
+.modal {
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+  &-close {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    font-size: 26px;
+  }
+}
+.form-input {
+  margin-bottom: 40px;
+}
+.form-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  > *:not(:last-child) {
+    margin-right: 20px;
+  }
+}

@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from "@mui/material";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import Favorites from "./pages/Favorites/Favorites";
+import Recents from "./pages/Recents/Recents";
+import Settings from "./pages/Settings";
+import Trash from "./pages/Trash/Trash";
+import Layout from "./Layouts/Layout";
+import { theme } from "./theme";
+import Search from "./pages/Search/Search.jsx";
+import AddButton from "./components/AddButton/AddButton.jsx";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <React.Fragment>
+          <Layout>
+            <Routes>
+              <Route exact path="/" element={<Dashboard />} />
+              <Route path="/trash" element={<Trash />} />
+              <Route path="/recents" element={<Recents />} />
+              <Route path="/favorite" element={<Favorites />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/search" element={<Search />} />
+            </Routes>
+            <AddButton />
+          </Layout>
+        </React.Fragment>
+      </Router>
+    </ThemeProvider>
   );
 }
 

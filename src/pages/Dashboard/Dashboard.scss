@@ -1,0 +1,36 @@
+.folders-info,
+.file-info {
+  padding: 20px 0;
+  color: gray;
+  @media (max-width: 600px) {
+    padding: 10px 0;
+  }
+}
+.folders-view,
+.file-view,
+.filter-view {
+  display: flex;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+  @media (max-width: 600px) {
+    justify-content: space-evenly;
+  }
+  > * {
+    margin: 8px;
+
+    @media (max-width: 600px) {
+      margin: 10px 2px;
+    }
+  }
+
+  // .file {
+  //   margin-top: 30px;
+  // }
+}
+
+.filter-view {
+  @media (max-width: 600px) {
+    display: none;
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,19 @@
+.recents-view {
+  display: flex;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+  @media (max-width: 600px) {
+    justify-content: space-evenly;
+  }
+  > * {
+    margin: 8px;
+
+    @media (max-width: 600px) {
+      margin: 10px 2px;
+    }
+  }
+
+  // .file {
+  //   margin-top: 30px;
+  // }
+}

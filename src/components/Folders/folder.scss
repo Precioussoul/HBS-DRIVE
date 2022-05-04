@@ -1,0 +1,34 @@
+.folder {
+  position: relative;
+  padding: 1px;
+  // background-color: aqua;
+  margin-bottom: 10px;
+
+  .folder-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+  }
+
+  .folder-icons {
+    position: relative;
+  }
+  .icon-main {
+    font-size: 135px;
+    color: #1a22fc;
+    color: #5a65f3;
+    color: #a3a9df;
+  }
+  .icon-sub {
+    position: absolute;
+    bottom: 15px;
+    font-size: 55px;
+    color: #a1a1a6;
+    color: #5a65f3;
+
+    right: 20px;
+  }
+}
+.folder-icons-wrapper {
+  display: block;
+}

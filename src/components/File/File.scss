@@ -1,0 +1,23 @@
+.file {
+  display: flex;
+  border-radius: 5px;
+  transition: 0.4;
+  border: 0;
+
+  &-bg {
+    background-color: rgba($color: #abb7d8, $alpha: 0.6);
+  }
+  &:hover {
+    border: 1px solid #5a65f3;
+  }
+
+  &-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+
+    .file-menu {
+      cursor: pointer;
+    }
+  }
+}

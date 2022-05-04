@@ -1,0 +1,14 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 80%;
+    @media (min-width: 610px) {
+      width: 40%;
+      margin: 30px auto;
+    }
+  }
+}

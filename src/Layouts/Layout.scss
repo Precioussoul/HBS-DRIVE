@@ -1,0 +1,46 @@
+.btn-upload {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 5px;
+
+  @media (max-width: 600px) {
+    display: none;
+    visibility: hidden;
+  }
+}
+
+.upgrade-img {
+  width: 150px;
+  margin: 10px auto;
+
+  img {
+    width: 90%;
+    object-fit: contain;
+    margin: auto;
+  }
+}
+
+.upload-label {
+  width: 100%;
+}
+.upgrade-desc {
+  text-align: center;
+  padding: 10px 0;
+}
+.upgrade-link {
+  text-align: center;
+  display: block;
+  padding: 10px 0;
+  font-weight: 600;
+  color: #1a22fc;
+}
+.upload-new {
+  visibility: hidden;
+  display: none;
+}
+.upload-img {
+  img {
+    width: 90%;
+    height: 400px;
+  }
+}

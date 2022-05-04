@@ -1,0 +1,39 @@
+.filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba($color: #abb7d8, $alpha: 0.6);
+  border-radius: 10px;
+  padding: 0 8px;
+  width: 135px;
+
+  @media (min-width: 1536px) {
+    width: 200px;
+  }
+
+  .filter-img {
+    max-width: 50px;
+    height: 50px;
+    padding: 7px;
+    border-radius: 10px;
+    @media (min-width: 1536px) {
+      max-width: 60px;
+      height: 60px;
+    }
+    .image {
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .filter-count {
+    margin-left: 15px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+
+    & span {
+      margin-left: 5px;
+    }
+  }
+}
