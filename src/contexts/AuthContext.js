@@ -1,12 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  onAuthStateChanged,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
+import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
 
 // create a useContext api for data carriage without passing props down manually
-const AuthContext = React.createContext();
+export const AuthContext = React.createContext();
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
 // useContext api creation ends here
 
 function AuthProvider({ children }) {
@@ -14,36 +23,64 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   //signing up users
-  async function signup(email, password) {
-    return await auth.createUserWithEmailAndPassword(email, password);
+  function signupUser(email, password) {
+    return createUserWithEmailAndPassword(auth, email, password);
   }
 
   //logging in users
-  async function login(email, password) {
-    return await auth.signInWithEmailAndPassword(email, password);
+  function loginUser(email, password, setError, setLoading) {
+    return signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        setLoading(true);
+      })
+      .catch(() => {
+        setError("Failed to sign-in, check your credential or internet");
+        setLoading(false);
+        // setError("");
+      });
   }
 
   //logging out users
   function logout() {
-    return auth.signOut();
+    return signOut(auth);
   }
+  // delete user account
+  function deleteUserAccount(currentUser) {
+    return deleteUser(currentUser);
+  }
+
+  function updateUserProfile(name, photo, setError) {
+    return updateProfile(currentUser, {
+      displayName: name,
+      photoURL: photo,
+    }).then(() => {
+      setError("");
+    });
+  }
+
   // reset password
   async function resetPassword(email) {
-    return auth.sendPasswordResetEmail(email);
+    return sendPasswordResetEmail(auth, email);
   }
   // update Email
-  async function updateEmail(email) {
-    return currentUser.updateEmail(email);
+  function updateEmailAddress(email) {
+    return updateEmail(currentUser, email);
+  }
+  // verify email address
+  function verifyEmailAddress(User, message) {
+    return sendEmailVerification(User).then(() => {
+      message("please check your email address for further instruction");
+    });
   }
   // update Password
-  async function updatePassword(password) {
-    return currentUser.updatePassword(password);
+  function updateCurrentPassword(password) {
+    return updatePassword(currentUser, password);
   }
 
   // using UseEffect to run function when application load
   useEffect(() => {
     // firebase auto detect current user
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
     });
@@ -53,12 +90,15 @@ function AuthProvider({ children }) {
 
   const value = {
     currentUser,
-    signup,
-    login,
+    signupUser,
+    loginUser,
     logout,
+    updateUserProfile,
     resetPassword,
-    updateEmail,
-    updatePassword,
+    verifyEmailAddress,
+    updateEmailAddress,
+    updateCurrentPassword,
+    deleteUserAccount,
   };
 
   return (

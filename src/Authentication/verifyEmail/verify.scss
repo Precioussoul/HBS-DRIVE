@@ -1,0 +1,48 @@
+$box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+
+.user-acc {
+  width: 100%;
+  box-shadow: $box-shadow;
+  background-color: #fff;
+  padding: 20px;
+
+  @media (max-width: 330px) {
+    width: 300px;
+  }
+  @media (min-width: 331px) and (max-width: 600px) {
+    width: 370px;
+  }
+
+  &__pro-title {
+    font-size: 20px;
+    text-align: center;
+
+    @media (max-width: 330px) {
+      font-size: 18px;
+    }
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
+  p {
+    font-size: 16px;
+    padding: 10px;
+
+    @media (max-width: 600px) {
+      align-self: flex-start;
+    }
+  }
+}
+
+.please-verify {
+  text-align: center;
+}

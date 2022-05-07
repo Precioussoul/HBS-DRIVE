@@ -29,7 +29,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fff;
+    color: #ddd;
     font-size: 30px;
     &.rotate {
       transform: rotate(135deg);
@@ -50,6 +50,7 @@
     padding: 20px;
     list-style-type: none;
     opacity: 0;
+    z-index: 6;
     visibility: hidden;
     transition: 0.3s;
     @media (max-width: 600px) {
@@ -100,4 +101,13 @@
     justify-content: space-between;
     align-items: center;
   }
+}
+
+.hide {
+  display: none;
+  visibility: hidden;
+}
+.show {
+  display: block;
+  visibility: visible;
 }

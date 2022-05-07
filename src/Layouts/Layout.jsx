@@ -39,9 +39,11 @@ import UploadFiles from "../components/uploadCenter/Upload";
 import ModalComponent from "../components/Modal/ModalComponent";
 
 const drawerWidth = 210;
-const drawerWidth2 = 275;
-const customWidth = drawerWidth + drawerWidth2;
+const drawerWidth2 = 270;
 const xlWidth = 320;
+
+const customWidthXL = drawerWidth + xlWidth;
+const customWidthMd = 480;
 
 function Layout(props) {
   const { window, children } = props;
@@ -82,7 +84,7 @@ function Layout(props) {
     {
       text: "Settings",
       icon: <Settings color="primary" />,
-      path: "/settings",
+      path: "/gen-settings",
     },
   ];
 
@@ -247,8 +249,8 @@ function Layout(props) {
             p: 2,
             width: {
               xs: "100%",
-              md: `calc(100% - ${customWidth}px)`,
-              // xl: `calc(100% - ${xlWidth}px)`,
+              sm: `calc(100% - ${customWidthMd}px)`,
+              xl: `calc(100% - ${customWidthXL}px)`,
             },
           }}
         >

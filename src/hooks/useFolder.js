@@ -1,9 +1,9 @@
 import { doc, getDoc, getDocs } from "firebase/firestore";
-import { useEffect, useReducer } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import { colRef, database, databaseRef, singleRef } from "../firebase/firebase";
 import rootReducer from "../reducers/rootReducer";
 import ACTIONS from "../reducers/action";
-import { useAuth } from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 export const ROOT_FOLDER = { name: "Drive", id: null, path: [] };
 
@@ -15,7 +15,7 @@ export default function useFolder(folderId = null, folder = null) {
     childFiles: [],
     // initial value in a state
   });
-  const { currentUser } = useAuth();
+  const { currentUser } = useContext(AuthContext);
   // when folderId and folder changes
   useEffect(() => {
     dispatch({ type: ACTIONS.SELECT_FOLDER, payload: { folderId, folder } });

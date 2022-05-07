@@ -1,0 +1,82 @@
+$box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+
+.user-acc {
+  width: 500px;
+  box-shadow: $box-shadow;
+  background-color: #fff;
+  padding: 20px;
+
+  @media (max-width: 330px) {
+    width: 300px;
+  }
+  @media (min-width: 331px) and (max-width: 600px) {
+    width: 370px;
+  }
+
+  &__pro-title {
+    font-size: 20px;
+    text-align: center;
+
+    @media (max-width: 330px) {
+      font-size: 18px;
+    }
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
+  p {
+    font-size: 16px;
+    padding: 10px;
+
+    @media (max-width: 600px) {
+      align-self: flex-start;
+    }
+  }
+}
+
+.div-upload {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.img-upl {
+  width: 100px;
+  height: 100px;
+  border-radius: 20%;
+  overflow: hidden;
+
+  @media (max-width: 600px) {
+    margin-bottom: 20px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.profile-input {
+  display: none;
+  visibility: hidden;
+}
+
+.save-change {
+  display: flex;
+  align-items: center;
+}

@@ -1,5 +1,6 @@
 import { CloudUpload, CreateNewFolder } from "@mui/icons-material";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import ModalComponent from "../Modal/ModalComponent";
 import "./AddButton.scss";
 
@@ -16,8 +17,11 @@ export default function AddButton() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const { pathname } = useLocation();
+  const pathgen = "/";
   return (
-    <>
+    <div className={pathname === pathgen ? "show" : "hide"}>
       <div className="action" onClick={actionToggle}>
         <span className={openAction ? "rotate" : ""}>+</span>
         <ul>
@@ -35,7 +39,7 @@ export default function AddButton() {
         </ul>
       </div>
       <ModalComponent open={open} handleclose={handleClose} />
-    </>
+    </div>
   );
 }
 

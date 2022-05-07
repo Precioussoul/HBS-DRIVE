@@ -5,7 +5,13 @@ import {
   getFirestore,
   serverTimestamp,
 } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -48,4 +54,52 @@ export const singleRef = {
   },
 };
 
-export default app;
+const storageRef = ref(storage);
+const filesRef = ref(storage, "files/");
+export let result;
+
+export function avatarURL(
+  file,
+  currentUser,
+  setError,
+  setMessage,
+  setLoading,
+  setFile
+) {
+  const fileRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
+  getDownloadURL(fileRef)
+    .then((url) => {
+      result = url;
+      setMessage("your changes has been saved");
+      setLoading(true);
+      setMessage("");
+      setFile("");
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    })
+    .catch(() => {
+      setError("please resave changes");
+      setTimeout(() => {
+        setLoading(false);
+        setMessage("");
+      }, 2000);
+    });
+
+  // return result;
+}
+
+export function uploadAvatar(file, currentUser) {
+  const avatarRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
+
+  uploadBytes(avatarRef, file);
+}
+
+export function deleteFileStorage(currentUser) {
+  const deleteFileRef = ref(storage, `avatar/${currentUser.uid}`);
+
+  deleteObject(deleteFileRef).then(() => {
+    console.log("deleted");
+  });
+}

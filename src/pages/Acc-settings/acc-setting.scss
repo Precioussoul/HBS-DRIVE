@@ -1,0 +1,21 @@
+.settings-view {
+  @media (min-width: 900px) {
+    width: calc(100% - 280px);
+  }
+  & > * {
+    margin: 40px 0;
+  }
+}
+
+.acc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  align-self: flex-start;
+  width: 95%;
+}
+
+.acc-sub {
+  align-self: flex-start;
+}

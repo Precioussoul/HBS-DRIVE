@@ -17,3 +17,17 @@
   //   margin-top: 30px;
   // }
 }
+
+.recent-header {
+  display: none;
+  visibility: hidden;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+  margin-bottom: 10px;
+
+  @media (max-width: 600px) {
+    display: flex;
+    visibility: visible;
+  }
+}

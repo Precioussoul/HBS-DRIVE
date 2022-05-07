@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ArrowCircleLeft,
   Cancel,
@@ -25,7 +25,10 @@ import {
   MenuItem,
   styled,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
+import { blue, deepPurple } from "@mui/material/colors";
+import { color } from "../../theme";
 
 const CancelSearch = styled(Box)(({ theme, state }) => ({
   display: state ? "flex" : "none",
@@ -39,6 +42,13 @@ export default function Navbar() {
     setAnchorEl(event.currentTarget);
   };
   const navigate = useNavigate();
+  const { logout, currentUser } = useContext(AuthContext);
+  const username = currentUser.displayName
+    ? currentUser.displayName
+    : currentUser.email;
+
+  console.log(currentUser);
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -54,6 +64,10 @@ export default function Navbar() {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.target.value = "";
+  };
+  const handleLogout = () => {
+    logout();
+    handleClose();
   };
 
   return (
@@ -85,7 +99,7 @@ export default function Navbar() {
       <div className="greeting">
         <p>
           {" "}
-          <span>Hi Sofiyullah 👋</span>
+          <span>Hi {username} 👋</span>
         </p>
       </div>
       <div className="nav-items-wrapper">
@@ -103,8 +117,13 @@ export default function Navbar() {
 
         <div>
           <Avatar
-            src="/images/project-1-4.jpg"
-            sx={{ border: ".5px solid #1a22fc" }}
+            src={currentUser.photoURL ? currentUser.photoURL : ""}
+            alt={
+              currentUser.displayName
+                ? currentUser.displayName[0]
+                : currentUser.email[0]
+            }
+            sx={{ border: ".5px solid #1a22fc", bgcolor: blue[900] }}
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
@@ -120,9 +139,13 @@ export default function Navbar() {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem>
+              <Link to={"gen-settings"}>Profile</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to={"acc-settings"}>Account Settings</Link>
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>
       </div>
