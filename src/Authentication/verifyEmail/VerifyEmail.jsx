@@ -38,7 +38,9 @@ const VerifyEmail = () => {
         {!currentUser.emailVerified && (
           <div className="please-verify">
             <p className="success">{msg}</p>
-            <Button variant="contained">click to verify email</Button>
+            <Button variant="contained" onClick={handleVerify}>
+              click to verify email
+            </Button>
           </div>
         )}
       </form>

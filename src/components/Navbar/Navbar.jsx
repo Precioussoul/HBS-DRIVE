@@ -139,12 +139,12 @@ export default function Navbar() {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem>
-              <Link to={"gen-settings"}>Profile</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to={"acc-settings"}>Account Settings</Link>
-            </MenuItem>
+            <Link to={"gen-settings"}>
+              <MenuItem>Profile</MenuItem>
+            </Link>
+            <Link to={"acc-settings"}>
+              <MenuItem>Account Settings</MenuItem>
+            </Link>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>

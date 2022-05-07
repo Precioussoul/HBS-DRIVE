@@ -36,8 +36,8 @@ const UpdateProfile = () => {
     if (email !== currentUser.email) {
       promises.push(updateEmailAddress(email));
     }
-    if (password) {
-      promises.push(updateCurrentPassword(password));
+    if (newPassword === password) {
+      promises.push(updateCurrentPassword(newPassword));
     }
 
     Promise.all(promises)
@@ -45,7 +45,7 @@ const UpdateProfile = () => {
         navigate("/");
       })
       .catch(() => {
-        setError("failed to update account");
+        setError("please log out to verify or try again");
       })
       .finally(() => {
         setLoading(false);
@@ -66,7 +66,6 @@ const UpdateProfile = () => {
           type={"email"}
           defaultValue={currentUser.email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
       </div>
 
@@ -78,7 +77,6 @@ const UpdateProfile = () => {
           placeholder="Leave blank to keep the same "
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
       </div>
       <div className="form-input">
@@ -89,7 +87,6 @@ const UpdateProfile = () => {
           placeholder="Leave blank to keep the same "
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-          required
         />
       </div>
       <Box sx={{ display: "flex", justifyContent: "center" }}>

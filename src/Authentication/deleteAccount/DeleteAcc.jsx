@@ -10,8 +10,7 @@ import {
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { deleteFileStorage } from "../../firebase/firebase";
-import { deleteAvatarFileFromStorage } from "../../firebase/fireBucket";
+import { deleteFolder } from "../../firebase/firebase";
 import { color } from "../../theme";
 import "./deleteAcc.scss";
 
@@ -23,9 +22,10 @@ const DeleteAcc = () => {
   const handleDelete = (e) => {
     e.preventDefault();
     try {
-      deleteUserAccount(currentUser);
-      deleteAvatarFileFromStorage(currentUser);
-      navigate("/login");
+      deleteUserAccount(currentUser).then(() => {
+        navigate("/login");
+        deleteFolder(currentUser);
+      });
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +82,7 @@ const DeleteAcc = () => {
               margin: "auto",
             }}
           >
-            <div className="modal-header">
+            <div className="modal-acc">
               <p>
                 Your account will be deleted immediately and permanently. Once
                 deleted, accounts can not be restored.

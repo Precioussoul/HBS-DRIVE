@@ -12,7 +12,7 @@ import {
   StarOutlined,
   Storage,
 } from "@mui/icons-material";
-import { Box, Button, Switch } from "@mui/material";
+import { Button, Switch } from "@mui/material";
 import React, { useContext } from "react";
 import { color } from "../../theme";
 import "./gen-settings.scss";
@@ -168,7 +168,6 @@ const GenSettings = () => {
               <Button
                 variant="outlined"
                 color={currentUser.emailVerified ? "success" : "warning"}
-                onClick={handleLogout}
                 sx={{
                   // bgcolor:
                   padding: "3px 8px",

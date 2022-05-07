@@ -9,6 +9,7 @@ import {
   deleteObject,
   getDownloadURL,
   getStorage,
+  listAll,
   ref,
   uploadBytes,
 } from "firebase/storage";
@@ -96,10 +97,21 @@ export function uploadAvatar(file, currentUser) {
   uploadBytes(avatarRef, file);
 }
 
-export function deleteFileStorage(currentUser) {
-  const deleteFileRef = ref(storage, `avatar/${currentUser.uid}`);
+export const deleteFolder = (currentUser) => {
+  const deleteFolderRef = ref(storage, `avatar/${currentUser.uid}`);
+  deleteFolderRef
+    .listAll()
+    .then((dir) => {
+      dir.items.forEach((fileRef) =>
+        deleteFile(fileRef.fullPath, fileRef.name)
+      );
+      dir.prefixes.forEach((folderRef) => deleteFolder(folderRef.fullPath));
+    })
+    .catch((error) => console.log(error));
+};
 
-  deleteObject(deleteFileRef).then(() => {
-    console.log("deleted");
-  });
-}
+const deleteFile = (pathToFile, fileName) => {
+  const ref = ref(storage, pathToFile);
+  const childRef = ref(storage, fileName);
+  childRef.delete();
+};

@@ -49,12 +49,13 @@ function AuthProvider({ children }) {
     return deleteUser(currentUser);
   }
 
-  function updateUserProfile(name, photo, setError) {
+  function updateUserProfile(name, photo, setError, navigate) {
     return updateProfile(currentUser, {
       displayName: name,
       photoURL: photo,
     }).then(() => {
       setError("");
+      navigate("/");
     });
   }
 

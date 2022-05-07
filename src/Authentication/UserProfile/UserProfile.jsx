@@ -26,8 +26,8 @@ const UserProfile = () => {
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
   const { currentUser, updateUserProfile } = useContext(AuthContext);
-  const [photo, setPhoto] = useState("");
   const [message, setMessage] = useState("");
+  const [photo, setPhoto] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -42,24 +42,25 @@ const UserProfile = () => {
 
   //   save files to cloud
 
-  async function handleSaveChange(e) {
+  if (file !== undefined) {
+    uploadAvatar(file, currentUser);
+  }
+
+  function handleSaveChange(e) {
     e.preventDefault();
 
-    if (file !== undefined) {
-      await uploadAvatar(file, currentUser);
-      //   get dowload url
-
+    //   get dowload url
+    setTimeout(() => {
       avatarURL(file, currentUser, setError, setMessage, setLoading, setFile);
-      //  console.log("downloaded url", downloadedUrl);
-      if (result !== undefined) {
-        setPhoto(result);
-        updateUserProfile(fullname, result, setError);
-      }
-
-      // setError("your changes has been saved");
-    } else {
-      setFile("");
+    }, 2000);
+    //  console.log("downloaded url", downloadedUrl);
+    if (result !== undefined) {
+      setPhoto(result);
+      updateUserProfile(fullname, result, setError, navigate);
     }
+    setFile("");
+
+    // setError("your changes has been saved");
   }
 
   return (
@@ -89,7 +90,6 @@ const UserProfile = () => {
             }}
             label="Last name"
             placeholder="Enter Last name"
-            value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
@@ -104,7 +104,7 @@ const UserProfile = () => {
           />
           <div className="div-upload">
             <div className="img-upl">
-              <img src={photo ? photo : "images/camera.png"} alt="" />
+              <img src={photo !== "" ? photo : "images/camera.png"} alt="" />
             </div>
             <div className="upload-btns">
               <Button
