@@ -42,7 +42,7 @@ const UserProfile = () => {
 
   //   save files to cloud
 
-  if (file !== undefined) {
+  if (file !== undefined || file !== "") {
     uploadAvatar(file, currentUser);
   }
 
