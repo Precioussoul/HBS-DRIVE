@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useParams } from "react-router-dom";
 import File from "../../components/File/File";
 import Filter from "../../components/Filter/Filter";
 import Folder from "../../components/Folders/Folder";
@@ -8,6 +8,13 @@ import "./Dashboard.scss";
 import useFolder from "../../hooks/useFolder";
 
 export default function Dashboard() {
+  const { folder_Id } = useParams();
+  const { childFolders, folder } = useFolder(folder_Id);
+
+  console.log("childFolder", childFolders);
+  console.log("params", folder_Id);
+  console.log("main folder", folder);
+
   return (
     <div className="Dashboard">
       <div className="filter-view">
@@ -33,13 +40,13 @@ export default function Dashboard() {
         <div className="folders-info">
           <h4>Folders</h4>
         </div>
-        <div className="folders-view">
-          <Folder />
-          <Folder />
-          <Folder />
-          <Folder />
-          {/* <Folder /> */}
-        </div>
+        {childFolders.length > 0 && (
+          <div className="folders-view">
+            {childFolders.map((childFolder) => (
+              <Folder key={childFolder.id} folder={childFolder} />
+            ))}
+          </div>
+        )}
       </div>
       <div className="file-info">
         <h4>Files</h4>

@@ -1,7 +1,7 @@
 import { CloudUpload, CreateNewFolder } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import ModalComponent from "../Modal/ModalComponent";
+import FolderModal from "../FolderModal/FolderModal";
 import "./AddButton.scss";
 
 export default function AddButton() {
@@ -38,7 +38,7 @@ export default function AddButton() {
           </li>
         </ul>
       </div>
-      <ModalComponent open={open} handleclose={handleClose} />
+      <FolderModal open={open} handleclose={handleClose} />
     </div>
   );
 }

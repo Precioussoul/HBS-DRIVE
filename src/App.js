@@ -14,28 +14,37 @@ import ProtectedRoute from "./Authentication/ProtectedRoute.js";
 import AuthProvider from "./contexts/AuthContext.js";
 import AccSettings from "./pages/Acc-settings/AccSettings";
 import GenSettings from "./pages/Gen-settings/GenSettings.jsx";
+import FolderProvider from "./contexts/FolderContext.js";
+import FolderDetails from "./pages/FolderDetails/FolderDetails.jsx";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <Router>
-          <Routes>
-            {/* Authentication */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/forgot-password" element={<ForgetPassword />} />
-            <Route path="/" element={<ProtectedRoute />}>
-              <Route exact path="" element={<Dashboard />} />
-              <Route path="trash" element={<Trash />} />
-              <Route path="recents" element={<Recents />} />
-              <Route path="favorite" element={<Favorites />} />
-              <Route path="search" element={<Search />} />
-              <Route path="acc-settings" element={<AccSettings />} />
-              <Route path="gen-settings" element={<GenSettings />} />
-            </Route>
-          </Routes>
-        </Router>
+        <FolderProvider>
+          <Router>
+            <Routes>
+              {/* Authentication */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/forgot-password" element={<ForgetPassword />} />
+              <Route path="/" element={<ProtectedRoute />}>
+                <Route exact path="" element={<Dashboard />} />
+                <Route
+                  exact
+                  path="/folder/:folder_Id"
+                  element={<FolderDetails />}
+                />
+                <Route path="trash" element={<Trash />} />
+                <Route path="recents" element={<Recents />} />
+                <Route path="favorite" element={<Favorites />} />
+                <Route path="search" element={<Search />} />
+                <Route path="acc-settings" element={<AccSettings />} />
+                <Route path="gen-settings" element={<GenSettings />} />
+              </Route>
+            </Routes>
+          </Router>
+        </FolderProvider>
       </AuthProvider>
     </ThemeProvider>
   );

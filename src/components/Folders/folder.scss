@@ -1,13 +1,22 @@
 .folder {
+  align-items: center;
   position: relative;
   padding: 1px;
   // background-color: aqua;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 
   .folder-detail {
     display: flex;
-    justify-content: space-between;
     padding: 0 5px;
+    align-items: center;
+    justify-content: center;
+
+    .folder-name {
+      margin-top: -17px;
+      text-align: center;
+      // font-weight: bold;
+      color: rgb(14, 13, 13);
+    }
   }
 
   .folder-icons {
@@ -15,15 +24,13 @@
   }
   .icon-main {
     font-size: 135px;
-    color: #1a22fc;
-    color: #5a65f3;
     color: #a3a9df;
+    left: 20px;
   }
   .icon-sub {
     position: absolute;
     bottom: 15px;
     font-size: 55px;
-    color: #a1a1a6;
     color: #5a65f3;
 
     right: 20px;

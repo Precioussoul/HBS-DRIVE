@@ -26,8 +26,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-console.log(firebaseConfig);
-
 // init services
 export const database = getFirestore(app);
 export const auth = getAuth(app);
@@ -50,10 +48,10 @@ export const colRef = {
 
 export const singleRef = {
   folders: (id) => {
-    doc(database, colRef.folders, id);
+    return doc(database, colRef.folders, id);
   },
   files: (id) => {
-    doc(database, colRef.files, id);
+    return doc(database, colRef.files, id);
   },
 };
 

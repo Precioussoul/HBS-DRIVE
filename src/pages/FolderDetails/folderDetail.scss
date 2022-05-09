@@ -1,0 +1,10 @@
+.folders-view.folderDetails {
+  & > * {
+    margin: 0px 8px;
+  }
+
+  @media (max-width: 600px) {
+    justify-content: space-between;
+    padding: 0 5px;
+  }
+}

@@ -1,0 +1,17 @@
+.goback-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  width: 95%;
+  margin: 0;
+  color: #f9f9f948;
+}
+
+.goback-sub {
+  align-self: flex-start;
+}
+.goback-name {
+  font-size: 20px;
+  text-transform: capitalize;
+}

@@ -13,13 +13,14 @@
   flex-wrap: wrap;
   // justify-content: space-between;
   @media (max-width: 600px) {
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding: 0 5px;
   }
   > * {
     margin: 8px;
 
     @media (max-width: 600px) {
-      margin: 10px 2px;
+      margin: 4px 2px;
     }
   }
 
@@ -33,4 +34,11 @@
     display: none;
     visibility: hidden;
   }
+}
+
+.breadcrumb-view {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  align-items: center;
 }

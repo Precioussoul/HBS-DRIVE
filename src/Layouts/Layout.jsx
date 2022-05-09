@@ -34,9 +34,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import Navbar from "../components/Navbar/Navbar";
 import Storage from "../components/StorageProgress/Storage";
-import Summary from "../components/StorageSummary/Summary";
 import UploadFiles from "../components/uploadCenter/Upload";
-import ModalComponent from "../components/Modal/ModalComponent";
+import FolderModal from "../components/FolderModal/FolderModal";
 
 const drawerWidth = 210;
 const drawerWidth2 = 270;
@@ -105,11 +104,17 @@ function Layout(props) {
       <div className="btn-upload">
         <Button
           variant="contained"
-          sx={{ display: "flex", alignItems: "center", marginLeft: "5px" }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginLeft: "5px",
+          }}
         >
           <label htmlFor="new" className="upload-label">
-            <CloudUpload /> Upload
+            <CloudUpload />
           </label>
+          <p>Upload</p>
         </Button>
         <input type="file" id="new" className="upload-new" />
         <Button
@@ -120,7 +125,7 @@ function Layout(props) {
           <CreateNewFolder />
         </Button>
       </div>
-      <ModalComponent open={open} handleclose={handleClose} />
+      <FolderModal open={open} handleclose={handleClose} />
       <List>
         {menuItems.map((item, indx) => (
           <ListItem
@@ -249,7 +254,7 @@ function Layout(props) {
             p: 2,
             width: {
               xs: "100%",
-              sm: `calc(100% - ${customWidthMd}px)`,
+              lg: `calc(100% - ${customWidthMd}px)`,
               xl: `calc(100% - ${customWidthXL}px)`,
             },
           }}
@@ -265,12 +270,12 @@ function Layout(props) {
             variant="permanent"
             anchor="right"
             sx={{
-              display: { sm: "none", md: "block" },
+              display: { xs: "none", lg: "block" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: { sm: drawerWidth2, xl: xlWidth },
               },
-              visibility: { xs: "hidden", sm: "visible" },
+              visibility: { xs: "hidden", lg: "visible" },
             }}
             open
           >

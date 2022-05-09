@@ -55,7 +55,7 @@
     justify-content: space-between;
   }
   .greeting {
-    @media (max-width: 600px) {
+    @media (max-width: 900px) {
       display: none;
       visibility: hidden;
     }
