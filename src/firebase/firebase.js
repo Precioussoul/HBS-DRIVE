@@ -67,8 +67,8 @@ export function avatarURL(
   setLoading,
   setFile
 ) {
-  const fileRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
-  getDownloadURL(fileRef)
+  const avatarRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
+  getDownloadURL(avatarRef)
     .then((url) => {
       result = url;
       setMessage("your changes has been saved");
@@ -115,3 +115,7 @@ const deleteFile = (pathToFile, fileName) => {
   const childRef = ref(storage, fileName);
   childRef.delete();
 };
+
+// files upload
+
+export function uploadFiles(currentUser, filePath, file) {}

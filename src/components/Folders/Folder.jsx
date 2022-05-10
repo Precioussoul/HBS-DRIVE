@@ -40,32 +40,3 @@ export default function Folder({ folder }) {
     </>
   );
 }
-
-{
-  /* <div className="folder-menu">
-          <MoreVert
-            style={{ cursor: "pointer" }}
-            id="file-menu"
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-          />{" "}
-          <Menu
-            id="file-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            <MenuItem onClick={handleClose}>Preview</MenuItem>
-            <MenuItem onClick={handleClose}>Get shareable link</MenuItem>
-            <MenuItem onClick={handleClose}>Add a star</MenuItem>
-            <MenuItem onClick={handleClose}>Download</MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>Delete</MenuItem>
-          </Menu>
-        </div> */
-}

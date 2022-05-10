@@ -1,6 +1,6 @@
 import { getDoc, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useContext, useEffect, useReducer } from "react";
-import { colRef, database, databaseRef, singleRef } from "../firebase/firebase";
+import { databaseRef, singleRef } from "../firebase/firebase";
 import rootReducer from "../reducers/rootReducer";
 import ACTIONS from "../reducers/action";
 import { AuthContext } from "../contexts/AuthContext";
@@ -21,8 +21,6 @@ export default function useFolder(folderId = null, folder = null) {
     dispatch({ type: ACTIONS.SELECT_FOLDER, payload: { folderId, folder } });
   }, [folderId, folder]);
   // only changes when folderId changes
-  // const docSnap = getDoc(singleRef.folders(folderId));
-  // console.log(docSnap.data(), "doc snap");
 
   useEffect(() => {
     if (folderId == null) {
@@ -49,9 +47,7 @@ export default function useFolder(folderId = null, folder = null) {
           type: ACTIONS.UPDATE_FOLDER,
           payload: { folder: ROOT_FOLDER },
         });
-        console.log("error, data not found");
       });
-    console.log("folderId", folderId);
   }, [folderId]);
 
   useEffect(() => {
@@ -69,24 +65,26 @@ export default function useFolder(folderId = null, folder = null) {
         payload: { childFolders: data },
       });
     });
-    console.log("folderId new", folderId);
   }, [folderId, currentUser]);
 
-  // useEffect(() => {
-  //   return (
-  //     database.files
-  //       .where("folderId", "==", folderId)
-  //       .where("userId", "==", currentUser.uid)
-  //       // .orderBy("createdAt")
-  //       .onSnapshot((snapshot) => {
-  //         dispatch({
-  //           type: ACTIONS.SET_CHILD_FILES,
-  //           payload: { childFiles: snapshot.docs.map(database.formatDoc) },
-  //         });
-  //       })
-  //   );
-  // }, [folderId, currentUser]);
-  // console.log("this is state", state);
+  useEffect(() => {
+    const q = query(
+      databaseRef.filesRef,
+      where("folderId", "==", folderId),
+      where("userId", "==", currentUser.uid),
+      orderBy("createdAt")
+    );
+    onSnapshot(q, (querySnapshot) => {
+      const filedata = querySnapshot.docs.map((doc) =>
+        databaseRef.formatDoc(doc)
+      );
+      console.log("data files", filedata);
+      dispatch({
+        type: ACTIONS.SET_CHILD_FILES,
+        payload: { childFiles: filedata },
+      });
+    });
+  }, [folderId, currentUser]);
 
   return state;
 }

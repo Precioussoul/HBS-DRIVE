@@ -4,16 +4,16 @@ import { AuthContext } from "../contexts/AuthContext";
 import Layout from "../Layouts/Layout";
 import Login from "./Login/Login";
 import AddButton from "../components/AddButton/AddButton.jsx";
-// import SimpleBreadcrumbs from "../components/SimpleBreadCrumbs";
+import SimplePortal from "../components/SimplePortal";
 
 const ProtectedRoute = () => {
   const { currentUser } = useContext(AuthContext);
 
   return currentUser !== null ? (
     <Layout>
-      {/* <SimpleBreadcrumbs /> */}
       <Outlet />
       <AddButton />
+      <SimplePortal />
     </Layout>
   ) : (
     <Login />

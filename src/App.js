@@ -14,14 +14,14 @@ import ProtectedRoute from "./Authentication/ProtectedRoute.js";
 import AuthProvider from "./contexts/AuthContext.js";
 import AccSettings from "./pages/Acc-settings/AccSettings";
 import GenSettings from "./pages/Gen-settings/GenSettings.jsx";
-import FolderProvider from "./contexts/FolderContext.js";
 import FolderDetails from "./pages/FolderDetails/FolderDetails.jsx";
+import FileAndFolderProvider from "./contexts/FileAndFolderContext.js";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <FolderProvider>
+        <FileAndFolderProvider>
           <Router>
             <Routes>
               {/* Authentication */}
@@ -44,7 +44,7 @@ function App() {
               </Route>
             </Routes>
           </Router>
-        </FolderProvider>
+        </FileAndFolderProvider>
       </AuthProvider>
     </ThemeProvider>
   );

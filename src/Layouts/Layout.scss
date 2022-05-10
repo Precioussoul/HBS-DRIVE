@@ -22,6 +22,10 @@
 
 .upload-label {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  // height: 100%;
 }
 .upgrade-desc {
   text-align: center;

@@ -12,7 +12,7 @@ import {
 import React from "react";
 import "./File.scss";
 
-export default function File({ fileUrl, fileName }) {
+export default function File({ file }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -22,20 +22,49 @@ export default function File({ fileUrl, fileName }) {
     setAnchorEl(null);
   };
 
+  const fileType = [
+    "image/png",
+    "image/png",
+    "video/mp4",
+    "audio/mpeg",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "audio/wav",
+    "audio/mpeg4",
+    "application/pdf",
+    "application/pptx",
+  ];
+  // let resultFile;
+  // switch (file.type) {
+  //   case "image/png":
+  //     return (resultFile = file.url);
+  //     break;
+  //   case "image/jpeg":
+  //     return (resultFile = file.url);
+  //   case "application/pdf":
+  //     return (resultFile = "images/pdf.png");
+  //     break;
+  //   default:
+  //     break;
+  // }
+
   return (
-    <div className="file">
+    <a href={file.url} download className="file">
       <Card
-        sx={{ maxWidth: { xs: 150, sm: 180, xl: 350 } }}
+        sx={{ maxWidth: { xs: 150, sm: 175, xl: 350 } }}
         className="file-bg"
       >
-        <CardMedia
+        {/* <CardMedia
           component="img"
           height="140"
-          image={fileUrl}
-          alt="green iguana"
-        />
+          image={
+            file.type === "image/jpeg" || "image/png"
+              ? file.url
+              : "images/camera.png"
+          }
+          alt={file.name}
+        /> */}
         <div className="file-detail">
-          <p>{fileName}</p>
+          <p>{file.name}</p>
           <div className="file-menu">
             <MoreVert
               id="file-menu"
@@ -54,15 +83,19 @@ export default function File({ fileUrl, fileName }) {
               }}
             >
               <MenuItem onClick={handleClose}>Preview</MenuItem>
-              <MenuItem onClick={handleClose}>Get shareable link</MenuItem>
               <MenuItem onClick={handleClose}>Add a star</MenuItem>
-              <MenuItem onClick={handleClose}>Download</MenuItem>
+              <MenuItem onClick={handleClose}>Get shareable link</MenuItem>
+              <MenuItem>
+                <a href={file.url} className="download">
+                  Download
+                </a>
+              </MenuItem>
               <Divider />
               <MenuItem onClick={handleClose}>Delete</MenuItem>
             </Menu>
           </div>
         </div>
       </Card>
-    </div>
+    </a>
   );
 }

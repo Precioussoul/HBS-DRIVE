@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { color } from "../theme";
 import "./Layout.scss";
@@ -26,16 +26,22 @@ import {
   StarOutline,
   Menu,
   AddToDrive,
-  CloudUploadOutlined,
   CloudUpload,
   CreateNewFolder,
 } from "@mui/icons-material";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 import Navbar from "../components/Navbar/Navbar";
 import Storage from "../components/StorageProgress/Storage";
 import UploadFiles from "../components/uploadCenter/Upload";
 import FolderModal from "../components/FolderModal/FolderModal";
+import useFolder, { ROOT_FOLDER } from "../hooks/useFolder";
+import { databaseRef, storage } from "../firebase/firebase";
+import { AuthContext } from "../contexts/AuthContext";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { addDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { v4 as uuidV4 } from "uuid";
+import { FileAndFolderContext } from "../contexts/FileAndFolderContext";
 
 const drawerWidth = 210;
 const drawerWidth2 = 270;
@@ -46,8 +52,15 @@ const customWidthMd = 480;
 
 function Layout(props) {
   const { window, children } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { folder_Id } = useParams();
+  const { folder } = useFolder(folder_Id);
+  const { currentUser } = React.useContext(AuthContext);
+  const { setUpFile, setUploadingFiles, handleCloseShow, setError } =
+    useContext(FileAndFolderContext);
+
+  const currentFolder = folder;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -58,6 +71,102 @@ function Layout(props) {
   };
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const handleFileUpload = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    setUpFile(file);
+    const defaultFileValue = file.size / 1024 / 1024;
+    const fileSize = `${Math.round(defaultFileValue * 100) / 100} MB`;
+
+    if (currentFolder == null || file == null) return;
+    const id = uuidV4();
+    handleCloseShow();
+
+    setUploadingFiles((prevState) => [
+      ...prevState,
+      { id: id, name: file.name, progress: 0, error: false },
+    ]);
+
+    const filePath =
+      currentFolder === ROOT_FOLDER
+        ? `${currentFolder.path.join("/")}/${file.name}`
+        : `${currentFolder.path.join("/")}/${currentFolder.name}/${file.name}`;
+
+    const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`);
+
+    const uploadTask = uploadBytesResumable(fileRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setUploadingFiles((prevState) => {
+          return prevState.map((uploadFile) => {
+            if (uploadFile.id === id) {
+              return { ...uploadFile, progress: progress };
+            }
+            return uploadFile;
+          });
+        });
+      },
+      () => {
+        setUploadingFiles((prevState) => {
+          return prevState.filter((uploadFile) => {
+            if (uploadFile.id === id) {
+              setError(true);
+              return { ...uploadFile, error: true };
+            }
+            return uploadFile;
+          });
+        });
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadUrl) => {
+            console.log("download url", downloadUrl);
+
+            const q = query(
+              databaseRef.filesRef,
+              where("name", "==", file.name),
+              where("folderId", "==", currentFolder.id),
+              where("userId", "==", currentUser.uid)
+            );
+
+            getDocs(q).then((existingFiles) => {
+              const existingFile = existingFiles.docs[0];
+              console.log("existing File", existingFile);
+              if (existingFile) {
+                const existRef = ref(existingFile);
+                updateDoc(existRef, {
+                  url: downloadUrl,
+                });
+              } else {
+                addDoc(databaseRef.filesRef, {
+                  name: file.name,
+                  size: fileSize,
+                  type: file.type,
+                  url: downloadUrl,
+                  folderId: currentFolder.id,
+                  userId: currentUser.uid,
+                  createdAt: databaseRef.timestamp,
+                });
+              }
+            });
+          })
+          .then(() => {
+            setUploadingFiles((prevState) => {
+              return prevState.filter((uploadFile) => {
+                return uploadFile.id !== id;
+              });
+            });
+            setUpFile("");
+          });
+      }
+    );
+  };
 
   const menuItems = [
     {
@@ -107,16 +216,20 @@ function Layout(props) {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
             marginLeft: "5px",
           }}
         >
           <label htmlFor="new" className="upload-label">
             <CloudUpload />
+            <p>Upload</p>
           </label>
-          <p>Upload</p>
         </Button>
-        <input type="file" id="new" className="upload-new" />
+        <input
+          type="file"
+          id="new"
+          className="upload-new"
+          onChange={handleFileUpload}
+        />
         <Button
           sx={{ marginRight: "5px" }}
           variant="contained"
@@ -250,7 +363,6 @@ function Layout(props) {
         <Box
           component="main"
           sx={{
-            // flexGrow: 1,
             p: 2,
             width: {
               xs: "100%",
@@ -281,6 +393,7 @@ function Layout(props) {
           >
             <Box>
               <Toolbar />
+
               <Storage />
               <UploadFiles />
             </Box>

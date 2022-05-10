@@ -9,11 +9,12 @@ import useFolder from "../../hooks/useFolder";
 
 export default function Dashboard() {
   const { folder_Id } = useParams();
-  const { childFolders, folder } = useFolder(folder_Id);
+  const { childFolders, folder, childFiles } = useFolder(folder_Id);
 
   console.log("childFolder", childFolders);
   console.log("params", folder_Id);
   console.log("main folder", folder);
+  console.log("CHILD FILES", childFiles);
 
   return (
     <div className="Dashboard">
@@ -51,30 +52,13 @@ export default function Dashboard() {
       <div className="file-info">
         <h4>Files</h4>
       </div>
-      <div className="file-view">
-        <File fileUrl={"/images/google-docs.png"} fileName={"rent.docx"} />
-        <File fileUrl={"/images/project-1-2.jpg"} fileName={"fairy lady"} />
-        <File fileUrl={"/images/project-1-3.jpg"} fileName={"fairy lady 2"} />
-        <File fileUrl={"/images/google-docs.png"} fileName={"rent.docx"} />
-        <File fileUrl={"/images/project-1-2.jpg"} fileName={"fairy lady"} />
-        <File fileUrl={"/images/project-1-3.jpg"} fileName={"fairy lady 2"} />
-        <File fileUrl={"/images/google-docs.png"} fileName={"rent.docx"} />
-        <File fileUrl={"/images/project-1-2.jpg"} fileName={"fairy lady"} />
-        <File fileUrl={"/images/project-1-3.jpg"} fileName={"fairy lady 2"} />
-        <File fileUrl={"/images/google-docs.png"} fileName={"rent.docx"} />
-        <File fileUrl={"/images/project-1-2.jpg"} fileName={"fairy lady"} />
-        <File fileUrl={"/images/project-1-3.jpg"} fileName={"fairy lady 2"} />
-        <File fileUrl={"/images/google-docs.png"} fileName={"rent.docx"} />
-        <File fileUrl={"/images/project-1-2.jpg"} fileName={"fairy lady"} />
-        <File fileUrl={"/images/project-1-3.jpg"} fileName={"fairy lady 2"} />
-        <File fileUrl={"/images/google-docs.png"} fileName={"rent.docx"} />
-        <File fileUrl={"/images/project-1-2.jpg"} fileName={"fairy lady"} />
-        <File fileUrl={"/images/project-1-3.jpg"} fileName={"fairy lady 2"} />
-        <File fileUrl={"/images/google-docs.png"} fileName={"rent.docx"} />
-        <File fileUrl={"/images/project-1-2.jpg"} fileName={"fairy lady"} />
-        <File fileUrl={"/images/project-1-3.jpg"} fileName={"fairy lady 2"} />
-        <File fileUrl={"/images/pdf.png"} fileName={"ALX guide"} />
-      </div>
+      {childFiles.length > 0 && (
+        <div className="file-view">
+          {childFiles.map((childFile) => (
+            <File key={childFile.id} file={childFile} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

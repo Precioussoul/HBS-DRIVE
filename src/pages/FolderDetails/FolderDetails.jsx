@@ -8,10 +8,15 @@ import useFolder from "../../hooks/useFolder";
 
 export default function FolderDetails() {
   const { folder_Id } = useParams();
-  const { childFolders, folder } = useFolder(folder_Id);
+  const { childFolders, folder, childFiles } = useFolder(folder_Id);
   return (
     <div className="folderDetails">
       <GoBack currentFolder={folder} />
+      {childFolders.length > 0 && (
+        <div className="folders-info">
+          <h4>Folders</h4>
+        </div>
+      )}
       <div className="folders">
         {childFolders.length > 0 && (
           <div className="folders-view folderDetails">
@@ -21,6 +26,18 @@ export default function FolderDetails() {
           </div>
         )}
       </div>
+      {childFiles.length > 0 && (
+        <div className="file-info">
+          <h4>Files</h4>
+        </div>
+      )}
+      {childFiles.length > 0 && (
+        <div className="file-view">
+          {childFiles.map((childFile) => (
+            <File key={childFile.id} file={childFile} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

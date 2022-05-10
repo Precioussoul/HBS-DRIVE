@@ -3,13 +3,13 @@ import { Box, Button, Modal, TextField } from "@mui/material";
 import "./Modal.scss";
 import { databaseRef } from "../../firebase/firebase";
 import { addDoc } from "firebase/firestore";
-import { FolderContext } from "../../contexts/FolderContext";
+import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import useFolder, { ROOT_FOLDER } from "../../hooks/useFolder";
 import { useParams } from "react-router-dom";
 
 export default function FolderModal({ open, handleclose }) {
-  const { folderName, setFolderName } = useContext(FolderContext);
+  const { folderName, setFolderName } = useContext(FileAndFolderContext);
   const { folder_Id } = useParams();
   const { folder } = useFolder(folder_Id);
   const { currentUser } = useContext(AuthContext);

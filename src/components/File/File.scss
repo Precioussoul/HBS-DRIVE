@@ -16,8 +16,17 @@
     justify-content: space-between;
     padding: 5px 10px;
 
+    p {
+      font-size: 14px;
+    }
+
     .file-menu {
       cursor: pointer;
     }
+  }
+
+  .download {
+    width: 100%;
+    display: inline-block;
   }
 }

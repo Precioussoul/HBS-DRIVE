@@ -28,11 +28,7 @@ export default function Recents() {
       </div>
       <Divider sx={{ display: { sm: "none" }, visibility: { sm: "hidden" } }} />
       <div className="recents-view">
-        <Folder />
-        <File fileName={"olumide.jpg"} fileUrl={"images/project-1-3.jpg"} />
-        <Folder />
-        <File fileName={"olumide.jpg"} fileUrl={"images/project-1-3.jpg"} />
-        <File fileName={"olumide.jpg"} fileUrl={"images/project-1-3.jpg"} />
+        <p>recents files</p>
       </div>
     </div>
   );
