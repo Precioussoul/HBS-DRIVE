@@ -36,7 +36,6 @@ export default function useFolder(folderId = null, folder = null) {
     getDoc(singleRef.folders(folderId))
       .then((doc) => {
         const folderData = databaseRef.formatDoc(doc);
-        console.log("document", folderData);
         dispatch({
           type: ACTIONS.UPDATE_FOLDER,
           payload: { folder: folderData },
@@ -59,7 +58,6 @@ export default function useFolder(folderId = null, folder = null) {
     );
     onSnapshot(q, (querySnapshot) => {
       const data = querySnapshot.docs.map((doc) => databaseRef.formatDoc(doc));
-      console.log("data", data);
       dispatch({
         type: ACTIONS.SET_CHILD_FOLDERS,
         payload: { childFolders: data },
@@ -78,7 +76,6 @@ export default function useFolder(folderId = null, folder = null) {
       const filedata = querySnapshot.docs.map((doc) =>
         databaseRef.formatDoc(doc)
       );
-      console.log("data files", filedata);
       dispatch({
         type: ACTIONS.SET_CHILD_FILES,
         payload: { childFiles: filedata },

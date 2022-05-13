@@ -18,13 +18,11 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password);
     setLoading(true);
     loginUser(email, password, setError, setLoading);
     navigate("/");
   };
 
-  console.log(currentUser, "currentuser");
   return (
     <Box
       sx={{

@@ -1,13 +1,18 @@
 import { ChevronLeft } from "@mui/icons-material";
 import { Button, Divider } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import File from "../../components/File/File";
+import { FavoritesContext } from "../../contexts/FavoriteContext";
+import { FavorTest } from "../../theme";
 import "./favorites.scss";
 
 export default function Favorites() {
   const [empty, setEmpty] = useState(true);
+  const { favoredFiles } = useContext(FavoritesContext);
   const navigate = useNavigate();
+
+  console.log("favorites files", favoredFiles);
   return (
     <div>
       <div className="recent-header">
@@ -35,6 +40,7 @@ export default function Favorites() {
         </div>
       ) : (
         <File fileUrl={"images/txt.png"} fileName={"github.txt"} />
+        // <FavorTest />
       )}
     </div>
   );

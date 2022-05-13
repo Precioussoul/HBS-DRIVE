@@ -1,10 +1,11 @@
 .action {
   position: fixed;
-  bottom: 30px;
+  bottom: -300px;
   right: 340px;
   width: 65px;
   display: none;
   visibility: hidden;
+  transition: 0.4s;
   height: 65px;
   border-radius: 20%;
   background-color: #1a22fc;
@@ -15,6 +16,7 @@
   @media (max-width: 600px) {
     right: 20px;
     display: block;
+    bottom: 30px;
     visibility: visible;
   }
   @media (min-width: 1400px) {

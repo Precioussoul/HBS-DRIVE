@@ -13,7 +13,6 @@ const ForgetPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email);
 
     try {
       setError("");

@@ -4,7 +4,7 @@
   justify-content: space-between;
   background-color: rgba($color: #abb7d8, $alpha: 0.6);
   border-radius: 10px;
-  padding: 0 8px;
+  padding: 0 5px;
   width: 135px;
 
   @media (min-width: 1536px) {
@@ -12,13 +12,14 @@
   }
 
   .filter-img {
-    max-width: 50px;
-    height: 50px;
-    padding: 7px;
+    max-width: 40px;
+    height: 40px;
+    padding: 4px;
     border-radius: 10px;
     @media (min-width: 1536px) {
       max-width: 60px;
       height: 60px;
+      padding: 7px;
     }
     .image {
       object-fit: contain;
@@ -28,12 +29,28 @@
   }
   .filter-count {
     margin-left: 15px;
-    font-size: 14px;
+    font-size: 10px;
+    font-weight: bold;
     display: flex;
     align-items: center;
+    @media (min-width: 1536px) {
+      font-weight: normal;
+      font-size: 14px;
+    }
 
     & span {
       margin-left: 5px;
+    }
+  }
+
+  .filter-type {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: capitalize;
+
+    @media (min-width: 1536px) {
+      font-weight: normal;
+      font-size: 14px;
     }
   }
 }

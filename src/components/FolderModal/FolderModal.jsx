@@ -16,9 +16,6 @@ export default function FolderModal({ open, handleclose }) {
 
   const currentFolder = folder;
 
-  console.log("folder name", folderName);
-  console.log("currentFolder", currentFolder);
-
   const handleFolder = (e) => {
     e.preventDefault();
     if (currentFolder == null) return;

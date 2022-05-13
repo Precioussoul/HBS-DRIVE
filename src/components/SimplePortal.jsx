@@ -10,8 +10,6 @@ export default function SimplePortal() {
     useContext(FileAndFolderContext);
   const container = React.useRef(null);
 
-  console.log("uploading", uploadingFiles);
-
   return (
     <>
       {uploadingFiles.length > 0 &&

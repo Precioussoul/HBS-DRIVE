@@ -69,9 +69,13 @@ function AuthProvider({ children }) {
   }
   // verify email address
   function verifyEmailAddress(User, message) {
-    return sendEmailVerification(User).then(() => {
-      message("please check your email address for further instruction");
-    });
+    return sendEmailVerification(User)
+      .then(() => {
+        message("please check your email address for further instruction");
+      })
+      .catch(() => {
+        message("please try again");
+      });
   }
   // update Password
   function updateCurrentPassword(password) {

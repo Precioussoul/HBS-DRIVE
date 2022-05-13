@@ -12,7 +12,7 @@ export default function Summary({ image, type, length, totalSize }) {
           <small>{length} files</small>
         </div>
       </div>
-      <span className="summary-size">{totalSize}GB</span>
+      <span className="summary-size">{totalSize} MB</span>
     </div>
   );
 }

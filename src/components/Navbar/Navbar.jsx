@@ -29,6 +29,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { blue, deepPurple } from "@mui/material/colors";
 import { color } from "../../theme";
+import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
 
 const CancelSearch = styled(Box)(({ theme, state }) => ({
   display: state ? "flex" : "none",
@@ -43,11 +44,10 @@ export default function Navbar() {
   };
   const navigate = useNavigate();
   const { logout, currentUser } = useContext(AuthContext);
+  const { setSearchQuery } = useContext(FileAndFolderContext);
   const username = currentUser.displayName
     ? currentUser.displayName
     : currentUser.email;
-
-  console.log(currentUser);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -84,7 +84,7 @@ export default function Navbar() {
         <InputBase
           onClick={handleSearch}
           sx={{ width: "100%" }}
-          onChange={(e) => console.log(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         {/* <CancelSearch state={cancel} onClick={closeSearch}>
           <ArrowCircleLeft fontSize="large" />

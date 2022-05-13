@@ -57,7 +57,7 @@ function Layout(props) {
   const { folder_Id } = useParams();
   const { folder } = useFolder(folder_Id);
   const { currentUser } = React.useContext(AuthContext);
-  const { setUpFile, setUploadingFiles, handleCloseShow, setError } =
+  const { setUpFile, setUploadingFiles, handleCloseShow, setError, fullSpace } =
     useContext(FileAndFolderContext);
 
   const currentFolder = folder;
@@ -77,7 +77,7 @@ function Layout(props) {
     const file = e.target.files[0];
     setUpFile(file);
     const defaultFileValue = file.size / 1024 / 1024;
-    const fileSize = `${Math.round(defaultFileValue * 100) / 100} MB`;
+    const fileSize = `${Math.round(defaultFileValue * 100) / 100}`;
 
     if (currentFolder == null || file == null) return;
     const id = uuidV4();
@@ -126,8 +126,6 @@ function Layout(props) {
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((downloadUrl) => {
-            console.log("download url", downloadUrl);
-
             const q = query(
               databaseRef.filesRef,
               where("name", "==", file.name),
@@ -137,7 +135,6 @@ function Layout(props) {
 
             getDocs(q).then((existingFiles) => {
               const existingFile = existingFiles.docs[0];
-              console.log("existing File", existingFile);
               if (existingFile) {
                 const existRef = ref(existingFile);
                 updateDoc(existRef, {
@@ -149,6 +146,8 @@ function Layout(props) {
                   size: fileSize,
                   type: file.type,
                   url: downloadUrl,
+                  isStarred: false,
+                  isTrashed: false,
                   folderId: currentFolder.id,
                   userId: currentUser.uid,
                   createdAt: databaseRef.timestamp,
@@ -210,34 +209,42 @@ function Layout(props) {
         </Typography>
       </Toolbar>
       <Divider />
-      <div className="btn-upload">
-        <Button
-          variant="contained"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginLeft: "5px",
-          }}
-        >
-          <label htmlFor="new" className="upload-label">
-            <CloudUpload />
-            <p>Upload</p>
-          </label>
-        </Button>
-        <input
-          type="file"
-          id="new"
-          className="upload-new"
-          onChange={handleFileUpload}
-        />
-        <Button
-          sx={{ marginRight: "5px" }}
-          variant="contained"
-          onClick={() => setOpen(true)}
-        >
-          <CreateNewFolder />
-        </Button>
-      </div>
+      {fullSpace ? (
+        <div>
+          <p className="error">
+            Your Space is Full, please upgrade or Delete Files
+          </p>
+        </div>
+      ) : (
+        <div className="btn-upload">
+          <Button
+            variant="contained"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              marginLeft: "5px",
+            }}
+          >
+            <label htmlFor="new" className="upload-label">
+              <CloudUpload />
+              <p>Upload</p>
+            </label>
+          </Button>
+          <input
+            type="file"
+            id="new"
+            className="upload-new"
+            onChange={handleFileUpload}
+          />
+          <Button
+            sx={{ marginRight: "5px" }}
+            variant="contained"
+            onClick={() => setOpen(true)}
+          >
+            <CreateNewFolder />
+          </Button>
+        </div>
+      )}
       <FolderModal open={open} handleclose={handleClose} />
       <List>
         {menuItems.map((item, indx) => (
@@ -395,7 +402,16 @@ function Layout(props) {
               <Toolbar />
 
               <Storage />
-              <UploadFiles />
+
+              {fullSpace ? (
+                <div>
+                  <p className="error">
+                    Your Space is Full, please upgrade or delete some files
+                  </p>
+                </div>
+              ) : (
+                <UploadFiles />
+              )}
             </Box>
           </Drawer>
         </Box>

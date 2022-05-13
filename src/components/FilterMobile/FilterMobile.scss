@@ -1,0 +1,37 @@
+.f-Mobile {
+  width: 110px;
+  height: 110px;
+  background-color: #eef2fd;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  @media (max-width: 380px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  &-img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 7px;
+
+    .image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &-name {
+    color: #808080;
+    font-size: 14px;
+    text-transform: capitalize;
+  }
+  &-count-mb {
+    color: #808080;
+    font-size: 13px;
+  }
+}

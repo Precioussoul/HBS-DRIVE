@@ -16,34 +16,46 @@ import AccSettings from "./pages/Acc-settings/AccSettings";
 import GenSettings from "./pages/Gen-settings/GenSettings.jsx";
 import FolderDetails from "./pages/FolderDetails/FolderDetails.jsx";
 import FileAndFolderProvider from "./contexts/FileAndFolderContext.js";
+import OtherFilesFilter from "./pages/Others/OtherFilesFilter.jsx";
+import ImageFilter from "./pages/Images/ImageFilter.jsx";
+import VideoFilter from "./pages/Videos/VideoFilter.jsx";
+import AudioFilter from "./pages/Audios/AudioFilter.jsx";
+import DocsFilter from "./pages/Documents/DocsFilter.jsx";
+import FavoriteContextProvider from "./contexts/FavoriteContext.js";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <FileAndFolderProvider>
-          <Router>
-            <Routes>
-              {/* Authentication */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/forgot-password" element={<ForgetPassword />} />
-              <Route path="/" element={<ProtectedRoute />}>
-                <Route exact path="" element={<Dashboard />} />
-                <Route
-                  exact
-                  path="/folder/:folder_Id"
-                  element={<FolderDetails />}
-                />
-                <Route path="trash" element={<Trash />} />
-                <Route path="recents" element={<Recents />} />
-                <Route path="favorite" element={<Favorites />} />
-                <Route path="search" element={<Search />} />
-                <Route path="acc-settings" element={<AccSettings />} />
-                <Route path="gen-settings" element={<GenSettings />} />
-              </Route>
-            </Routes>
-          </Router>
+          <FavoriteContextProvider>
+            <Router>
+              <Routes>
+                {/* Authentication */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgetPassword />} />
+                <Route path="/" element={<ProtectedRoute />}>
+                  <Route exact path="" element={<Dashboard />} />
+                  <Route
+                    path="/folder/:folder_Id"
+                    element={<FolderDetails />}
+                  />
+                  <Route path="trash" element={<Trash />} />
+                  <Route path="recents" element={<Recents />} />
+                  <Route path="favorite" element={<Favorites />} />
+                  <Route path="search" element={<Search />} />
+                  <Route path="acc-settings" element={<AccSettings />} />
+                  <Route path="gen-settings" element={<GenSettings />} />
+                  <Route path="documents" element={<DocsFilter />} />
+                  <Route path="audios" element={<AudioFilter />} />
+                  <Route path="videos" element={<VideoFilter />} />
+                  <Route path="images" element={<ImageFilter />} />
+                  <Route path="others" element={<OtherFilesFilter />} />
+                </Route>
+              </Routes>
+            </Router>
+          </FavoriteContextProvider>
         </FileAndFolderProvider>
       </AuthProvider>
     </ThemeProvider>

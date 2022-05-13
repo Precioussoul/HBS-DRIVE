@@ -18,7 +18,7 @@ export default function AddButton() {
   const { folder_Id } = useParams();
   const { currentUser } = useContext(AuthContext);
   const { folder } = useFolder(folder_Id);
-  const { setUpFile, setUploadingFiles, handleCloseShow, setError } =
+  const { setUpFile, setUploadingFiles, handleCloseShow, setError, fullSpace } =
     useContext(FileAndFolderContext);
 
   const currentFolder = folder;
@@ -38,7 +38,7 @@ export default function AddButton() {
     const file = e.target.files[0];
     setUpFile(file);
     const defaultFileValue = file.size / 1024 / 1024;
-    const fileSize = `${Math.round(defaultFileValue * 100) / 100} MB`;
+    const fileSize = Math.round(defaultFileValue * 100) / 100;
 
     if (currentFolder == null || file == null) return;
     const id = uuidV4();
@@ -87,8 +87,6 @@ export default function AddButton() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((downloadUrl) => {
-            console.log("download url", downloadUrl);
-
             const q = query(
               databaseRef.filesRef,
               where("name", "==", file.name),
@@ -98,7 +96,6 @@ export default function AddButton() {
 
             getDocs(q).then((existingFiles) => {
               const existingFile = existingFiles.docs[0];
-              console.log("existing File", existingFile);
               if (existingFile) {
                 const existRef = ref(existingFile);
                 updateDoc(existRef, {
@@ -110,6 +107,8 @@ export default function AddButton() {
                   size: fileSize,
                   type: file.type,
                   url: downloadUrl,
+                  isStarred: false,
+                  isTrashed: false,
                   folderId: currentFolder.id,
                   userId: currentUser.uid,
                   createdAt: databaseRef.timestamp,
@@ -137,32 +136,57 @@ export default function AddButton() {
     "favorites",
     "recents",
   ];
+
+  var prevScrollpos = window.pageYOffset;
+  window.onscroll = function () {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      document.getElementById("act-btn").style.bottom = "30px";
+    } else {
+      document.getElementById("act-btn").style.bottom = "-300px";
+    }
+    prevScrollpos = currentScrollPos;
+  };
+
   return (
     <div
       className={pathgens.forEach((gen) => {
         return pathname === gen ? "hide" : "show";
       })}
     >
-      <div className="action" onClick={actionToggle}>
+      <div id="act-btn" className="action" onClick={actionToggle}>
         <span className={openAction ? "rotate" : ""}>+</span>
-        <ul>
-          <li id="folder" onClick={() => setOpen(true)}>
-            <CreateNewFolder className="icon" fontSize="large" />
-            <p>Create new folder</p>
-          </li>
-          <li>
-            <label htmlFor="fileup" className="fileup-label">
-              <CloudUpload className="icon" fontSize="large" />
-              <p>Upload File</p>
-            </label>
-            <input
-              type="file"
-              id="fileup"
-              className="file-up"
-              onChange={handleFileUpload}
-            />
-          </li>
-        </ul>
+
+        {fullSpace ? (
+          <ul>
+            <li>
+              <div>
+                <p className="error">
+                  Sorry, your space is full, please upgrade or delete files
+                </p>
+              </div>
+            </li>
+          </ul>
+        ) : (
+          <ul>
+            <li id="folder" onClick={() => setOpen(true)}>
+              <CreateNewFolder className="icon" fontSize="large" />
+              <p>Create new folder</p>
+            </li>
+            <li>
+              <label htmlFor="fileup" className="fileup-label">
+                <CloudUpload className="icon" fontSize="large" />
+                <p>Upload File</p>
+              </label>
+              <input
+                type="file"
+                id="fileup"
+                className="file-up"
+                onChange={handleFileUpload}
+              />
+            </li>
+          </ul>
+        )}
       </div>
       <FolderModal open={open} handleclose={handleClose} />
     </div>

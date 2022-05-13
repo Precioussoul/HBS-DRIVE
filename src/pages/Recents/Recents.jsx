@@ -1,13 +1,17 @@
 import { ChevronLeft } from "@mui/icons-material";
 import { Button, Divider } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import File from "../../components/File/File";
 import Folder from "../../components/Folders/Folder";
+import useFolder from "../../hooks/useFolder";
 import "./recents.scss";
 
 export default function Recents() {
   const navigate = useNavigate();
+  const { folder_Id } = useParams();
+  const { childFolders, childFiles } = useFolder(folder_Id);
+
   return (
     <div>
       <div className="recent-header">
@@ -27,9 +31,24 @@ export default function Recents() {
         </Button>{" "}
       </div>
       <Divider sx={{ display: { sm: "none" }, visibility: { sm: "hidden" } }} />
-      <div className="recents-view">
-        <p>recents files</p>
-      </div>
+      {childFiles.length > 0 && childFolders.length > 0 && (
+        <div className="recents-view">
+          {childFolders.map((childFolder) => (
+            <div className="recent-details" key={childFolder.id}>
+              <Folder folder={childFolder} />
+              <p>Uploaded on</p>
+              <p>{childFolder.createdAt.toDate().toDateString()}</p>
+            </div>
+          ))}
+          {childFiles.map((childFile) => (
+            <div className="recent-details" key={childFile.id}>
+              <File file={childFile} />
+              <p>Uploaded on</p>
+              <p>{childFile.createdAt.toDate().toDateString()}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
