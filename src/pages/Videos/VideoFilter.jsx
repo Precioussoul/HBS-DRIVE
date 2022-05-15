@@ -39,8 +39,8 @@ export default function VideoFilter() {
       </div>
       <Divider />
       <div className="recents-view">
-        {videos.map((file) => (
-          <File key={file.id} file={file} />
+        {videos.map((file, index) => (
+          <File key={file.id} file={file} index={index} />
         ))}
       </div>
     </div>

@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./trash.scss";
 import File from "../../components/File/File";
 import { useNavigate } from "react-router-dom";
 import { Button, Divider } from "@mui/material";
 import { ChevronLeft } from "@mui/icons-material";
+import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
 
 export default function Trash() {
   const [empty, setEmpty] = React.useState(true);
   const navigate = useNavigate();
+  const { allFiles } = useContext(FileAndFolderContext);
+
+  const trash = allFiles.filter((file) => file.isTrashed === true);
+
+  let fromTrash = false;
+
+  if (trash.length > 0) {
+    fromTrash = true;
+  }
   return (
     <div>
       <div className="recent-header">
@@ -27,14 +37,18 @@ export default function Trash() {
         </Button>{" "}
       </div>
       <Divider sx={{ display: { sm: "none" }, visibility: { sm: "hidden" } }} />
-      {empty ? (
+      {!trash.length > 0 ? (
         <div className="trash">
           <img src="/images/trash.png" alt="" />
           <h3>Trash is Empty</h3>
           <p>there is no file or folder in your trash currently</p>
         </div>
       ) : (
-        <File fileUrl={"images/zip.png"} fileName={"movie.zip"} />
+        <>
+          {trash.map((itemTrash) => (
+            <File key={itemTrash.id} file={itemTrash} fromTrash={fromTrash} />
+          ))}
+        </>
       )}
     </div>
   );

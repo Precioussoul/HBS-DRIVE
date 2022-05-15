@@ -15,6 +15,7 @@ export default function useFolder(folderId = null, folder = null) {
     childFiles: [],
     // initial value in a state
   });
+
   const { currentUser } = useContext(AuthContext);
   // when folderId and folder changes
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function useFolder(folderId = null, folder = null) {
       where("userId", "==", currentUser.uid),
       orderBy("createdAt")
     );
-    onSnapshot(q, (querySnapshot) => {
+    const unsub = onSnapshot(q, (querySnapshot) => {
       const data = querySnapshot.docs.map((doc) => databaseRef.formatDoc(doc));
       dispatch({
         type: ACTIONS.SET_CHILD_FOLDERS,
@@ -72,12 +73,33 @@ export default function useFolder(folderId = null, folder = null) {
       where("userId", "==", currentUser.uid),
       orderBy("createdAt")
     );
-    onSnapshot(q, (querySnapshot) => {
+    const unsub = onSnapshot(q, (querySnapshot) => {
       const filedata = querySnapshot.docs.map((doc) =>
         databaseRef.formatDoc(doc)
       );
       dispatch({
         type: ACTIONS.SET_CHILD_FILES,
+        payload: { childFiles: filedata },
+      });
+    });
+  }, [folderId, currentUser]);
+
+  useEffect(() => {
+    const q = query(
+      databaseRef.filesRef,
+      where("isTrashed", "==", false),
+      where("folderId", "==", folderId),
+      where("userId", "==", currentUser.uid)
+      // orderBy("createdAt")
+    );
+
+    const unsub = onSnapshot(q, (querySnapshot) => {
+      const filedata = querySnapshot.docs.map((doc) =>
+        databaseRef.formatDoc(doc)
+      );
+
+      dispatch({
+        type: ACTIONS.UPDATE_CHILD_FILES,
         payload: { childFiles: filedata },
       });
     });

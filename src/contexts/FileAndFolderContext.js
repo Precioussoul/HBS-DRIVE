@@ -1,7 +1,8 @@
 import { onSnapshot, orderBy, query, where } from "firebase/firestore";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { databaseRef } from "../firebase/firebase";
 import { AuthContext } from "./AuthContext";
+
 export const FileAndFolderContext = React.createContext();
 
 function FileAndFolderProvider({ children }) {
@@ -14,6 +15,25 @@ function FileAndFolderProvider({ children }) {
   const [allFiles, setAllFiles] = useState([]);
   const [allFolders, setAllFolders] = useState([]);
   const { currentUser } = useContext(AuthContext);
+
+  const jfavorites = localStorage.getItem("favorites");
+  const localFavorites = jfavorites ? JSON.parse(jfavorites) : [];
+  const [favorites, setFavorites] = useState(localFavorites);
+
+  const jtrash = localStorage.getItem("trash");
+  const localtrash = jtrash ? JSON.parse(jtrash) : [];
+  const [trash, setTrash] = useState(localtrash);
+  console.log("local trash", localtrash);
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    localStorage.setItem("trash", JSON.stringify(favorites));
+  }, [favorites, trash]);
+
+  // localStorage.removeItem("favorites");
+
+  console.log("fav", favorites);
+  console.log("trash", trash);
 
   const documents = allFiles.filter((file) =>
     file.type.toLowerCase().includes("application/")
@@ -28,28 +48,42 @@ function FileAndFolderProvider({ children }) {
     file.type.toLowerCase().includes("video/")
   );
 
-  const q = query(
-    databaseRef.filesRef,
-    where("userId", "==", currentUser.uid),
-    orderBy("createdAt")
-  );
-  onSnapshot(q, (querySnapshot) => {
-    const filedata = querySnapshot.docs.map((doc) =>
-      databaseRef.formatDoc(doc)
-    );
-    setAllFiles(filedata);
-  });
-  const q2 = query(
-    databaseRef.foldersRef,
-    where("userId", "==", currentUser.uid),
-    orderBy("createdAt")
-  );
-  onSnapshot(q2, (querySnapshot) => {
-    const folderdata = querySnapshot.docs.map((doc) =>
-      databaseRef.formatDoc(doc)
-    );
-    setAllFolders(folderdata);
-  });
+  // useEffect(() => {
+
+  // }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      const q = query(
+        databaseRef.filesRef,
+        where("userId", "==", currentUser.uid),
+        orderBy("createdAt")
+      );
+
+      const q2 = query(
+        databaseRef.foldersRef,
+        where("userId", "==", currentUser.uid),
+        orderBy("createdAt")
+      );
+      const unsubs = onSnapshot(q2, (querySnapshot) => {
+        const folderdata = querySnapshot.docs.map((doc) =>
+          databaseRef.formatDoc(doc)
+        );
+        setAllFolders(folderdata);
+      });
+
+      const unsub = onSnapshot(q, (querySnapshot) => {
+        const filedata = querySnapshot.docs.map((doc) =>
+          databaseRef.formatDoc(doc)
+        );
+        setAllFiles(filedata);
+      });
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    localStorage.removeItem("favorites");
+  }, []);
 
   const otherFiles = allFiles.filter(
     (file) =>
@@ -93,6 +127,11 @@ function FileAndFolderProvider({ children }) {
     searchFiles,
     searchFolders,
     allFiles,
+    allFolders,
+    favorites,
+    setFavorites,
+    trash,
+    setTrash,
   };
 
   return (

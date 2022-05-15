@@ -41,8 +41,8 @@ export default function DocsFilter() {
       </div>
       <Divider />
       <div className="recents-view">
-        {documents.map((file) => (
-          <File key={file.id} file={file} />
+        {documents.map((file, index) => (
+          <File key={file.id} file={file} index={index} />
         ))}
       </div>
     </div>

@@ -1,4 +1,18 @@
-import { MoreVert } from "@mui/icons-material";
+import {
+  CheckCircleOutlined,
+  CloudDownload,
+  CloudDownloadOutlined,
+  DeleteForever,
+  DeleteOutlined,
+  LinkOutlined,
+  MoreVert,
+  Preview,
+  PreviewOutlined,
+  RestoreFromTrashOutlined,
+  Star,
+  StarBorder,
+  VisibilityOutlined,
+} from "@mui/icons-material";
 import {
   Button,
   Divider,
@@ -8,50 +22,68 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FavoritesContext } from "../../contexts/FavoriteContext";
-import ACTIONS from "../../reducers/action";
+import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
+import { AuthContext } from "../../contexts/AuthContext";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import "./File.scss";
+import useFolder, { ROOT_FOLDER } from "../../hooks/useFolder";
+import { useParams } from "react-router-dom";
+import ACTIONS from "../../reducers/action";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { databaseRef, storage } from "../../firebase/firebase";
+import { async } from "@firebase/util";
 
-export default function File({ file }) {
+export default function File({ file, fromTrash }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { dispatch, favoredFiles } = useContext(FavoritesContext);
-  let star = JSON.parse(localStorage.getItem("starred"));
-  console.log("starred", star);
 
-  const [starred, setStarred] = useState(star);
+  const { currentUser } = useContext(AuthContext);
+  const [copied, setCopied] = useState(false);
   const open = Boolean(anchorEl);
+  const { folder_Id } = useParams();
+  const { folder, childFiles } = useFolder(folder_Id);
+  const currentFolder = folder;
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    localStorage.setItem("starred", JSON.stringify(starred));
-  }, [starred]);
+  const favRef = doc(databaseRef.filesRef, file.id);
 
-  const toggleFavorites = (e) => {
-    e.stopPropagation();
+  const addToFavorites = () => {
+    updateDoc(favRef, {
+      isStarred: true,
+    });
+  };
+  const removeFavorites = () => {
+    updateDoc(favRef, {
+      isStarred: false,
+    });
+  };
+  // const filePath =
+  //   currentFolder === ROOT_FOLDER
+  //     ? `${currentFolder.path.join("/")}/${file.id}`
+  //     : `${currentFolder.path.join("/")}/${currentFolder.name}/${file.id}`;
 
-    if (favoredFiles.length > 0) {
-      favoredFiles.forEach((favor) => {
-        if (favor.id === file.id) {
-          dispatch({
-            type: ACTIONS.REMOVE_FROM_FAVORITES,
-            id: file.id,
-          });
-        }
-      });
-    } else {
-      dispatch({
-        type: ACTIONS.ADD_TO_FAVORITES,
-        file,
-      });
-      setStarred(!starred);
-    }
+  // const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`); //storage
+  const permanentDelete = () => {
+    deleteDoc(doc(databaseRef.filesRef, file.id));
+  };
+  const trashRef = doc(databaseRef.filesRef, file.id);
+
+  const updateTrash = () => {
+    updateDoc(trashRef, {
+      isTrashed: true,
+    }).then(() => {});
+  };
+  const undoTrash = () => {
+    updateDoc(trashRef, {
+      isTrashed: false,
+    });
   };
 
   let fileResult;
@@ -161,18 +193,53 @@ export default function File({ file }) {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={handleClose}>Preview</MenuItem>
-              <MenuItem onClick={toggleFavorites}>
-                {starred ? "Starred" : "Add a star"}
+              <MenuItem onClick={handleClose} className={"menu-item"}>
+                <VisibilityOutlined />
+                Preview
               </MenuItem>
-              <MenuItem onClick={handleClose}>Get shareable link</MenuItem>
-              <MenuItem>
-                <a href={file.url} download target={"_blank"}>
-                  Download
-                </a>
+              <MenuItem
+                onClick={file.isStarred ? removeFavorites : addToFavorites}
+                className={"menu-item"}
+              >
+                {file.isStarred ? <Star /> : <StarBorder />}
+                {file.isStarred ? "Starred" : "Add a star"}
               </MenuItem>
+              <CopyToClipboard text={file.url} onCopy={() => setCopied(true)}>
+                <MenuItem className="menu-item">
+                  {copied ? <CheckCircleOutlined /> : <LinkOutlined />}
+                  {copied ? "Copied" : "Get link"}
+                </MenuItem>
+              </CopyToClipboard>
+              <a href={file.url} rel="noreferrer" download target={"_blank"}>
+                <MenuItem className="menu-item">
+                  <CloudDownloadOutlined />
+                  <p> Download</p>
+                </MenuItem>
+              </a>
               <Divider />
-              <MenuItem onClick={handleClose}>Delete</MenuItem>
+              <MenuItem
+                onClick={file.isTrashed ? undoTrash : updateTrash}
+                className="menu-item"
+              >
+                {file.isTrashed ? (
+                  <RestoreFromTrashOutlined />
+                ) : (
+                  <DeleteOutlined />
+                )}
+
+                {file.isTrashed ? "Restore" : "Delete"}
+              </MenuItem>
+              <MenuItem
+                onClick={permanentDelete}
+                sx={{
+                  display: fromTrash ? "flex" : "none",
+                  visibility: fromTrash ? "visible" : "hidden",
+                }}
+                className="menu-item"
+              >
+                <DeleteForever />
+                <p>Permanent Delete</p>
+              </MenuItem>
             </Menu>
           </div>
         </div>

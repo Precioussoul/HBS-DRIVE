@@ -27,6 +27,11 @@ function rootReducer(state, { type, payload }) {
         ...state,
         childFiles: payload.childFiles,
       };
+    case ACTIONS.UPDATE_CHILD_FILES:
+      return {
+        ...state,
+        childFiles: payload.childFiles,
+      };
 
     default:
       return state;

@@ -39,8 +39,8 @@ export default function ImageFilter() {
       </div>
       <Divider />
       <div className="recents-view">
-        {images.map((file) => (
-          <File key={file.id} file={file} />
+        {images.map((file, index) => (
+          <File key={file.id} file={file} index={index} />
         ))}
       </div>
     </div>

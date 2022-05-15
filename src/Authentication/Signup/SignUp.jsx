@@ -1,6 +1,6 @@
 import { AddToDrive } from "@mui/icons-material";
 import { Button, TextField, Typography } from "@mui/material";
-import { Box, margin } from "@mui/system";
+import { Box } from "@mui/system";
 import React, { useContext, useState } from "react";
 import { color } from "../../theme";
 import "./SignUp.scss";
@@ -18,15 +18,6 @@ const SignUp = () => {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  // const verifyEmail = () => {
-  //   try {
-  //     verifyEmailAddress(currentUser);
-  //     setMsg("verification link has been sent to your email");
-  //   } catch {
-  //     setError("verification failed");
-  //   }
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -119,14 +110,6 @@ const SignUp = () => {
           >
             Sign Up
           </Button>
-          {/* <Button
-            onClick={verifyEmail}
-            variant="contained"
-            sx={{ width: "50%" }}
-            disableElevation={loading}
-          >
-            verify Email
-          </Button> */}
         </Box>
       </form>
       <div className="account">

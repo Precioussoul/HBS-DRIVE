@@ -39,8 +39,8 @@ export default function AudioFilter() {
       </div>
       <Divider />
       <div className="recents-view">
-        {audios.map((file) => (
-          <File key={file.id} file={file} />
+        {audios.map((file, index) => (
+          <File key={file.id} file={file} index={index} />
         ))}
       </div>
     </div>

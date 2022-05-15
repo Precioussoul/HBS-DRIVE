@@ -3,16 +3,19 @@ import { Button, Divider } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import File from "../../components/File/File";
-import { FavoritesContext } from "../../contexts/FavoriteContext";
-import { FavorTest } from "../../theme";
+import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
 import "./favorites.scss";
 
 export default function Favorites() {
-  const [empty, setEmpty] = useState(true);
-  const { favoredFiles } = useContext(FavoritesContext);
   const navigate = useNavigate();
+  const { allFiles } = useContext(FileAndFolderContext);
+  let fav = false;
+  // if (favorites.length > 0) {
+  //   fav = true;
+  // }
 
-  console.log("favorites files", favoredFiles);
+  const trulyFavorites = allFiles.filter((file) => file.isStarred === true);
+
   return (
     <div>
       <div className="recent-header">
@@ -32,15 +35,19 @@ export default function Favorites() {
         </Button>{" "}
       </div>
       <Divider sx={{ display: { sm: "none" }, visibility: { sm: "hidden" } }} />
-      {empty ? (
+      {!trulyFavorites.length > 0 ? (
         <div className="favorite">
           <img src="/images/starred.png" alt="" className="fav-img" />
           <h3>Nothing is starred or favoured 💕</h3>
           <p>Add a star to a file and folder</p>
         </div>
       ) : (
-        <File fileUrl={"images/txt.png"} fileName={"github.txt"} />
-        // <FavorTest />
+        <div className="recents-view">
+          {trulyFavorites.map((file, index) => (
+            <File key={file.id} file={file} index={index} />
+            // <p key={file.id}>{file.name}</p>
+          ))}
+        </div>
       )}
     </div>
   );

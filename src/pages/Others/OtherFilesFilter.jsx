@@ -39,8 +39,8 @@ export default function OtherFilesFilter() {
       </div>
       <Divider />
       <div className="recents-view">
-        {otherFiles.map((file) => (
-          <File key={file.id} file={file} />
+        {otherFiles.map((file, index) => (
+          <File key={file.id} file={file} index={index} />
         ))}
       </div>
     </div>
