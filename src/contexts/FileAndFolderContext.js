@@ -15,25 +15,7 @@ function FileAndFolderProvider({ children }) {
   const [allFiles, setAllFiles] = useState([]);
   const [allFolders, setAllFolders] = useState([]);
   const { currentUser } = useContext(AuthContext);
-
-  const jfavorites = localStorage.getItem("favorites");
-  const localFavorites = jfavorites ? JSON.parse(jfavorites) : [];
-  const [favorites, setFavorites] = useState(localFavorites);
-
-  const jtrash = localStorage.getItem("trash");
-  const localtrash = jtrash ? JSON.parse(jtrash) : [];
-  const [trash, setTrash] = useState(localtrash);
-  console.log("local trash", localtrash);
-
-  useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    localStorage.setItem("trash", JSON.stringify(favorites));
-  }, [favorites, trash]);
-
-  // localStorage.removeItem("favorites");
-
-  console.log("fav", favorites);
-  console.log("trash", trash);
+  const [mode, setMode] = useState("dark");
 
   const documents = allFiles.filter((file) =>
     file.type.toLowerCase().includes("application/")
@@ -47,10 +29,6 @@ function FileAndFolderProvider({ children }) {
   const videos = allFiles.filter((file) =>
     file.type.toLowerCase().includes("video/")
   );
-
-  // useEffect(() => {
-
-  // }, [currentUser]);
 
   useEffect(() => {
     if (currentUser) {
@@ -128,10 +106,6 @@ function FileAndFolderProvider({ children }) {
     searchFolders,
     allFiles,
     allFolders,
-    favorites,
-    setFavorites,
-    trash,
-    setTrash,
   };
 
   return (

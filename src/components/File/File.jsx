@@ -22,27 +22,27 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import "./File.scss";
-import useFolder, { ROOT_FOLDER } from "../../hooks/useFolder";
+import useFolder from "../../hooks/useFolder";
 import { useParams } from "react-router-dom";
-import ACTIONS from "../../reducers/action";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { databaseRef, storage } from "../../firebase/firebase";
-import { async } from "@firebase/util";
+import Axios from "axios";
+import fileDownload from "js-file-download";
 
 export default function File({ file, fromTrash }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-
   const { currentUser } = useContext(AuthContext);
   const [copied, setCopied] = useState(false);
   const open = Boolean(anchorEl);
   const { folder_Id } = useParams();
-  const { folder, childFiles } = useFolder(folder_Id);
+  const { folder, childFiles } = useFolder(folder_Id, null, childFiles);
   const currentFolder = folder;
+  const [starred, setStarred] = useState(false);
+  const [trashed, setTrashed] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,6 +51,14 @@ export default function File({ file, fromTrash }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function download(url, filename) {
+    Axios.get(url, {
+      responseType: "blob",
+    }).then((res) => {
+      fileDownload(res.data, filename);
+    });
+  }
 
   const favRef = doc(databaseRef.filesRef, file.id);
 
@@ -64,6 +72,7 @@ export default function File({ file, fromTrash }) {
       isStarred: false,
     });
   };
+
   // const filePath =
   //   currentFolder === ROOT_FOLDER
   //     ? `${currentFolder.path.join("/")}/${file.id}`
@@ -152,12 +161,7 @@ export default function File({ file, fromTrash }) {
     <>
       {file && (
         <div className="file">
-          <a
-            href={file.url}
-            download
-            target={"_blank"}
-            className="file-information"
-          >
+          <div className="file-information">
             <div className="file-img">
               <img src={fileResult} alt={file.name} />
             </div>
@@ -173,7 +177,7 @@ export default function File({ file, fromTrash }) {
             <Typography noWrap fontSize={14}>
               {file.size} MB
             </Typography>
-          </a>
+          </div>
           <div className="file-menu">
             <IconButton
               id="file-options"
@@ -201,8 +205,8 @@ export default function File({ file, fromTrash }) {
                 onClick={file.isStarred ? removeFavorites : addToFavorites}
                 className={"menu-item"}
               >
-                {file.isStarred ? <Star /> : <StarBorder />}
-                {file.isStarred ? "Starred" : "Add a star"}
+                {starred ? <Star /> : <StarBorder />}
+                {starred ? "Starred" : "Add a star"}
               </MenuItem>
               <CopyToClipboard text={file.url} onCopy={() => setCopied(true)}>
                 <MenuItem className="menu-item">
@@ -210,12 +214,14 @@ export default function File({ file, fromTrash }) {
                   {copied ? "Copied" : "Get link"}
                 </MenuItem>
               </CopyToClipboard>
-              <a href={file.url} rel="noreferrer" download target={"_blank"}>
-                <MenuItem className="menu-item">
-                  <CloudDownloadOutlined />
-                  <p> Download</p>
-                </MenuItem>
-              </a>
+
+              <MenuItem
+                className="menu-item"
+                onClick={() => download(file.url, file.name)}
+              >
+                <CloudDownloadOutlined />
+                <p> Download</p>
+              </MenuItem>
               <Divider />
               <MenuItem
                 onClick={file.isTrashed ? undoTrash : updateTrash}

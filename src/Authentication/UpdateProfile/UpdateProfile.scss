@@ -1,4 +1,5 @@
 $box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+$black-shadow: rgb(0 120 120 / 64%) 0px 5px 15px;
 
 .form.update {
   width: 100%;
@@ -7,6 +8,13 @@ $box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   background-color: #fff;
   margin: auto;
+
+  &.dark {
+    box-shadow: $black-shadow;
+    background-color: #121212;
+  }
+
+  // #29252D
 
   @media (max-width: 330px) {
     width: 300px;

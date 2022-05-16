@@ -61,24 +61,24 @@ export default function Dashboard() {
         />
       </div>
       <div className="filterMobile">
-        <div className="m-greeting">
-          <span className="m-greeting-time">Welcome Back</span>
-          <p className="m-greeting-name">
+        <div className="m-greeting ">
+          <span className="m-greeting-time dark">Welcome Back</span>
+          <p className="m-greeting-name dark">
             {currentUser.displayName
               ? currentUser.displayName
               : currentUser.email}
           </p>
         </div>
-        <div className="m-storage-dashboard">
+        <div className="m-storage-dashboard dark">
           <div className="m-storage-icon">
             <img src="images/server.png" alt="storage" />
           </div>
           <div className="m-storage-details">
-            <div className="m-storage-space">
+            <div className="m-storage-space dark">
               <p className="space-name">Available Space</p>
               <span className="space-count">{allFiles.length} files</span>
             </div>
-            <p className="space-metric">{`${totalSize}MB of ${availableSpace}MB used`}</p>
+            <p className="space-metric dark">{`${totalSize}MB of ${availableSpace}MB used`}</p>
             <div className="space-progress">
               <div
                 style={{
@@ -98,6 +98,7 @@ export default function Dashboard() {
             imgUrl={"images/documents.png"}
             totalSize={docTotal}
             link={"documents"}
+            className="f-mobile dark"
           />
           <FilterMobile
             count={images.length}

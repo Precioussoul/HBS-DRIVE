@@ -154,7 +154,7 @@ export default function AddButton() {
         return pathname === gen ? "hide" : "show";
       })}
     >
-      <div id="act-btn" className="action" onClick={actionToggle}>
+      <div id="act-btn" className="action dark" onClick={actionToggle}>
         <span className={openAction ? "rotate" : ""}>+</span>
 
         {fullSpace ? (
@@ -168,7 +168,7 @@ export default function AddButton() {
             </li>
           </ul>
         ) : (
-          <ul>
+          <ul className="darks">
             <li id="folder" onClick={() => setOpen(true)}>
               <CreateNewFolder className="icon" fontSize="large" />
               <p>Create new folder</p>

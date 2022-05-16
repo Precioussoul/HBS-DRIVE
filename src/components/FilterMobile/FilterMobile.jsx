@@ -6,7 +6,7 @@ import "./FilterMobile.scss";
 export default function FilterMobile({ count, type, imgUrl, totalSize, link }) {
   return (
     <Link to={link}>
-      <div className="f-Mobile">
+      <div className="f-Mobile dark">
         <div className="f-Mobile-img">
           <img src={imgUrl} alt={type} className="image" />
         </div>

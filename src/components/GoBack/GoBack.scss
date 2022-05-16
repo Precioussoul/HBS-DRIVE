@@ -6,6 +6,10 @@
   width: 95%;
   margin: 0;
   color: #f9f9f948;
+
+  &.dark {
+    color: #ccc;
+  }
 }
 
 .goback-sub {

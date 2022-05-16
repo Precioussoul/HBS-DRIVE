@@ -296,9 +296,10 @@ function Layout(props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px) ` },
           ml: { sm: `${drawerWidth}px` },
-          backgroundColor: "white",
+          backgroundColor: "background.default",
           zIndex: (theme) => theme.zIndex.drawer + 1,
           borderBottom: "1px solid #ddd",
+          color: "text.primary",
         }}
       >
         <Toolbar>
@@ -321,11 +322,17 @@ function Layout(props) {
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{ display: "flex" }}
+        color="text.primary"
+        bgcolor={"Background.default"}
+      >
         {/* navbar/appbar */}
 
         <Box
           component="nav"
+          color="text.primary"
+          bgcolor={"Background.default"}
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
           aria-label="mailbox folders"
         >
@@ -369,6 +376,8 @@ function Layout(props) {
         {/* middle box */}
         <Box
           component="main"
+          color="text.primary"
+          bgcolor={"Background.default"}
           sx={{
             p: 2,
             width: {
@@ -405,9 +414,9 @@ function Layout(props) {
 
               {fullSpace ? (
                 <div>
-                  <p className="error">
+                  <Typography className="error">
                     Your Space is Full, please upgrade or delete some files
-                  </p>
+                  </Typography>
                 </div>
               ) : (
                 <UploadFiles />

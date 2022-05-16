@@ -33,7 +33,10 @@ const ForgetPassword = () => {
         alignItems: "center",
         margin: "auto",
         minHeight: "100vh",
-        backgroundImage: 'url("/images/bubble.webp")',
+        // backgroundImage: 'url("/images/bubble.webp")',
+        // backgroundImage: 'url("/images/darkBg.webp")',
+        backgroundColor: "background.default",
+        color: "text.color",
       }}
     >
       <Typography
@@ -50,7 +53,7 @@ const ForgetPassword = () => {
         <AddToDrive sx={{ color: color.primaryColor2, fontSize: 60 }} />
         HBS Drive
       </Typography>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form dark" onSubmit={handleSubmit}>
         <p className="form-header"> Reset Password</p>
         <p className="error">{error}</p>
         <div className="form-input">
@@ -74,10 +77,10 @@ const ForgetPassword = () => {
           </Button>
         </Box>
       </form>
-      <div className="account">
+      <div className="account dark">
         <Link to="/login">Login instead</Link>
       </div>
-      <div className="account">
+      <div className="account dark">
         <p>Don't have an account ?</p>
         <Link to="/signup">Sign up</Link>
       </div>

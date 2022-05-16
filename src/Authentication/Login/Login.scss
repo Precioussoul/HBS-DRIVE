@@ -1,11 +1,18 @@
 $box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+$black-shadow: rgb(0 120 120 / 64%) 0px 5px 15px;
 
 .form {
   width: 500px;
   padding: 20px;
-  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  box-shadow: $box-shadow;
   background-color: #fff;
+  border-radius: 10px;
+
+  &.dark {
+    box-shadow: $black-shadow;
+    background-color: #121212;
+    color: #ccc;
+  }
 
   @media (max-width: 330px) {
     width: 300px;
@@ -32,6 +39,14 @@ $box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   display: flex;
   justify-content: center;
   padding: 20px 0;
+
+  &.dark {
+    color: #ccc;
+
+    & > * {
+      color: #ccc;
+    }
+  }
 
   & > * {
     margin: 0 5px;

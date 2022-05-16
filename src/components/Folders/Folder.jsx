@@ -26,13 +26,13 @@ export default function Folder({ folder }) {
           <div className="folder">
             <div className="folder-icons-wrapper">
               <div className="folder-icons">
-                <FolderIcon className="icon-main" />
-                <Cloud className=" icon-sub" />
+                <FolderIcon className="icon-main dark" />
+                <Cloud className=" icon-sub dark" />
               </div>
             </div>
 
             <div className="folder-detail">
-              <p className="folder-name">{folder.name}</p>
+              <p className="folder-name dark">{folder.name}</p>
             </div>
           </div>
         </Link>

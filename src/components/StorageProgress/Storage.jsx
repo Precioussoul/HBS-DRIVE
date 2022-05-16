@@ -55,6 +55,7 @@ export default function Storage() {
   const totalP = (totalSize / availableSpace) * 100;
   totalStorageProgress = `${Math.round(totalP * 100) / 100}`;
 
+  const dark = true;
   return (
     <div className="Storage">
       <div className="top">
@@ -67,7 +68,7 @@ export default function Storage() {
             value={totalStorageProgress}
             text={`${totalSize}MB of ${availableSpace}MB `}
             styles={buildStyles({
-              textColor: "#333",
+              textColor: dark ? "#ccc" : "#333",
               pathColor: "#1a22fc",
               trailColor: "#a3a9df",
               textSize: "8.5px",

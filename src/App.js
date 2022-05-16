@@ -1,11 +1,11 @@
-import { ThemeProvider } from "@mui/material";
-import React from "react";
+import { createTheme, ThemeProvider } from "@mui/material";
+import React, { useContext, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import Favorites from "./pages/Favorites/Favorites";
 import Recents from "./pages/Recents/Recents";
 import Trash from "./pages/Trash/Trash";
-import { theme } from "./theme";
+import { color, theme } from "./theme";
 import Search from "./pages/Search/Search.jsx";
 import Login from "./Authentication/Login/Login.jsx";
 import SignUp from "./Authentication/Signup/SignUp.jsx";
@@ -23,6 +23,12 @@ import AudioFilter from "./pages/Audios/AudioFilter.jsx";
 import DocsFilter from "./pages/Documents/DocsFilter.jsx";
 
 function App() {
+  const [mode, setMode] = useState("dark");
+  const theme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>

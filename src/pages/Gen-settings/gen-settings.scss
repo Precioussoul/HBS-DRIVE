@@ -4,6 +4,9 @@ $box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   display: grid;
   grid-template-columns: 2fr, 1fr;
   grid-template-rows: auto;
+  &.dark {
+    color: #ccc;
+  }
   &-header {
     display: flex;
     justify-content: space-between;
@@ -68,6 +71,10 @@ $box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
   padding: 10px 5px;
   background-color: #d7daf3;
   color: #514f53;
+  &.dark {
+    background-color: #44414027;
+    color: #444;
+  }
 }
 
 .contents,

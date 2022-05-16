@@ -49,7 +49,8 @@ const SignUp = () => {
         alignItems: "center",
         margin: "auto",
         minHeight: "100vh",
-        backgroundImage: 'url("/images/bubble.webp")',
+        // backgroundImage: 'url("/images/bubble.webp")',
+        backgroundColor: "background.default",
       }}
     >
       <Typography
@@ -66,7 +67,7 @@ const SignUp = () => {
         <AddToDrive sx={{ color: color.primaryColor2, fontSize: 60 }} />
         HBS Drive
       </Typography>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form dark" onSubmit={handleSubmit}>
         <p className="form-header">Sign up for new account</p>
         <p className="error">{error}</p>
         <p className="success">{msg}</p>
@@ -112,10 +113,10 @@ const SignUp = () => {
           </Button>
         </Box>
       </form>
-      <div className="account">
+      <div className="account dark">
         <Link to="/forgot-password">Forgot Password</Link>
       </div>
-      <div className="account">
+      <div className="account dark">
         <p>Already have an account ?</p>
         <Link to="/login">Log in</Link>
       </div>

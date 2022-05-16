@@ -54,7 +54,7 @@ const UpdateProfile = () => {
 
   console.log(currentUser, "currentuser");
   return (
-    <form className="form update" onSubmit={handleSubmit}>
+    <form className="form update dark" onSubmit={handleSubmit}>
       <p className="form-header">Update Email and Password</p>
       <p className="error">{error}</p>
       <p className="success">{msg}</p>

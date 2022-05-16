@@ -10,6 +10,7 @@
   .nav-items-wrapper {
     display: flex;
     // flex-direction: row;
+    color: #ccc;
     .nav-items {
       display: flex;
 
@@ -55,6 +56,9 @@
     justify-content: space-between;
   }
   .greeting {
+    &.dark {
+      color: #ccc;
+    }
     @media (max-width: 900px) {
       display: none;
       visibility: hidden;

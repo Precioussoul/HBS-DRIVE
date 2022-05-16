@@ -85,18 +85,16 @@ export default function Navbar() {
           onClick={handleSearch}
           sx={{ width: "100%" }}
           onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="  Search in Drive"
         />
-        {/* <CancelSearch state={cancel} onClick={closeSearch}>
-          <ArrowCircleLeft fontSize="large" />
-        </CancelSearch> */}
+
         {cancel && (
           <button type="submit" className="search-btn">
             <Search color="primary" />
           </button>
         )}
-        {/* <input type="text" placeholder="Search...." className="input-search" /> */}
       </form>
-      <div className="greeting">
+      <div className="greeting dark">
         <p>
           {" "}
           <span>Hi {username} 👋</span>

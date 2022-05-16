@@ -28,7 +28,7 @@ const GenSettings = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="gen">
+    <div className="gen dark">
       <div className="gen-settings">
         <div className="gen-header">
           <p>Profile</p>
@@ -79,7 +79,7 @@ const GenSettings = () => {
             </div>
           </div>
         </div>
-        <p className="style-bg">Contents</p>
+        <p className="style-bg dark">Contents</p>
 
         <div className="contents">
           <p>
@@ -125,7 +125,7 @@ const GenSettings = () => {
             </Link>
           </div>
         </div>
-        <p className="style-bg">Preferences</p>
+        <p className="style-bg dark">Preferences</p>
 
         <div className="preference">
           <div className="pref 1">

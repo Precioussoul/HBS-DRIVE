@@ -65,7 +65,7 @@ const UserProfile = () => {
 
   return (
     <div>
-      <form className="user-acc" onSubmit={handleSaveChange}>
+      <form className="user-acc dark" onSubmit={handleSaveChange}>
         <p className="user-acc__pro-title">Update Name or Profile Image</p>
         <p className="error">{error}</p>
         <p className="success">{message}</p>

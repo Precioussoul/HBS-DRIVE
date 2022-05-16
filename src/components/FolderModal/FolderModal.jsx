@@ -44,7 +44,7 @@ export default function FolderModal({ open, handleclose }) {
         sx={{
           width: { xs: "90vw", sm: 520 },
           height: { xs: "35vh", sm: 250 },
-          backgroundColor: "#fff",
+          backgroundColor: "background.default",
           position: "absolute",
           top: 0,
           bottom: 0,

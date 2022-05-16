@@ -26,7 +26,7 @@ const VerifyEmail = () => {
         <p>Email verification status -</p>
         <br />
       </Typography>
-      <form className="user-acc" onSubmit={handleVerify}>
+      <form className="user-acc dark" onSubmit={handleVerify}>
         <p> {currentUser.displayName}</p>
         <p className="user-acc__pro-title">
           {currentUser.emailVerified
