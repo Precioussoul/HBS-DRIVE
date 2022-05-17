@@ -70,6 +70,7 @@ export default function useFolder(folderId = null, folder = null) {
     const q = query(
       databaseRef.filesRef,
       where("folderId", "==", folderId),
+      where("isTrashed", "==", false),
       where("userId", "==", currentUser.uid),
       orderBy("createdAt")
     );
@@ -79,27 +80,6 @@ export default function useFolder(folderId = null, folder = null) {
       );
       dispatch({
         type: ACTIONS.SET_CHILD_FILES,
-        payload: { childFiles: filedata },
-      });
-    });
-  }, [folderId, currentUser]);
-
-  useEffect(() => {
-    const q = query(
-      databaseRef.filesRef,
-      where("isTrashed", "==", false),
-      where("folderId", "==", folderId),
-      where("userId", "==", currentUser.uid)
-      // orderBy("createdAt")
-    );
-
-    const unsub = onSnapshot(q, (querySnapshot) => {
-      const filedata = querySnapshot.docs.map((doc) =>
-        databaseRef.formatDoc(doc)
-      );
-
-      dispatch({
-        type: ACTIONS.UPDATE_CHILD_FILES,
         payload: { childFiles: filedata },
       });
     });

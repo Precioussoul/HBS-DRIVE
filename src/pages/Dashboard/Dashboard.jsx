@@ -148,8 +148,8 @@ export default function Dashboard() {
       </div>
       {childFiles.length > 0 && (
         <div className="file-view">
-          {childFiles.map((childFile, index) => (
-            <File key={childFile.id} file={childFile} index={index} />
+          {childFiles.map((childFile) => (
+            <File key={childFile.id} file={childFile} />
           ))}
         </div>
       )}

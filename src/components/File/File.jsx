@@ -39,7 +39,7 @@ export default function File({ file, fromTrash }) {
   const [copied, setCopied] = useState(false);
   const open = Boolean(anchorEl);
   const { folder_Id } = useParams();
-  const { folder, childFiles } = useFolder(folder_Id, null, childFiles);
+  const { folder, childFiles } = useFolder(folder_Id);
   const currentFolder = folder;
   const [starred, setStarred] = useState(false);
   const [trashed, setTrashed] = useState(false);
@@ -205,8 +205,8 @@ export default function File({ file, fromTrash }) {
                 onClick={file.isStarred ? removeFavorites : addToFavorites}
                 className={"menu-item"}
               >
-                {starred ? <Star /> : <StarBorder />}
-                {starred ? "Starred" : "Add a star"}
+                {file.isStarred ? <Star /> : <StarBorder />}
+                {file.isStarred ? "Starred" : "Add a star"}
               </MenuItem>
               <CopyToClipboard text={file.url} onCopy={() => setCopied(true)}>
                 <MenuItem className="menu-item">
