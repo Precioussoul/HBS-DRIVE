@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../../App";
 import "./Summary.scss";
 export default function Summary({ image, type, length, totalSize }) {
+  const { mode } = useContext(ThemeContext);
   return (
     <div className="summary">
       <div className="summary-info">
@@ -12,7 +14,9 @@ export default function Summary({ image, type, length, totalSize }) {
           <small>{length} files</small>
         </div>
       </div>
-      <span className="summary-size">{totalSize} MB</span>
+      <span className={`summary-size ${mode}`}>
+        {Math.round(totalSize * 100) / 100} MB
+      </span>
     </div>
   );
 }

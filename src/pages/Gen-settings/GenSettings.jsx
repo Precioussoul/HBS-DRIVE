@@ -13,22 +13,29 @@ import {
   Storage,
 } from "@mui/icons-material";
 import { Button, Switch } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { color } from "../../theme";
 import "./gen-settings.scss";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../App";
 
 const GenSettings = () => {
   const { currentUser, logout } = useContext(AuthContext);
+  const { mode, setMode } = useContext(ThemeContext);
+  const [checked, setChecked] = useState(true);
 
   const handleLogout = () => {
     logout();
   };
   const navigate = useNavigate();
 
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
   return (
-    <div className="gen dark">
+    <div className={`gen ${mode}`}>
       <div className="gen-settings">
         <div className="gen-header">
           <p>Profile</p>
@@ -79,7 +86,7 @@ const GenSettings = () => {
             </div>
           </div>
         </div>
-        <p className="style-bg dark">Contents</p>
+        <p className={`style-bg ${mode}`}>Contents</p>
 
         <div className="contents">
           <p>
@@ -125,7 +132,7 @@ const GenSettings = () => {
             </Link>
           </div>
         </div>
-        <p className="style-bg dark">Preferences</p>
+        <p className={`style-bg ${mode}`}>Preferences</p>
 
         <div className="preference">
           <div className="pref 1">
@@ -155,7 +162,10 @@ const GenSettings = () => {
             </p>
 
             <div className="preference">
-              <Switch />
+              <Switch
+                onChange={() => setMode(mode === "light" ? "dark" : "light")}
+                checked={mode === "dark" ? true : false}
+              />
             </div>
           </div>
           <div className="pref 2">

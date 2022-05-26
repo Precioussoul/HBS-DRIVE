@@ -5,10 +5,27 @@
   justify-content: center;
 
   .fav-img {
-    width: 80%;
+    width: 70%;
     @media (min-width: 610px) {
       width: 40%;
       margin: 30px auto;
+    }
+  }
+}
+.favorites-view {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+  @media (max-width: 600px) {
+    justify-content: space-between;
+    padding: 0 5px;
+  }
+  > * {
+    margin: 10px;
+
+    @media (max-width: 600px) {
+      margin: 6px 2px;
     }
   }
 }

@@ -4,6 +4,7 @@ import {
   CloudDownloadOutlined,
   DeleteForever,
   DeleteOutlined,
+  History,
   LinkOutlined,
   MoreVert,
   Preview,
@@ -22,27 +23,40 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import "./File.scss";
-import useFolder from "../../hooks/useFolder";
+import useFolder, { ROOT_FOLDER } from "../../hooks/useFolder";
 import { useParams } from "react-router-dom";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { databaseRef, storage } from "../../firebase/firebase";
 import Axios from "axios";
 import fileDownload from "js-file-download";
+import { deleteObject, ref } from "firebase/storage";
+import { ThemeContext } from "../../App";
+import PreviewModal from "../PreviewModal/PreviewModal";
 
 export default function File({ file, fromTrash }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { currentUser } = useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
   const [copied, setCopied] = useState(false);
   const open = Boolean(anchorEl);
   const { folder_Id } = useParams();
-  const { folder, childFiles } = useFolder(folder_Id);
-  const currentFolder = folder;
-  const [starred, setStarred] = useState(false);
-  const [trashed, setTrashed] = useState(false);
+  const { folder } = useFolder(folder_Id);
+  const [openPrev, setOpenPrev] = useState(false);
+
+  const handleClosePrev = () => {
+    setOpenPrev(false);
+  };
+
+  let currentFolder;
+
+  if (folder) {
+    currentFolder = folder;
+  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -50,6 +64,10 @@ export default function File({ file, fromTrash }) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const previewFile = () => {
+    setOpenPrev(true);
   };
 
   function download(url, filename) {
@@ -73,15 +91,21 @@ export default function File({ file, fromTrash }) {
     });
   };
 
-  // const filePath =
-  //   currentFolder === ROOT_FOLDER
-  //     ? `${currentFolder.path.join("/")}/${file.id}`
-  //     : `${currentFolder.path.join("/")}/${currentFolder.name}/${file.id}`;
+  let filePath;
+  if (currentFolder) {
+    filePath =
+      currentFolder.name === ROOT_FOLDER.name
+        ? `${currentFolder.path.join("/")}/${file.name}`
+        : `${file.folderName}/${file.name}`;
+  }
 
-  // const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`); //storage
+  const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`); //storage
+
   const permanentDelete = () => {
     deleteDoc(doc(databaseRef.filesRef, file.id));
+    deleteObject(fileRef);
   };
+
   const trashRef = doc(databaseRef.filesRef, file.id);
 
   const updateTrash = () => {
@@ -102,6 +126,9 @@ export default function File({ file, fromTrash }) {
       fileResult = file.url;
       break;
     case "image/png":
+      fileResult = file.url;
+      break;
+    case "image/jfif":
       fileResult = file.url;
       break;
     case "video/mp4":
@@ -134,8 +161,14 @@ export default function File({ file, fromTrash }) {
     case "application/vnd.openxmlformats-officedocument.wordprocessingml.document": //word
       fileResult = "images/docs.png";
       break;
+    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": //word
+      fileResult = "images/xls.png";
+      break;
     case "application/vnd.ms-powerpoint": // ppt
       fileResult = "images/ppt.png";
+      break;
+    case "application/x-msdownload": // ppt
+      fileResult = "images/exe.png";
       break;
     case "application/vnd.openxmlformats-officedocument.presentationml.presentation": //pptx // ppt
       fileResult = "images/ppt.png";
@@ -160,11 +193,11 @@ export default function File({ file, fromTrash }) {
   return (
     <>
       {file && (
-        <div className="file">
+        <div className={`file ${mode}`}>
           <div className="file-information">
-            <div className="file-img">
+            <a href={file.url} target="_blank" className="file-img">
               <img src={fileResult} alt={file.name} />
-            </div>
+            </a>
             <Typography
               noWrap
               fontSize={14}
@@ -197,7 +230,7 @@ export default function File({ file, fromTrash }) {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={handleClose} className={"menu-item"}>
+              <MenuItem onClick={previewFile} className={"menu-item"}>
                 <VisibilityOutlined />
                 Preview
               </MenuItem>
@@ -227,11 +260,7 @@ export default function File({ file, fromTrash }) {
                 onClick={file.isTrashed ? undoTrash : updateTrash}
                 className="menu-item"
               >
-                {file.isTrashed ? (
-                  <RestoreFromTrashOutlined />
-                ) : (
-                  <DeleteOutlined />
-                )}
+                {file.isTrashed ? <History /> : <DeleteOutlined />}
 
                 {file.isTrashed ? "Restore" : "Delete"}
               </MenuItem>
@@ -248,6 +277,13 @@ export default function File({ file, fromTrash }) {
               </MenuItem>
             </Menu>
           </div>
+          {file && (
+            <PreviewModal
+              open={openPrev}
+              handleclose={handleClosePrev}
+              viewFile={file}
+            />
+          )}
         </div>
       )}
     </>

@@ -8,14 +8,16 @@ export const FileAndFolderContext = React.createContext();
 function FileAndFolderProvider({ children }) {
   const [folderName, setFolderName] = useState("");
   const [uploadingFiles, setUploadingFiles] = useState([]);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [upfile, setUpFile] = useState("");
   const [error, setError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [allFiles, setAllFiles] = useState([]);
   const [allFolders, setAllFolders] = useState([]);
   const { currentUser } = useContext(AuthContext);
-  const [mode, setMode] = useState("dark");
+  const [totalProgress, setTotalProgress] = useState(0);
+  const [totalSize, setTotalSize] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const documents = allFiles.filter((file) =>
     file.type.toLowerCase().includes("application/")
@@ -28,6 +30,11 @@ function FileAndFolderProvider({ children }) {
   );
   const videos = allFiles.filter((file) =>
     file.type.toLowerCase().includes("video/")
+  );
+
+  const fileFavorites = allFiles.filter((file) => file.isStarred === true);
+  const folderFavorites = allFolders.filter(
+    (folder) => folder.isStarred === true
   );
 
   useEffect(() => {
@@ -68,7 +75,8 @@ function FileAndFolderProvider({ children }) {
       !file.type.toLowerCase().includes("image") &&
       !file.type.toLowerCase().includes("audio") &&
       !file.type.toLowerCase().includes("video") &&
-      !file.type.toLowerCase().includes("application/")
+      !file.type.toLowerCase().includes("application") &&
+      !file.type.toLowerCase().includes("application/x-ms")
   );
   const searchFiles = allFiles.filter(
     (file) =>
@@ -106,6 +114,14 @@ function FileAndFolderProvider({ children }) {
     searchFolders,
     allFiles,
     allFolders,
+    totalProgress,
+    setTotalProgress,
+    totalSize,
+    setTotalSize,
+    setLoading,
+    loading,
+    fileFavorites,
+    folderFavorites,
   };
 
   return (

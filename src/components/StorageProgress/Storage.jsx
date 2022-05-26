@@ -5,8 +5,9 @@ import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import Summary from "../StorageSummary/Summary";
 import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
+import { ThemeContext } from "../../App";
+import { AuthContext } from "../../contexts/AuthContext";
 
-export let totalSize = 0;
 export let availableSpace = 200;
 
 export let docTotal = 0;
@@ -14,48 +15,77 @@ export let imageTotal = 0;
 export let audioTotal = 0;
 export let vidTotal = 0;
 export let otherFileTotal = 0;
-export let totalStorageProgress;
+// export let totalStorageProgress;
 
 export default function Storage() {
-  const { documents, audios, videos, images, otherFiles } =
-    useContext(FileAndFolderContext);
+  const {
+    documents,
+    audios,
+    videos,
+    images,
+    otherFiles,
+    setTotalProgress,
+    totalProgress,
+    totalSize,
+    setTotalSize,
+  } = useContext(FileAndFolderContext);
 
-  if (documents.length > 0)
+  if (documents.length > 0) {
+    docTotal = 0;
     documents.forEach((file) => {
-      docTotal = 0;
       return (docTotal += parseFloat(file.size));
     });
+  }
   if (audios.length > 0) {
+    audioTotal = 0;
     audios.forEach((file) => {
-      audioTotal = 0;
       return (audioTotal += parseFloat(file.size));
     });
   }
-  if (images.length > 0)
+  if (images.length > 0) {
+    imageTotal = 0;
     images.forEach((file) => {
-      imageTotal = 0;
       return (imageTotal += parseFloat(file.size));
     });
-  if (videos.length > 0)
+  }
+
+  if (videos.length > 0) {
+    vidTotal = 0;
     videos.forEach((file) => {
-      vidTotal = 0;
       return (vidTotal += parseFloat(file.size));
     });
-  if (otherFiles.length > 0)
+  }
+
+  if (otherFiles.length > 0) {
+    otherFileTotal = 0;
     otherFiles.forEach((file) => {
-      otherFileTotal = 0;
       return (otherFileTotal += parseFloat(file.size));
     });
+  }
 
   const totally =
     docTotal + vidTotal + audioTotal + imageTotal + otherFileTotal;
 
-  totalSize = `${Math.round(totally * 100) / 100}`;
+  const totalSz = Math.round(totally * 100) / 100;
 
-  const totalP = (totalSize / availableSpace) * 100;
-  totalStorageProgress = `${Math.round(totalP * 100) / 100}`;
+  const totalP = (totalSz / availableSpace) * 100;
 
-  const dark = true;
+  useEffect(() => {
+    setTotalProgress(Math.round(totalP * 100) / 100);
+    setTotalSize(totalSz);
+  }, [totalProgress, totalSz]);
+
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    docTotal = 0;
+    imageTotal = 0;
+    audioTotal = 0;
+    vidTotal = 0;
+    otherFileTotal = 0;
+  }, [currentUser]);
+
+  const { mode } = useContext(ThemeContext);
   return (
     <div className="Storage">
       <div className="top">
@@ -65,10 +95,10 @@ export default function Storage() {
       <div className="bottom">
         <div className="featuredChart">
           <CircularProgressbar
-            value={totalStorageProgress}
-            text={`${totalSize}MB of ${availableSpace}MB `}
+            value={totalProgress}
+            text={`${totalSz}MB of ${availableSpace}MB `}
             styles={buildStyles({
-              textColor: dark ? "#ccc" : "#333",
+              textColor: mode === "dark" ? "#ccc" : "#333",
               pathColor: "#1a22fc",
               trailColor: "#a3a9df",
               textSize: "8.5px",

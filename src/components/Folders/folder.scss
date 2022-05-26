@@ -10,7 +10,7 @@ $box-shadow-ff: 1px 2px 4px 2px rgba(201, 201, 201, 0.3);
     display: flex;
     padding: 0 5px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
 
     .folder-name {
       margin-top: -17px;
@@ -27,7 +27,7 @@ $box-shadow-ff: 1px 2px 4px 2px rgba(201, 201, 201, 0.3);
     position: relative;
   }
   .icon-main {
-    font-size: 150px;
+    font-size: 170px;
     color: #a3a9df;
     left: 20px;
 
@@ -36,11 +36,16 @@ $box-shadow-ff: 1px 2px 4px 2px rgba(201, 201, 201, 0.3);
       color: #7d8597;
     }
 
-    // @media (max-width: 600px) {
-    //   font-size: 125px;
-    //   color: #a3a9df;
-    //   left: 20px;
-    // }
+    @media (min-width: 600px) and (max-width: 991px) {
+      font-size: 160px;
+    }
+
+    @media (min-width: 321px) and (max-width: 399px) {
+      font-size: 145px;
+    }
+    @media (max-width: 320px) {
+      font-size: 130px;
+    }
   }
   .icon-sub {
     position: absolute;
@@ -52,9 +57,27 @@ $box-shadow-ff: 1px 2px 4px 2px rgba(201, 201, 201, 0.3);
     &.dark {
       color: #474973;
     }
-    // @media (max-width: 600px) {
-    //   font-size: 50px;
-    // }
+    @media (max-width: 400px) {
+      font-size: 60px;
+    }
+    @media (min-width: 401px) and (max-width: 991px) {
+      font-size: 70px;
+    }
+  }
+
+  .icon-starred {
+    position: absolute;
+    top: 40px;
+    font-size: 15px;
+    color: #5a65f3;
+    left: 22px;
+
+    &.dark {
+      color: #474973;
+    }
+    @media (max-width: 600px) {
+      top: 33px;
+    }
   }
 }
 .folder-icons-wrapper {

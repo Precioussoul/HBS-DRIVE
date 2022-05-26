@@ -30,6 +30,8 @@ export default function FolderModal({ open, handleclose }) {
       name: folderName,
       parentId: currentFolder.id,
       userId: currentUser.uid,
+      isStarred: false,
+      isTrashed: false,
       path,
       createdAt: databaseRef.timestamp,
     });

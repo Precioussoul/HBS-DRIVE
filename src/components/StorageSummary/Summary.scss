@@ -36,5 +36,9 @@
     font-size: 14px;
     font-weight: bold;
     color: #1a22fc;
+
+    &.dark {
+      color: #5a65f3;
+    }
   }
 }

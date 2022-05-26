@@ -6,11 +6,13 @@ import { color } from "../../theme";
 import "./UpdateProfile.scss";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../App";
 
 const UpdateProfile = () => {
   const [email, setEmail] = useState("");
   const { updateEmailAddress, updateCurrentPassword, currentUser } =
     useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -54,7 +56,7 @@ const UpdateProfile = () => {
 
   console.log(currentUser, "currentuser");
   return (
-    <form className="form update dark" onSubmit={handleSubmit}>
+    <form className={`form update ${mode}`} onSubmit={handleSubmit}>
       <p className="form-header">Update Email and Password</p>
       <p className="error">{error}</p>
       <p className="success">{msg}</p>

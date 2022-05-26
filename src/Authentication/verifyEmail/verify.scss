@@ -1,12 +1,16 @@
 $box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+$black-shadow: rgb(0 120 120 / 64%) 0px 5px 15px;
 
 .user-acc {
   width: 100%;
   box-shadow: $box-shadow;
   background-color: #fff;
-  background-color: #121212;
   padding: 20px;
 
+  &.dark {
+    background-color: #121212;
+    box-shadow: $black-shadow;
+  }
   @media (max-width: 330px) {
     width: 300px;
   }

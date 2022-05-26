@@ -8,13 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { blue } from "@mui/material/colors";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../App";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
   avatarURL,
   result,
   resultUrl,
+  storage,
   uploadAvatar,
 } from "../../firebase/firebase";
 import { color } from "../../theme";
@@ -26,6 +29,7 @@ const UserProfile = () => {
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
   const { currentUser, updateUserProfile } = useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
   const [message, setMessage] = useState("");
   const [photo, setPhoto] = useState("");
   const [error, setError] = useState("");
@@ -36,36 +40,46 @@ const UserProfile = () => {
     setLoading(false);
   };
 
-  console.log("file", file);
-  console.log(currentUser, " current user");
-  const fullname = firstName + " " + lastName;
-
   //   save files to cloud
+  const avatarRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
 
   if (file !== undefined || file !== "") {
-    uploadAvatar(file, currentUser);
+    uploadBytes(avatarRef, file);
   }
 
   function handleSaveChange(e) {
     e.preventDefault();
 
+    const fullname = firstName + " " + lastName;
+
     //   get dowload url
-    setTimeout(() => {
-      avatarURL(file, currentUser, setError, setMessage, setLoading, setFile);
-    }, 2000);
-    //  console.log("downloaded url", downloadedUrl);
-    if (result !== undefined) {
-      setPhoto(result);
-      updateUserProfile(fullname, result, setError, navigate);
-    }
-    setFile("");
+    getDownloadURL(avatarRef)
+      .then((url) => {
+        setLoading(true);
+        setMessage("");
+        setFile("");
+
+        updateUserProfile(fullname, url, setError, navigate);
+        setMessage("your changes has been saved");
+
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+      })
+      .catch(() => {
+        setError("please resave changes");
+        setTimeout(() => {
+          setLoading(false);
+          setMessage("");
+        }, 2000);
+      });
 
     // setError("your changes has been saved");
   }
 
   return (
     <div>
-      <form className="user-acc dark" onSubmit={handleSaveChange}>
+      <form className={`user-acc ${mode}`} onSubmit={handleSaveChange}>
         <p className="user-acc__pro-title">Update Name or Profile Image</p>
         <p className="error">{error}</p>
         <p className="success">{message}</p>

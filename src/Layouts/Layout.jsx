@@ -16,6 +16,8 @@ import {
   Toolbar,
   Typography,
   Button,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 import {
@@ -28,6 +30,8 @@ import {
   AddToDrive,
   CloudUpload,
   CreateNewFolder,
+  PauseCircle,
+  PlayCircle,
 } from "@mui/icons-material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 
@@ -42,6 +46,8 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { v4 as uuidV4 } from "uuid";
 import { FileAndFolderContext } from "../contexts/FileAndFolderContext";
+import LinearProgressWithLabel from "../components/LinearProgressBar";
+import { ThemeContext } from "../App";
 
 const drawerWidth = 210;
 const drawerWidth2 = 270;
@@ -57,8 +63,17 @@ function Layout(props) {
   const { folder_Id } = useParams();
   const { folder } = useFolder(folder_Id);
   const { currentUser } = React.useContext(AuthContext);
-  const { setUpFile, setUploadingFiles, handleCloseShow, setError, fullSpace } =
-    useContext(FileAndFolderContext);
+  const { mode } = React.useContext(ThemeContext);
+  const {
+    setUpFile,
+    setUploadingFiles,
+    handleCloseShow,
+    setError,
+    fullSpace,
+    show,
+    uploadingFiles,
+    upfile,
+  } = useContext(FileAndFolderContext);
 
   const currentFolder = folder;
 
@@ -71,6 +86,124 @@ function Layout(props) {
   };
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const handleMultipleFileUpload = (e) => {
+    e.preventDefault();
+    const files = e.target.files;
+
+    const fileArr = [];
+    for (let i = 0; i < files.length; i++) {
+      fileArr.push(files[i]);
+    }
+
+    fileArr.forEach((file) => {
+      setUpFile(file);
+      const defaultFileValue = file.size / 1024 / 1024;
+      const fileSize = `${Math.round(defaultFileValue * 100) / 100}`;
+
+      if (currentFolder == null || file == null) return;
+      const id = uuidV4();
+      handleCloseShow();
+
+      setUploadingFiles((prevState) => [
+        ...prevState,
+        { id: id, name: file.name, progress: 0, error: false },
+      ]);
+
+      const filePath =
+        currentFolder === ROOT_FOLDER
+          ? `${currentFolder.path.join("/")}/${file.name}`
+          : `${currentFolder.path.join("/")}/${currentFolder.name}/${
+              file.name
+            }`;
+
+      const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`);
+
+      const uploadTask = uploadBytesResumable(fileRef, file);
+
+      const pauseUpload = () => {
+        uploadTask.pause();
+      };
+      const resumeUpload = () => {
+        uploadTask.resume();
+      };
+      const cancelUpload = () => {
+        uploadTask.cancel();
+      };
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setUploadingFiles((prevState) => {
+            return prevState.map((uploadFile) => {
+              if (uploadFile.id === id) {
+                return { ...uploadFile, progress: progress };
+              }
+              return uploadFile;
+            });
+          });
+        },
+        () => {
+          setUploadingFiles((prevState) => {
+            return prevState.filter((uploadFile) => {
+              if (uploadFile.id === id) {
+                setError(true);
+                return { ...uploadFile, error: true };
+              }
+              return uploadFile;
+            });
+          });
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadUrl) => {
+              const q = query(
+                databaseRef.filesRef,
+                where("name", "==", file.name),
+                where("folderId", "==", currentFolder.id),
+                where("userId", "==", currentUser.uid)
+              );
+
+              getDocs(q).then((existingFiles) => {
+                const existingFile = existingFiles.docs[0];
+                if (existingFile) {
+                  const existRef = ref(existingFile);
+                  updateDoc(existRef, {
+                    url: downloadUrl,
+                  });
+                } else {
+                  addDoc(databaseRef.filesRef, {
+                    name: file.name,
+                    size: fileSize,
+                    type: file.type,
+                    url: downloadUrl,
+                    isStarred: false,
+                    isTrashed: false,
+                    folderId: currentFolder.id,
+                    folderName: currentFolder.name,
+                    userId: currentUser.uid,
+                    createdAt: databaseRef.timestamp,
+                  });
+                }
+              });
+            })
+            .then(() => {
+              setUploadingFiles((prevState) => {
+                return prevState.filter((uploadFile) => {
+                  return uploadFile.id !== id;
+                });
+              });
+              setUpFile("");
+              setUploadingFiles([]);
+            });
+        }
+      );
+    });
+  };
+  let pauseUpload, resumeUpload, cancelUpload;
 
   const handleFileUpload = (e) => {
     e.preventDefault();
@@ -96,6 +229,16 @@ function Layout(props) {
     const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`);
 
     const uploadTask = uploadBytesResumable(fileRef, file);
+
+    pauseUpload = () => {
+      uploadTask.pause();
+    };
+    resumeUpload = () => {
+      uploadTask.resume();
+    };
+    cancelUpload = () => {
+      uploadTask.cancel();
+    };
 
     uploadTask.on(
       "state_changed",
@@ -149,6 +292,7 @@ function Layout(props) {
                   isStarred: false,
                   isTrashed: false,
                   folderId: currentFolder.id,
+                  folderName: currentFolder.name,
                   userId: currentUser.uid,
                   createdAt: databaseRef.timestamp,
                 });
@@ -170,27 +314,27 @@ function Layout(props) {
   const menuItems = [
     {
       text: "My Drive",
-      icon: <Dashboard color="primary" />,
+      icon: <Dashboard color={mode === "dark" ? "secondary" : "primary"} />,
       path: "/",
     },
     {
       text: "Recents",
-      icon: <AccessTime color="primary" />,
+      icon: <AccessTime color={mode === "dark" ? "secondary" : "primary"} />,
       path: "/recents",
     },
     {
       text: "Favorites",
-      icon: <StarOutline color="primary" />,
+      icon: <StarOutline color={mode === "dark" ? "secondary" : "primary"} />,
       path: "/favorite",
     },
     {
       text: "Trash",
-      icon: <Delete color="primary" />,
+      icon: <Delete color={mode === "dark" ? "secondary" : "primary"} />,
       path: "/trash",
     },
     {
       text: "Settings",
-      icon: <Settings color="primary" />,
+      icon: <Settings color={mode === "dark" ? "secondary" : "primary"} />,
       path: "/gen-settings",
     },
   ];
@@ -201,11 +345,16 @@ function Layout(props) {
         <Typography
           variant="h6"
           component={"span"}
-          color={color.primaryColor2}
+          color={mode === "dark" ? "text.color" : color.primaryColor2}
           sx={{ display: "flex", alignItems: "center" }}
         >
-          <AddToDrive sx={{ color: color.primaryColor2 }} />
-          HBS Drive
+          {/* <AddToDrive
+            sx={{ color: mode === "dark" ? "text.color" : color.primaryColor2 }}
+          /> */}
+          <div className="hbs-logo layout">
+            <img src="/images/hbs-logo.png" alt="Hbs Drive" />
+          </div>
+          Hbs Drive
         </Typography>
       </Toolbar>
       <Divider />
@@ -254,7 +403,12 @@ function Layout(props) {
             onClick={() => navigate(item.path)}
             sx={{
               marginBottom: { xl: 2 },
-              backgroundColor: pathname === item.path ? "#a3a9df" : null,
+              backgroundColor:
+                pathname === item.path
+                  ? mode === "dark"
+                    ? "#292929"
+                    : "#a3a9df"
+                  : null,
             }}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
@@ -298,7 +452,7 @@ function Layout(props) {
           ml: { sm: `${drawerWidth}px` },
           backgroundColor: "background.default",
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          borderBottom: "1px solid #ddd",
+          borderBottom: mode === "dark" ? "1px solid blue" : "1px solid #ddd",
           color: "text.primary",
         }}
       >
@@ -331,7 +485,7 @@ function Layout(props) {
 
         <Box
           component="nav"
-          color="text.primary"
+          color="text.secondary"
           bgcolor={"Background.default"}
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
           aria-label="mailbox folders"
@@ -388,6 +542,62 @@ function Layout(props) {
           }}
         >
           <Toolbar />
+          <>
+            {uploadingFiles.length > 0 &&
+              uploadingFiles.map((file) => (
+                <Snackbar
+                  ref={container}
+                  open={show}
+                  color="success"
+                  onClose={handleCloseShow}
+                  key={file.id}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                  sx={{ width: "320px" }}
+                >
+                  <Alert
+                    severity={file.error ? "warning" : "success"}
+                    sx={{ width: "100%" }}
+                    variant="standard"
+                    onClose={() => {
+                      setUploadingFiles((prevState) => {
+                        return prevState.filter((uploadFile) => {
+                          return uploadFile.id !== file.id;
+                        });
+                      });
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "0 5px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography noWrap sx={{ width: "100px" }}>
+                        {upfile.name}
+                      </Typography>
+                      <span>
+                        {file ? (
+                          <span onClick={pauseUpload}>
+                            <PauseCircle />
+                          </span>
+                        ) : (
+                          <span onClick={resumeUpload}>
+                            <PlayCircle />
+                          </span>
+                        )}
+                      </span>
+                    </Box>
+                    <LinearProgressWithLabel value={file.progress} />
+                  </Alert>
+                </Snackbar>
+              ))}
+          </>
+
           {children}
         </Box>
 
@@ -419,7 +629,9 @@ function Layout(props) {
                   </Typography>
                 </div>
               ) : (
-                <UploadFiles />
+                <UploadFiles
+                  handleMultipleFileUpload={handleMultipleFileUpload}
+                />
               )}
             </Box>
           </Drawer>

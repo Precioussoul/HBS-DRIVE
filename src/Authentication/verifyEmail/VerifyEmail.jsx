@@ -1,11 +1,13 @@
 import { Button, TextField, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
+import { ThemeContext } from "../../App";
 import { AuthContext } from "../../contexts/AuthContext";
 import { color } from "../../theme";
 import "./verify.scss";
 
 const VerifyEmail = () => {
   const { currentUser, verifyEmailAddress } = useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
   const [msg, setMsg] = useState();
 
   const handleVerify = (e) => {
@@ -26,7 +28,7 @@ const VerifyEmail = () => {
         <p>Email verification status -</p>
         <br />
       </Typography>
-      <form className="user-acc dark" onSubmit={handleVerify}>
+      <form className={`user-acc ${mode}`} onSubmit={handleVerify}>
         <p> {currentUser.displayName}</p>
         <p className="user-acc__pro-title">
           {currentUser.emailVerified

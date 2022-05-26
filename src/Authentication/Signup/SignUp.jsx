@@ -6,11 +6,13 @@ import { color } from "../../theme";
 import "./SignUp.scss";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../App";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const { signupUser, verifyEmailAddress, currentUser } =
     useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -49,11 +51,14 @@ const SignUp = () => {
         alignItems: "center",
         margin: "auto",
         minHeight: "100vh",
-        // backgroundImage: 'url("/images/bubble.webp")',
-        backgroundColor: "background.default",
+        backgroundImage:
+          mode === "dark"
+            ? 'url("/images/bubble-dark.webp")'
+            : 'url("/images/bubble.webp")',
+        color: mode === "dark" ? "text.color" : "inherit",
       }}
     >
-      <Typography
+      {/* <Typography
         variant="h6"
         component={"span"}
         color={color.primaryColor2}
@@ -66,8 +71,11 @@ const SignUp = () => {
       >
         <AddToDrive sx={{ color: color.primaryColor2, fontSize: 60 }} />
         HBS Drive
-      </Typography>
-      <form className="form dark" onSubmit={handleSubmit}>
+      </Typography> */}
+      <div className="hbs-logo">
+        <img src="/images/hbs-logo.png" alt="Hbs Drive" />
+      </div>
+      <form className={`form ${mode}`} onSubmit={handleSubmit}>
         <p className="form-header">Sign up for new account</p>
         <p className="error">{error}</p>
         <p className="success">{msg}</p>
@@ -113,10 +121,10 @@ const SignUp = () => {
           </Button>
         </Box>
       </form>
-      <div className="account dark">
+      <div className={`account ${mode}`}>
         <Link to="/forgot-password">Forgot Password</Link>
       </div>
-      <div className="account dark">
+      <div className={`account ${mode}`}>
         <p>Already have an account ?</p>
         <Link to="/login">Log in</Link>
       </div>

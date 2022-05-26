@@ -1,7 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
+  AccountBox,
+  AccountBoxOutlined,
   ArrowCircleLeft,
   Cancel,
+  DarkMode,
   DarkModeOutlined,
   FullscreenExitOutlined,
   GridOn,
@@ -10,7 +13,9 @@ import {
   LightbulbCircleTwoTone,
   LightMode,
   ListOutlined,
+  LogoutOutlined,
   NotificationsNoneOutlined,
+  PeopleAltOutlined,
   Search,
   SearchOutlined,
 } from "@mui/icons-material";
@@ -24,12 +29,14 @@ import {
   Menu,
   MenuItem,
   styled,
+  Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { blue, deepPurple } from "@mui/material/colors";
 import { color } from "../../theme";
 import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
+import { ThemeContext } from "../../App";
 
 const CancelSearch = styled(Box)(({ theme, state }) => ({
   display: state ? "flex" : "none",
@@ -44,6 +51,7 @@ export default function Navbar() {
   };
   const navigate = useNavigate();
   const { logout, currentUser } = useContext(AuthContext);
+  const { mode, setMode } = useContext(ThemeContext);
   const { setSearchQuery } = useContext(FileAndFolderContext);
   const username = currentUser.displayName
     ? currentUser.displayName
@@ -72,7 +80,7 @@ export default function Navbar() {
 
   return (
     <div className="navbar">
-      <form className="nav-search" onSubmit={handleSubmit}>
+      <form className={`nav-search ${mode}`} onSubmit={handleSubmit}>
         {/* <SearchOutlined className="icon" /> */}
         {cancel ? (
           <CancelSearch state={cancel} onClick={closeSearch}>
@@ -94,20 +102,24 @@ export default function Navbar() {
           </button>
         )}
       </form>
-      <div className="greeting dark">
+      <div className={`greeting ${mode}`}>
         <p>
           {" "}
-          <span>Hi {username} 👋</span>
+          <span>Welcome, {username} 👋</span>
         </p>
       </div>
-      <div className="nav-items-wrapper">
+      <div className={`nav-items-wrapper ${mode}`}>
         <div className="nav-items">
           <div className="item">
             <LanguageOutlined className="icon" />
             english
           </div>
           <div className="item">
-            <LightMode className="icon" />
+            {mode === "dark" ? (
+              <DarkMode className="icon" onClick={() => setMode("light")} />
+            ) : (
+              <LightMode className="icon" onClick={() => setMode("dark")} />
+            )}
           </div>
           <div className="item"></div>
         </div>
@@ -138,12 +150,35 @@ export default function Navbar() {
             }}
           >
             <Link to={"gen-settings"}>
-              <MenuItem>Profile</MenuItem>
+              <MenuItem className="menu-item">
+                <PeopleAltOutlined />
+                <p>Profile</p>
+              </MenuItem>
             </Link>
             <Link to={"acc-settings"}>
-              <MenuItem>Account Settings</MenuItem>
+              <MenuItem className="menu-item">
+                <AccountBoxOutlined />
+                <p> Manage Account</p>
+              </MenuItem>
             </Link>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem className="menu-item">
+              <span>
+                {mode === "light" ? (
+                  <DarkMode className="icon" />
+                ) : (
+                  <LightMode className="icon" />
+                )}
+              </span>
+              {mode === "light" ? (
+                <span onClick={() => setMode("dark")}>Dark Mode</span>
+              ) : (
+                <span onClick={() => setMode("light")}>Light Mode</span>
+              )}
+            </MenuItem>
+            <MenuItem onClick={handleLogout} className="menu-item">
+              <LogoutOutlined />
+              <p>Logout</p>
+            </MenuItem>
           </Menu>
         </div>
       </div>

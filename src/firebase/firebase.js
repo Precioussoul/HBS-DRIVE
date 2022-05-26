@@ -57,47 +57,8 @@ export const singleRef = {
 
 const storageRef = ref(storage);
 const filesRef = ref(storage, "files/");
-export let result;
 
-export function avatarURL(
-  file,
-  currentUser,
-  setError,
-  setMessage,
-  setLoading,
-  setFile
-) {
-  const avatarRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
-  getDownloadURL(avatarRef)
-    .then((url) => {
-      result = url;
-      setMessage("your changes has been saved");
-      setLoading(true);
-      setMessage("");
-      setFile("");
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    })
-    .catch(() => {
-      setError("please resave changes");
-      setTimeout(() => {
-        setLoading(false);
-        setMessage("");
-      }, 2000);
-    });
-
-  // return result;
-}
-
-export function uploadAvatar(file, currentUser) {
-  const avatarRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
-
-  uploadBytes(avatarRef, file);
-}
-
-export const deleteFolder = (currentUser) => {
+export const deleteAccountFolder = (currentUser) => {
   const deleteFolderRef = ref(storage, `avatar/${currentUser.uid}`);
   deleteFolderRef
     .listAll()
@@ -105,7 +66,9 @@ export const deleteFolder = (currentUser) => {
       dir.items.forEach((fileRef) =>
         deleteFile(fileRef.fullPath, fileRef.name)
       );
-      dir.prefixes.forEach((folderRef) => deleteFolder(folderRef.fullPath));
+      dir.prefixes.forEach((folderRef) =>
+        deleteAccountFolder(folderRef.fullPath)
+      );
     })
     .catch((error) => console.log(error));
 };

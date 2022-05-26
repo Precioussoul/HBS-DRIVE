@@ -9,13 +9,15 @@ import {
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../App";
 import { AuthContext } from "../../contexts/AuthContext";
-import { deleteFolder } from "../../firebase/firebase";
+import { deleteAccountFolder } from "../../firebase/firebase";
 import { color } from "../../theme";
 import "./deleteAcc.scss";
 
 const DeleteAcc = () => {
   const { currentUser, deleteUserAccount } = useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ const DeleteAcc = () => {
     try {
       deleteUserAccount(currentUser).then(() => {
         navigate("/login");
-        deleteFolder(currentUser);
+        // deleteAccountFolder(currentUser);
       });
     } catch (err) {
       console.log(err);
@@ -38,7 +40,7 @@ const DeleteAcc = () => {
     setOpen(true);
   };
   return (
-    <div className="user-acc">
+    <div className={`user-acc ${mode}`}>
       <Typography
         variant="p"
         color={color.textColor}
@@ -71,7 +73,7 @@ const DeleteAcc = () => {
             sx={{
               width: { xs: "90vw", sm: 520 },
               height: { xs: "35vh", sm: 250 },
-              backgroundColor: "#fff",
+              backgroundColor: "background.default",
               position: "absolute",
               top: 0,
               bottom: 0,
@@ -83,10 +85,10 @@ const DeleteAcc = () => {
             }}
           >
             <div className="modal-acc">
-              <p>
+              <Typography sx={{ width: "80%", fontSize: { xs: "14px" } }}>
                 Your account will be deleted immediately and permanently. Once
                 deleted, accounts can not be restored.
-              </p>
+              </Typography>
 
               <span className="modal-close" onClick={handleclose}>
                 x
@@ -100,7 +102,13 @@ const DeleteAcc = () => {
               <Button type="reset" variant="outlined" onClick={handleclose}>
                 Cancel
               </Button>
-              <Button onClick={handleDelete} variant="contained">
+              <Button
+                onClick={handleDelete}
+                variant="contained"
+                sx={{
+                  bgcolor: "red",
+                }}
+              >
                 Delete
               </Button>
             </div>

@@ -9,6 +9,7 @@ import { databaseRef, storage } from "../../firebase/firebase";
 import useFolder, { ROOT_FOLDER } from "../../hooks/useFolder";
 import FolderModal from "../FolderModal/FolderModal";
 import { v4 as uuidV4 } from "uuid";
+import { ThemeContext } from "../../App";
 
 import "./AddButton.scss";
 
@@ -17,6 +18,7 @@ export default function AddButton() {
   const [openAction, setOpenAction] = useState(false);
   const { folder_Id } = useParams();
   const { currentUser } = useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
   const { folder } = useFolder(folder_Id);
   const { setUpFile, setUploadingFiles, handleCloseShow, setError, fullSpace } =
     useContext(FileAndFolderContext);
@@ -33,99 +35,121 @@ export default function AddButton() {
     setOpen(false);
   };
 
-  const handleFileUpload = (e) => {
+  const handleMultipleFileUpload = (e) => {
     e.preventDefault();
-    const file = e.target.files[0];
-    setUpFile(file);
-    const defaultFileValue = file.size / 1024 / 1024;
-    const fileSize = Math.round(defaultFileValue * 100) / 100;
+    const files = e.target.files;
 
-    if (currentFolder == null || file == null) return;
-    const id = uuidV4();
-    handleCloseShow();
+    const fileArr = [];
+    for (let i = 0; i < files.length; i++) {
+      fileArr.push(files[i]);
+    }
 
-    setUploadingFiles((prevState) => [
-      ...prevState,
-      { id: id, name: file.name, progress: 0, error: false },
-    ]);
+    fileArr.forEach((file) => {
+      setUpFile(file);
+      const defaultFileValue = file.size / 1024 / 1024;
+      const fileSize = `${Math.round(defaultFileValue * 100) / 100}`;
 
-    const filePath =
-      currentFolder === ROOT_FOLDER
-        ? `${currentFolder.path.join("/")}/${file.name}`
-        : `${currentFolder.path.join("/")}/${currentFolder.name}/${file.name}`;
+      if (currentFolder == null || file == null) return;
+      const id = uuidV4();
+      handleCloseShow();
 
-    const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`);
+      setUploadingFiles((prevState) => [
+        ...prevState,
+        { id: id, name: file.name, progress: 0, error: false },
+      ]);
 
-    const uploadTask = uploadBytesResumable(fileRef, file);
+      const filePath =
+        currentFolder === ROOT_FOLDER
+          ? `${currentFolder.path.join("/")}/${file.name}`
+          : `${currentFolder.path.join("/")}/${currentFolder.name}/${
+              file.name
+            }`;
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setUploadingFiles((prevState) => {
-          return prevState.map((uploadFile) => {
-            if (uploadFile.id === id) {
-              return { ...uploadFile, progress: progress };
-            }
-            return uploadFile;
-          });
-        });
-      },
-      () => {
-        setUploadingFiles((prevState) => {
-          return prevState.filter((uploadFile) => {
-            if (uploadFile.id === id) {
-              setError(true);
-              return { ...uploadFile, error: true };
-            }
-            return uploadFile;
-          });
-        });
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref)
-          .then((downloadUrl) => {
-            const q = query(
-              databaseRef.filesRef,
-              where("name", "==", file.name),
-              where("folderId", "==", currentFolder.id),
-              where("userId", "==", currentUser.uid)
-            );
+      const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`);
 
-            getDocs(q).then((existingFiles) => {
-              const existingFile = existingFiles.docs[0];
-              if (existingFile) {
-                const existRef = ref(existingFile);
-                updateDoc(existRef, {
-                  url: downloadUrl,
-                });
-              } else {
-                addDoc(databaseRef.filesRef, {
-                  name: file.name,
-                  size: fileSize,
-                  type: file.type,
-                  url: downloadUrl,
-                  isStarred: false,
-                  isTrashed: false,
-                  folderId: currentFolder.id,
-                  userId: currentUser.uid,
-                  createdAt: databaseRef.timestamp,
-                });
+      const uploadTask = uploadBytesResumable(fileRef, file);
+
+      const pauseUpload = () => {
+        uploadTask.pause();
+      };
+      const resumeUpload = () => {
+        uploadTask.resume();
+      };
+      const cancelUpload = () => {
+        uploadTask.cancel();
+      };
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setUploadingFiles((prevState) => {
+            return prevState.map((uploadFile) => {
+              if (uploadFile.id === id) {
+                return { ...uploadFile, progress: progress };
               }
+              return uploadFile;
             });
-          })
-          .then(() => {
-            setUploadingFiles((prevState) => {
-              return prevState.filter((uploadFile) => {
-                return uploadFile.id !== id;
-              });
-            });
-            setUpFile("");
           });
-      }
-    );
+        },
+        () => {
+          setUploadingFiles((prevState) => {
+            return prevState.filter((uploadFile) => {
+              if (uploadFile.id === id) {
+                setError(true);
+                return { ...uploadFile, error: true };
+              }
+              return uploadFile;
+            });
+          });
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadUrl) => {
+              const q = query(
+                databaseRef.filesRef,
+                where("name", "==", file.name),
+                where("folderId", "==", currentFolder.id),
+                where("userId", "==", currentUser.uid)
+              );
+
+              getDocs(q).then((existingFiles) => {
+                const existingFile = existingFiles.docs[0];
+                if (existingFile) {
+                  const existRef = ref(existingFile);
+                  updateDoc(existRef, {
+                    url: downloadUrl,
+                  });
+                } else {
+                  addDoc(databaseRef.filesRef, {
+                    name: file.name,
+                    size: fileSize,
+                    type: file.type,
+                    url: downloadUrl,
+                    isStarred: false,
+                    isTrashed: false,
+                    folderId: currentFolder.id,
+                    folderName: currentFolder.name,
+                    userId: currentUser.uid,
+                    createdAt: databaseRef.timestamp,
+                  });
+                }
+              });
+            })
+            .then(() => {
+              setUploadingFiles((prevState) => {
+                return prevState.filter((uploadFile) => {
+                  return uploadFile.id !== id;
+                });
+              });
+              setUpFile("");
+              setUploadingFiles([]);
+            });
+        }
+      );
+    });
   };
 
   const { pathname } = useLocation();
@@ -154,7 +178,7 @@ export default function AddButton() {
         return pathname === gen ? "hide" : "show";
       })}
     >
-      <div id="act-btn" className="action dark" onClick={actionToggle}>
+      <div id="act-btn" className={`action ${mode}`} onClick={actionToggle}>
         <span className={openAction ? "rotate" : ""}>+</span>
 
         {fullSpace ? (
@@ -168,7 +192,7 @@ export default function AddButton() {
             </li>
           </ul>
         ) : (
-          <ul className="darks">
+          <ul className={`${mode}`}>
             <li id="folder" onClick={() => setOpen(true)}>
               <CreateNewFolder className="icon" fontSize="large" />
               <p>Create new folder</p>
@@ -182,7 +206,7 @@ export default function AddButton() {
                 type="file"
                 id="fileup"
                 className="file-up"
-                onChange={handleFileUpload}
+                onChange={handleMultipleFileUpload}
               />
             </li>
           </ul>

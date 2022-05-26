@@ -2,6 +2,7 @@ import { AddToDrive } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../../App";
 import { AuthContext } from "../../contexts/AuthContext";
 import { color } from "../../theme";
 
@@ -10,6 +11,7 @@ const ForgetPassword = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { resetPassword } = useContext(AuthContext);
+  const { mode } = useContext(ThemeContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,27 +35,18 @@ const ForgetPassword = () => {
         alignItems: "center",
         margin: "auto",
         minHeight: "100vh",
-        // backgroundImage: 'url("/images/bubble.webp")',
-        // backgroundImage: 'url("/images/darkBg.webp")',
-        backgroundColor: "background.default",
-        color: "text.color",
+        backgroundImage:
+          mode === "dark"
+            ? 'url("/images/darkBg.webp")'
+            : 'url("/images/bubble.webp")',
+        color: mode === "dark" ? "text.color" : "inherit",
       }}
     >
-      <Typography
-        variant="h6"
-        component={"span"}
-        color={color.primaryColor2}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "20px",
-          fontSize: 30,
-        }}
-      >
-        <AddToDrive sx={{ color: color.primaryColor2, fontSize: 60 }} />
-        HBS Drive
-      </Typography>
-      <form className="form dark" onSubmit={handleSubmit}>
+      <div className="hbs-logo">
+        <img src="/images/hbs-logo.png" alt="Hbs Drive" />
+      </div>
+
+      <form className={`form ${mode}`} onSubmit={handleSubmit}>
         <p className="form-header"> Reset Password</p>
         <p className="error">{error}</p>
         <div className="form-input">
@@ -77,10 +70,10 @@ const ForgetPassword = () => {
           </Button>
         </Box>
       </form>
-      <div className="account dark">
+      <div className={`account ${mode}`}>
         <Link to="/login">Login instead</Link>
       </div>
-      <div className="account dark">
+      <div className={`account ${mode}`}>
         <p>Don't have an account ?</p>
         <Link to="/signup">Sign up</Link>
       </div>
