@@ -15,9 +15,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2c93609e-b9bb-43cf-8333-646d70b91310/deploy-status)](https://app.netlify.com/sites/evolt-myspace/deploys)
 
+ ![chrome-capture-2022-5-23](public/images/hbs-drive.gif)
+
 </div>
 
-![chrome-capture-2022-5-23](https://user-images.githubusercontent.com/61556757/168996081-669617f1-1f8a-4357-b866-aa61913add91.gif)
 
 ## Table of Contents
 
@@ -86,7 +87,7 @@ https://evolt-myspace.netlify.app
 - Feed can be sort based on `recent` and `trending` posts.
 - User/Home and Explore feed has `infinite scroll`.
 
-**Explore Feed**
+**Recents**
 
 - All the new users posts will be shown over here.
 
@@ -95,13 +96,19 @@ https://evolt-myspace.netlify.app
 - User can search other users and follow them if not followed.
 - Implemented `debounce` for search.
 
-**Post**
+**Favorites/Starred**
 
 - User can `add`, `like/unlike` `edit`, `delete`, and `bookmark` a post.
 - Each post can be viewed on single page where user can comment and can edit or delete the comment.
 - Post can consist of text, image or gifs.
 
-**Profile**
+**Trash**
+
+- User can `add`, `like/unlike` `edit`, `delete`, and `bookmark` a post.
+- Each post can be viewed on single page where user can comment and can edit or delete the comment.
+- Post can consist of text, image or gifs.
+
+**Profile Settings**
 
 - User can view there profile or any other users profile.
 - Each user can edit there profile.
@@ -120,25 +127,21 @@ https://evolt-myspace.netlify.app
 ## Screenshots
 
 <!--   ![image](public/images/hbs-desk.png) -->
-<div style="display: flex;">
+<div display='flex'>
     <img alt="hbs drive mobile" src="public/images/hbs-mob.png" width="auto" height="auto" />
-  <img alt="hbs drive desktop" src="public/images/hbs-desk.png" width="80%" height="480px" />
+     <img alt="hbs drive mobile" src="public/images/hbs-mob-app.png" width="auto" height="auto" />
+
+  <img alt="hbs drive desktop" src="public/images/hbs-desk.png" width="auto" height="auto" />
 </div>
 
 ## 👨‍💻 Connect with me
 
-<a href="https://twitter.com/rohanmathur91"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white"/></a>
-<a href="https://www.linkedin.com/in/rohanmathur04/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/></a>
+<a href="https://twitter.com/sofiyullah_dev"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white"/></a>
+<a href="https://www.linkedin.com/in/sofiyullah-abdullah/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/></a>
 © 2022 GitHub, Inc.
 Ter
 
-
-
-
-
-
-
-
+ 
 ## Available Scripts
 
 In the project directory, you can run:
