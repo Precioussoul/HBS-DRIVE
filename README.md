@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Development of a Secured Cloud-Based Drive Application Exploiting Web technologies  
+## Developed and Managed by Abdullah Sofiyullah
+### A graduating student of Federal Polytechnic Ede, located in Osun state, Nigeria majoring in Computer engineering (Software Focused), HND.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
