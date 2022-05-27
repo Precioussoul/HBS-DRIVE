@@ -1,5 +1,5 @@
 # Development of a Secured Cloud-Based Drive Application Exploiting Web technologies  
-## Developed and Managed by Abdullah Sofiyullah
+## Developed and Managed by Abdullah Sofiyullah Folorunsho (HR20190103865)
 ### A graduating student of Federal Polytechnic Ede, located in Osun state, Nigeria majoring in Computer engineering (Software Focused), HND.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -34,28 +34,31 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Clone the repository on your local machine with the command below in your terminal, and cd into the **evolt-social** folder
 
 ```sh
-https://github.com/rohanmathur91/evolt-social.git
-cd evolt-social
+git clone https://github.com/Precioussoul/HBS-DRIVE.git
+cd HBS-DRIVE
 ```
 
 - Install dependencies (if you are using **yarn** then do with that)
 
 ```sh
-npm install
+yarn install
 ```
 
-- Create a `.env` file at the root level of the directory (at the level of `package.json`) and create a environment variables
+- Create a `.env` file at the root level of the directory (at the level of `package.json`) and create a environment variables and use process.env to initialize them.
 
-```
-REACT_APP_JWT_SECRET = <JWT_SECRET_KEY_OF_YOUR_CHOICE>
-REACT_APP_CLOUD_NAME = <YOUR_CLOUD_NAME_FROM_CLOUDINARY>
-REACT_APP_UPLOAD_PRESET_NAME = <YOUR_UPLOAD_PRESET>
+``` 
+REACT_APP_FIREBASE_API_KEY= <YOUR API KEY>
+REACT_APP_FIREBASE_AUTH_DOMAIN= <YOUR CLOUD AUTH DOMAIN>
+REACT_APP_FIREBASE_PROJECT_ID=<YOUR PROJECT ID>
+REACT_APP_FIREBASE_STORAGE_BUCKET=<YOUR CLOUD STORAGE BUCKET ID>
+REACT_APP_FIREBASE_MESSAGE_SENDER_ID= <YOUR SENDER ID>
+REACT_APP_FIREBASE_APP_ID=<YOUR GENERATED APP ID>
 ```
 
 - Start the server🚀
 
 ```
-npm start
+yarn start
 ```
 
 ## Live link
@@ -116,10 +119,11 @@ https://evolt-myspace.netlify.app
 
 ## Screenshots
 
-![mobile (5)](https://user-images.githubusercontent.com/61556757/168998787-5b5d988c-3d17-4ad2-b321-876db9b74c38.png)
-![mobile (6)](https://user-images.githubusercontent.com/61556757/168999027-797a8116-9488-4e87-b02d-665723c3a212.png)
-![mobile (8)](https://user-images.githubusercontent.com/61556757/168999297-ff45b571-afdd-4360-ad73-05ac18a541db.png)
-![image](https://user-images.githubusercontent.com/61556757/168998000-63f28ed4-6ac8-47cd-a0e4-338f433378b6.png)
+<!--   ![image](public/images/hbs-desk.png) -->
+<div style="display: flex;">
+    <img alt="hbs drive mobile" src="public/images/hbs-mob.png" width="auto" height="auto" />
+  <img alt="hbs drive desktop" src="public/images/hbs-desk.png" width="80%" height="480px" />
+</div>
 
 ## 👨‍💻 Connect with me
 
