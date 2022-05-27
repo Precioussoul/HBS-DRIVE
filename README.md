@@ -9,7 +9,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 <img alt="myspace-logo" src="public/images/hbs-logo.png" width="180px" height="180px" />
 
-# HBS Drive🚀
+# Hbs Drive🌩️ - Habsof drive
 
  <h3>A Cloud Based Drive Web app.</h3>
 
@@ -80,11 +80,20 @@ https://evolt-myspace.netlify.app
 
 ## 🛠 Technologies used
 
+- HTML
+- JavaScript 
 - ReactJS
-- Redux Toolkit
-- React Router
+- React ContextAPI
+- React Router 
 - SASS (Scss)
-- Firebase for backend
+- Material UI
+- Other NPM libraries for React
+- Firebase (Backend as a Service)
+- Firestore Cloud Database
+- Firebase Cloud Storage Bucket
+- Firebase Authentication
+- Node Package Manager (NodeJS) 
+- Git
 
 ## Features
 
