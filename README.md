@@ -11,7 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Hbs Drive🌩️ - Habsof drive
 
- <h3>A Cloud Based Drive Web app.</h3>
+ <h3>A Cloud Based Drive Web Application.</h3>
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2c93609e-b9bb-43cf-8333-646d70b91310/deploy-status)](https://app.netlify.com/sites/evolt-myspace/deploys)
 
