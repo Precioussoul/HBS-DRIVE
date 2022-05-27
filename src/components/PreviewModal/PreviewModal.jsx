@@ -1,9 +1,16 @@
-import React, { useContext } from "react";
-import { Box, Modal } from "@mui/material";
+import React, { useContext, useState } from "react";
+import { Box, Button, Modal } from "@mui/material";
 import FileViewer from "react-file-viewer";
+import PDFViewer from "pdf-viewer-reactjs";
+
 import "./PreviewModal.scss";
 
-export default function PreviewModal({ open, handleclose, viewFile }) {
+export default function PreviewModal({
+  open,
+  handleclose,
+  viewFile,
+  download,
+}) {
   let newFile = { url: "images/recents.png", type: "png" };
 
   if (viewFile !== undefined) {
@@ -62,47 +69,76 @@ export default function PreviewModal({ open, handleclose, viewFile }) {
       break;
 
     default:
-      fileResult = "images/otherFile.png";
+      fileResult = "OtherType";
   }
 
   const file = newFile.url;
   const type = fileResult;
 
-  var canvas = document.getElementsByTagName("canvas")[0];
-  if (canvas) {
-    canvas.width = `${100}%`;
-    canvas.height = 600;
+  if (open === true) {
+    var btn1 = document.querySelectorAll(".is-black")[0];
+    var btn3 = document.querySelectorAll(".is-black")[2];
+
+    if (btn1 !== undefined) {
+      setInterval(function () {
+        btn1.innerHTML = "Prev";
+        btn3.innerHTML = "Next";
+      }, 1000);
+    }
   }
 
-  var canvas2 = document.getElementsByTagName("canvas")[1];
-  if (canvas2) {
-    canvas2.width = 600;
-    canvas2.height = 300;
-  }
+  const DownloadIfError = () => {
+    return (
+      <div>
+        <p className="type-error">file type not supported</p>
+        <p>You can download the file Instead</p>
+        <Button onClick={download} variant="contained">
+          Download
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <Modal
       open={open}
       onClose={handleclose}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
       BackdropProps={{ style: { backgroundColor: "rgba(0,0,0,.7)" } }}
     >
       <Box
+        className="forDocOnly"
         sx={{
-          width: { xs: "95vw", sm: "60%" },
-          height: { xs: "50vh", sm: "60%" },
+          width: { xs: "95vw", sm: "800px" },
+          height: { xs: "50vh", sm: "600px" },
           backgroundColor: "inherit",
-          position: "fixed",
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          padding: { xs: 1.5, sm: 2 },
-          margin: "auto",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          overflowY: "scroll",
         }}
       >
-        <FileViewer key={newFile} fileType={type} filePath={file} />
+        {fileResult === "pdf" ? (
+          <PDFViewer
+            document={{
+              url: newFile.url,
+            }}
+            css="pdf-container"
+            canvasCss="pdf-view"
+            hideZoom={true}
+            hideRotation={true}
+            // hideNavbar={true}
+          />
+        ) : (
+          <FileViewer
+            key={newFile}
+            fileType={type}
+            filePath={file}
+            unsupportedComponent={DownloadIfError}
+          />
+        )}
       </Box>
     </Modal>
   );

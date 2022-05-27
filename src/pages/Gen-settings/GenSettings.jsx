@@ -19,9 +19,12 @@ import "./gen-settings.scss";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../App";
+import { availableSpace } from "../../components/StorageProgress/Storage";
+import { FileAndFolderContext } from "../../contexts/FileAndFolderContext";
 
 const GenSettings = () => {
   const { currentUser, logout } = useContext(AuthContext);
+  const { totalSize } = useContext(FileAndFolderContext);
   const { mode, setMode } = useContext(ThemeContext);
   const [checked, setChecked] = useState(true);
 
@@ -95,7 +98,7 @@ const GenSettings = () => {
           </p>
 
           <div className="storage">
-            <span>{`16 MB of 200 MB Used`}</span>
+            <span>{`${totalSize} MB of ${availableSpace} MB Used`}</span>
 
             <Button
               variant="outlined"

@@ -121,16 +121,6 @@ function Layout(props) {
 
       const uploadTask = uploadBytesResumable(fileRef, file);
 
-      const pauseUpload = () => {
-        uploadTask.pause();
-      };
-      const resumeUpload = () => {
-        uploadTask.resume();
-      };
-      const cancelUpload = () => {
-        uploadTask.cancel();
-      };
-
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -203,7 +193,6 @@ function Layout(props) {
       );
     });
   };
-  let pauseUpload, resumeUpload, cancelUpload;
 
   const handleFileUpload = (e) => {
     e.preventDefault();
@@ -229,16 +218,6 @@ function Layout(props) {
     const fileRef = ref(storage, `files/${currentUser.uid}/${filePath}`);
 
     const uploadTask = uploadBytesResumable(fileRef, file);
-
-    pauseUpload = () => {
-      uploadTask.pause();
-    };
-    resumeUpload = () => {
-      uploadTask.resume();
-    };
-    cancelUpload = () => {
-      uploadTask.cancel();
-    };
 
     uploadTask.on(
       "state_changed",
@@ -577,20 +556,9 @@ function Layout(props) {
                         alignItems: "center",
                       }}
                     >
-                      <Typography noWrap sx={{ width: "100px" }}>
+                      <Typography noWrap sx={{ width: "150px" }}>
                         {upfile.name}
                       </Typography>
-                      <span>
-                        {file ? (
-                          <span onClick={pauseUpload}>
-                            <PauseCircle />
-                          </span>
-                        ) : (
-                          <span onClick={resumeUpload}>
-                            <PlayCircle />
-                          </span>
-                        )}
-                      </span>
                     </Box>
                     <LinearProgressWithLabel value={file.progress} />
                   </Alert>

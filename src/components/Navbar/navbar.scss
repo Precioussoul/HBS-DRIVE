@@ -72,6 +72,15 @@
     @media (max-width: 1536px) {
       font-size: 15px;
     }
+
+    .grt-lg {
+      display: none;
+      visibility: hidden;
+      @media (min-width: 1600px) {
+        display: inline-block;
+        visibility: visible;
+      }
+    }
   }
 
   & .nav-search {

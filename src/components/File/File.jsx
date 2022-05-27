@@ -7,19 +7,20 @@ import {
   History,
   LinkOutlined,
   MoreVert,
-  Preview,
-  PreviewOutlined,
-  RestoreFromTrashOutlined,
+  Close,
   Star,
   StarBorder,
   VisibilityOutlined,
 } from "@mui/icons-material";
 import {
+  Alert,
+  Box,
   Button,
   Divider,
   IconButton,
   Menu,
   MenuItem,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
@@ -47,9 +48,16 @@ export default function File({ file, fromTrash }) {
   const { folder_Id } = useParams();
   const { folder } = useFolder(folder_Id);
   const [openPrev, setOpenPrev] = useState(false);
+  const [openNotify, setOpenNotify] = useState(false);
 
   const handleClosePrev = () => {
     setOpenPrev(false);
+  };
+  const handleCloseNotify = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenNotify(false);
   };
 
   let currentFolder;
@@ -109,9 +117,11 @@ export default function File({ file, fromTrash }) {
   const trashRef = doc(databaseRef.filesRef, file.id);
 
   const updateTrash = () => {
+    setOpenNotify(true);
+
     updateDoc(trashRef, {
       isTrashed: true,
-    }).then(() => {});
+    });
   };
   const undoTrash = () => {
     updateDoc(trashRef, {
@@ -190,6 +200,22 @@ export default function File({ file, fromTrash }) {
       fileResult = "images/otherFile.png";
   }
 
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleCloseNotify}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleCloseNotify}
+      >
+        <Close fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+
   return (
     <>
       {file && (
@@ -237,12 +263,22 @@ export default function File({ file, fromTrash }) {
               <MenuItem
                 onClick={file.isStarred ? removeFavorites : addToFavorites}
                 className={"menu-item"}
+                sx={{
+                  display: fromTrash ? "none" : "flex",
+                  visibility: fromTrash ? "hidden" : "visible",
+                }}
               >
                 {file.isStarred ? <Star /> : <StarBorder />}
                 {file.isStarred ? "Starred" : "Add a star"}
               </MenuItem>
               <CopyToClipboard text={file.url} onCopy={() => setCopied(true)}>
-                <MenuItem className="menu-item">
+                <MenuItem
+                  className="menu-item"
+                  sx={{
+                    display: fromTrash ? "none" : "flex",
+                    visibility: fromTrash ? "hidden" : "visible",
+                  }}
+                >
                   {copied ? <CheckCircleOutlined /> : <LinkOutlined />}
                   {copied ? "Copied" : "Get link"}
                 </MenuItem>
@@ -251,6 +287,10 @@ export default function File({ file, fromTrash }) {
               <MenuItem
                 className="menu-item"
                 onClick={() => download(file.url, file.name)}
+                sx={{
+                  display: fromTrash ? "none" : "flex",
+                  visibility: fromTrash ? "hidden" : "visible",
+                }}
               >
                 <CloudDownloadOutlined />
                 <p> Download</p>
@@ -282,8 +322,17 @@ export default function File({ file, fromTrash }) {
               open={openPrev}
               handleclose={handleClosePrev}
               viewFile={file}
+              download={() => download(file.url, file.name)}
             />
           )}
+
+          <Snackbar
+            open={openNotify}
+            autoHideDuration={6000}
+            onClose={handleCloseNotify}
+            message={`${file.name} has been moved to Trash`}
+            action={action}
+          />
         </div>
       )}
     </>

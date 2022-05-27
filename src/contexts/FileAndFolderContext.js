@@ -19,9 +19,17 @@ function FileAndFolderProvider({ children }) {
   const [totalSize, setTotalSize] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const documents = allFiles.filter((file) =>
-    file.type.toLowerCase().includes("application/")
+  const document1 = allFiles.filter((file) =>
+    file.type.toLowerCase().includes("application/vnd")
   );
+  const document2 = allFiles.filter((file) =>
+    file.type.toLowerCase().includes("pdf")
+  );
+  const document3 = allFiles.filter((file) =>
+    file.type.toLowerCase().includes("application/msword")
+  );
+
+  const documents = [...document1, ...document2, ...document3];
   const audios = allFiles.filter((file) =>
     file.type.toLowerCase().includes("audio/")
   );
@@ -75,8 +83,9 @@ function FileAndFolderProvider({ children }) {
       !file.type.toLowerCase().includes("image") &&
       !file.type.toLowerCase().includes("audio") &&
       !file.type.toLowerCase().includes("video") &&
-      !file.type.toLowerCase().includes("application") &&
-      !file.type.toLowerCase().includes("application/x-ms")
+      !file.type.toLowerCase().includes("application/vnd") &&
+      !file.type.toLowerCase().includes("application/x-ms") &&
+      file.type.toLowerCase().includes("x-zip")
   );
   const searchFiles = allFiles.filter(
     (file) =>

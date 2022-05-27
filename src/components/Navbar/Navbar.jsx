@@ -105,7 +105,9 @@ export default function Navbar() {
       <div className={`greeting ${mode}`}>
         <p>
           {" "}
-          <span>Welcome, {username} 👋</span>
+          <span>
+            Welcome <span className="grt-lg">Back</span>, {username} 👋
+          </span>
         </p>
       </div>
       <div className={`nav-items-wrapper ${mode}`}>
