@@ -11,6 +11,10 @@
 
 .pg-viewer-wrapper {
   overflow-y: hidden !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .video-container {
@@ -47,17 +51,21 @@
   & > * {
     width: 80% !important;
     height: auto !important;
+    color: initial;
   }
 }
 .column.is-3.buttons {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .button.is-black {
   border: 1px solid #a3a9df;
   color: #fff;
   background-color: transparent;
-  padding: 10px 20px;
+  padding: 5px 10px;
   border-radius: 5px;
 }
 
@@ -70,4 +78,18 @@
   text-transform: capitalize;
   font-size: 18px;
   font-weight: bold;
+}
+.error-component {
+  & > * {
+    color: initial !important;
+  }
+}
+
+.loading-container {
+  position: absolute;
+}
+.react-grid-Container {
+  & > * {
+    color: initial !important;
+  }
 }

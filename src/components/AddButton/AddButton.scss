@@ -2,11 +2,11 @@
   position: fixed;
   bottom: -300px;
   right: 340px;
-  width: 65px;
+  width: 75px;
   display: none;
   visibility: hidden;
   transition: 0.4s;
-  height: 65px;
+  height: 75px;
   border-radius: 20%;
   background-color: #1a22fc;
 
@@ -14,8 +14,8 @@
     background-color: #1c2541;
   }
   //   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 2px 4px 10px 1px rgba(71, 79, 190, 0.47);
-  box-shadow: 2px 4px 10px 1px rgba(64, 51, 138, 0.47);
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(11, 119, 47, 0.301);
+  box-shadow: 2px 4px 10px 1px rgba(4, 68, 68, 0.47);
 
   @media (max-width: 600px) {
     right: 20px;

@@ -31,6 +31,15 @@ export default function Search() {
               ))}
             </div>
           )}
+          {searchFiles.length < 1 && searchFolders.length < 1 && (
+            <div className="search-box">
+              <div className="search">
+                <img src="/images/research.png" alt="" />
+                <h3>No match found 🔍</h3>
+                <p>Try another search with different query</p>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

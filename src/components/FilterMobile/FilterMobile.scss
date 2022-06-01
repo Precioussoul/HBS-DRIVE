@@ -1,8 +1,8 @@
 $box-shadow: rgba(0, 120, 120, 0.5) 0px 5px 15px;
 
 .f-Mobile {
-  width: 110px;
-  height: 110px;
+  width: 115px;
+  height: 115px;
   background-color: #eef2fd;
   border-radius: 10px;
   display: flex;
@@ -15,9 +15,9 @@ $box-shadow: rgba(0, 120, 120, 0.5) 0px 5px 15px;
     box-shadow: $box-shadow;
   }
 
-  @media (min-width: 400px) and (max-width: 900px) {
-    width: 120px;
-    height: 120px;
+  @media (min-width: 381px) and (max-width: 424px) {
+    width: 108px;
+    height: 108px;
   }
 
   @media (min-width: 321px) and (max-width: 380px) {

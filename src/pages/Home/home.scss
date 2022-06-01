@@ -1,0 +1,28 @@
+.main {
+  background-color: #eef3f8;
+  overflow: hidden;
+
+  &.dark {
+    background-color: #121212;
+  }
+}
+
+.home-container {
+  width: 97%;
+  margin: 0 auto;
+  @media (min-width: 576px) {
+    width: 540px;
+  }
+  @media (min-width: 767px) {
+    width: 720px;
+  }
+  @media (min-width: 991px) {
+    width: 960px;
+  }
+  @media (min-width: 1200px) {
+    width: 1140px;
+  }
+  @media (min-width: 1400px) {
+    width: 1320px;
+  }
+}

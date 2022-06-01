@@ -28,15 +28,18 @@ function AuthProvider({ children }) {
   }
 
   //logging in users
-  function loginUser(email, password, setError, setLoading) {
+  function loginUser(email, password, setError, setLoading, navigate) {
     return signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         setLoading(true);
+        navigate("/");
       })
       .catch(() => {
         setError("Failed to sign-in, check your credential or internet");
         setLoading(false);
-        // setError("");
+        setTimeout(() => {
+          setError("");
+        }, 3000);
       });
   }
 

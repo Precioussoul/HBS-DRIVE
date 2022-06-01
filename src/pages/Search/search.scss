@@ -4,8 +4,12 @@
   align-items: center;
   justify-content: center;
 
+  @media (max-width: 600px) {
+    margin-top: 50px;
+  }
+
   img {
-    width: 80%;
+    width: 70%;
     @media (min-width: 610px) {
       width: 40%;
       margin: 30px auto;

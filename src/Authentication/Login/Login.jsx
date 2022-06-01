@@ -10,7 +10,7 @@ import { ThemeContext } from "../../App";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const { loginUser, currentUser } = useContext(AuthContext);
+  const { loginUser } = useContext(AuthContext);
   const { mode } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -21,8 +21,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    loginUser(email, password, setError, setLoading);
-    navigate("/");
+    loginUser(email, password, setError, setLoading, navigate);
   };
 
   return (
@@ -42,20 +41,6 @@ const Login = () => {
         color: mode === "dark" ? "text.color" : "inherit",
       }}
     >
-      {/* <Typography
-        variant="h6"
-        component={"span"}
-        color={color.primaryColor2}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "20px",
-          fontSize: 30,
-        }}
-      >
-        <AddToDrive sx={{ color: color.primaryColor2, fontSize: 60 }} />
-        HBS Drive
-      </Typography> */}
       <div className="hbs-logo">
         <img src="/images/hbs-logo.png" alt="Hbs Drive" />
       </div>

@@ -76,6 +76,7 @@ export default function Navbar() {
   const handleLogout = () => {
     logout();
     handleClose();
+    navigate("/");
   };
 
   return (
@@ -92,7 +93,7 @@ export default function Navbar() {
         <InputBase
           onClick={handleSearch}
           sx={{ width: "100%" }}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
           placeholder="  Search in Drive"
         />
 
@@ -103,12 +104,20 @@ export default function Navbar() {
         )}
       </form>
       <div className={`greeting ${mode}`}>
-        <p>
-          {" "}
-          <span>
-            Welcome <span className="grt-lg">Back</span>, {username} 👋
-          </span>
-        </p>
+        <span>
+          Welcome <span className="grt-lg">Back</span>,{" "}
+        </span>
+        <Typography
+          noWrap
+          sx={{
+            width: { sm: "70px", xl: "120px" },
+            display: "inline-block",
+            marginLeft: 1.5,
+          }}
+        >
+          {username}
+        </Typography>
+        👋
       </div>
       <div className={`nav-items-wrapper ${mode}`}>
         <div className="nav-items">
@@ -152,18 +161,18 @@ export default function Navbar() {
             }}
           >
             <Link to={"gen-settings"}>
-              <MenuItem className="menu-item">
+              <MenuItem className="menu-item" onClick={handleClose}>
                 <PeopleAltOutlined />
                 <p>Profile</p>
               </MenuItem>
             </Link>
             <Link to={"acc-settings"}>
-              <MenuItem className="menu-item">
+              <MenuItem className="menu-item" onClick={handleClose}>
                 <AccountBoxOutlined />
                 <p> Manage Account</p>
               </MenuItem>
             </Link>
-            <MenuItem className="menu-item">
+            <MenuItem className="menu-item" onClick={handleClose}>
               <span>
                 {mode === "light" ? (
                   <DarkMode className="icon" />

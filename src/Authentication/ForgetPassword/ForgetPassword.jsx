@@ -16,14 +16,15 @@ const ForgetPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      setError("");
-      setLoading(true);
-      resetPassword(email);
-    } catch {
-      setError("email doesn't match our record");
+    setError("");
+    setLoading(true);
+    resetPassword(email).catch(() => {
+      setError("Email doesn't match our record");
       setLoading(false);
-    }
+      setTimeout(() => {
+        setError(" ");
+      }, 3000);
+    });
   };
 
   return (
@@ -37,7 +38,7 @@ const ForgetPassword = () => {
         minHeight: "100vh",
         backgroundImage:
           mode === "dark"
-            ? 'url("/images/darkBg.webp")'
+            ? 'url("/images/bubble-dark.webp")'
             : 'url("/images/bubble.webp")',
         color: mode === "dark" ? "text.color" : "inherit",
       }}

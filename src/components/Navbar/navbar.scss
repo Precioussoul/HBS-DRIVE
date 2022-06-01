@@ -62,6 +62,8 @@
     justify-content: space-between;
   }
   .greeting {
+    display: flex;
+    align-items: center;
     &.dark {
       color: #ccc;
     }

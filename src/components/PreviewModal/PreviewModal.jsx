@@ -18,59 +18,82 @@ export default function PreviewModal({
   }
 
   let fileResult;
+  fileResult = newFile.type.includes("image")
+    ? "png"
+    : newFile.type && newFile.type.includes("audio")
+    ? "mp3"
+    : newFile.type && newFile.type.includes("video")
+    ? "mp4"
+    : newFile.type && newFile.type.includes("pdf")
+    ? "pdf"
+    : newFile.type && newFile.type.includes("wordprocessingml.document")
+    ? "docx"
+    : newFile.type && newFile.type.includes("vnd.oasis.opendocument.text")
+    ? "docx"
+    : newFile.type && newFile.type.includes("msword")
+    ? "docx"
+    : newFile.type && newFile.type.includes("spreadsheetml.sheet")
+    ? "xlsx"
+    : newFile.type && newFile.type.includes("csv")
+    ? "csv"
+    : newFile.type;
+  console.log("fileresult", fileResult);
 
-  switch (newFile.type) {
-    case "image/jpeg":
-      fileResult = "jpeg";
-      break;
-    case "image/png":
-      fileResult = "png";
-      break;
-    case "image/jfif":
-      fileResult = "jpeg";
-      break;
-    case "video/mp4":
-      fileResult = "mp4";
-      break;
-    case "video/x-matroska":
-      fileResult = "mkv";
-      break;
-    case "audio/mpeg":
-      fileResult = "mp3";
-      break;
-    case "audio/wav":
-      fileResult = "wav";
-      break;
-    case "audio/x-m4a":
-      fileResult = "mp3";
-      break;
+  // switch (newFile.type) {
+  //   case "image/jpeg":
+  //     fileResult = "jpeg";
+  //     break;
+  //   case "image/png":
+  //     fileResult = "png";
+  //     break;
+  //   case "image/jfif":
+  //     fileResult = "jpeg";
+  //     break;
+  //   case "video/mp4":
+  //     fileResult = "mp4";
+  //     break;
+  //   case "video/x-matroska":
+  //     fileResult = "mkv";
+  //     break;
+  //   case "audio/mpeg":
+  //     fileResult = "mp3";
+  //     break;
+  //   case "audio/mp3":
+  //     fileResult = "mp3";
+  //     break;
+  //   case "audio/wav":
+  //     fileResult = "wav";
+  //     break;
+  //   case "audio/x-m4a":
+  //     fileResult = "mp3";
+  //     break;
 
-    case "application/pdf":
-      fileResult = "pdf";
-      break;
-    case "application/msword":
-      fileResult = " docx";
-      break;
-    case "application/vnd.oasis.opendocument.text": //odt
-      fileResult = " docx";
-      break;
-    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document": //word
-      fileResult = "docx";
-      break;
-    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": //word
-      fileResult = "xslx";
-      break;
-    case "application/vnd.ms-powerpoint": // ppt
-      fileResult = "ppt";
-      break;
+  //   case "application/pdf":
+  //     fileResult = "pdf";
+  //     break;
+  //   case "application/msword":
+  //     fileResult = " docx";
+  //     break;
+  //   case "application/vnd.oasis.opendocument.text": //odt
+  //     fileResult = " docx";
+  //     break;
+  //   case "application/vnd.openxmlformats-officedocument.wordprocessingml.document": //word
+  //     fileResult = "docx";
+  //     break;
+  //   case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": //word
+  //     fileResult = "xslx";
+  //     break;
+  //   case "application/vnd.ms-powerpoint": // ppt
+  //     fileResult = "ppt";
+  //     break;
 
-    case "application/vnd.openxmlformats-officedocument.presentationml.presentation": //pptx // ppt
-      fileResult = "ppt";
-      break;
+  //   case "application/vnd.openxmlformats-officedocument.presentationml.presentation": //pptx // ppt
+  //     fileResult = "ppt";
+  //     break;
 
-    default:
-      fileResult = "OtherType";
-  }
+  //   default:
+  //     fileResult = "OtherType";
+  // }
 
   const file = newFile.url;
   const type = fileResult;
@@ -89,7 +112,7 @@ export default function PreviewModal({
 
   const DownloadIfError = () => {
     return (
-      <div>
+      <div className="error-component">
         <p className="type-error">file type not supported</p>
         <p>You can download the file Instead</p>
         <Button onClick={download} variant="contained">

@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none;
 }
 
 code {
@@ -15,4 +18,8 @@ code {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }

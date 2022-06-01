@@ -41,15 +41,18 @@ export default function Folder({ folder }) {
     updateDoc(favRef, {
       isStarred: true,
     });
+    handleClose();
   };
   const removeFavorites = () => {
     updateDoc(favRef, {
       isStarred: false,
     });
+    handleClose();
   };
 
   const permanentDelete = () => {
     deleteDoc(doc(databaseRef.foldersRef, folder.id));
+    handleClose();
   };
 
   const trashRef = doc(databaseRef.foldersRef, folder.id);
@@ -57,13 +60,15 @@ export default function Folder({ folder }) {
   const updateTrash = () => {
     updateDoc(trashRef, {
       isTrashed: true,
-    }).then(() => {});
+    });
+    handleClose();
   };
 
   const undoTrash = () => {
     updateDoc(trashRef, {
       isTrashed: false,
     });
+    handleClose();
   };
 
   return (

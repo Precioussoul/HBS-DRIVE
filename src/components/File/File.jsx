@@ -76,6 +76,7 @@ export default function File({ file, fromTrash }) {
 
   const previewFile = () => {
     setOpenPrev(true);
+    handleClose();
   };
 
   function download(url, filename) {
@@ -84,6 +85,7 @@ export default function File({ file, fromTrash }) {
     }).then((res) => {
       fileDownload(res.data, filename);
     });
+    handleClose();
   }
 
   const favRef = doc(databaseRef.filesRef, file.id);
@@ -92,11 +94,13 @@ export default function File({ file, fromTrash }) {
     updateDoc(favRef, {
       isStarred: true,
     });
+    handleClose();
   };
   const removeFavorites = () => {
     updateDoc(favRef, {
       isStarred: false,
     });
+    handleClose();
   };
 
   let filePath;
@@ -112,6 +116,7 @@ export default function File({ file, fromTrash }) {
   const permanentDelete = () => {
     deleteDoc(doc(databaseRef.filesRef, file.id));
     deleteObject(fileRef);
+    handleClose();
   };
 
   const trashRef = doc(databaseRef.filesRef, file.id);
@@ -122,83 +127,126 @@ export default function File({ file, fromTrash }) {
     updateDoc(trashRef, {
       isTrashed: true,
     });
+    handleClose();
   };
   const undoTrash = () => {
     updateDoc(trashRef, {
       isTrashed: false,
     });
+    handleClose();
   };
 
   let fileResult;
 
-  switch (file.type) {
-    case "image/jpeg":
-      fileResult = file.url;
-      break;
-    case "image/png":
-      fileResult = file.url;
-      break;
-    case "image/jfif":
-      fileResult = file.url;
-      break;
-    case "video/mp4":
-      fileResult = "images/mp4.png";
-      break;
-    case "video/x-matroska":
-      fileResult = "images/mkv.png";
-      break;
-    case "audio/mpeg":
-      fileResult = "images/mp3.png";
-      break;
-    case "audio/wav":
-      fileResult = "images/wav.png";
-      break;
-    case "audio/x-m4a":
-      fileResult = "images/m4a.png";
-      break;
-    case "application/x-zip-compressed":
-      fileResult = "images/zip.png";
-      break;
-    case "application/pdf":
-      fileResult = "images/pdf.png";
-      break;
-    case "application/msword":
-      fileResult = "images/docs.png";
-      break;
-    case "application/vnd.oasis.opendocument.text": //odt
-      fileResult = "images/docs.png";
-      break;
-    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document": //word
-      fileResult = "images/docs.png";
-      break;
-    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": //word
-      fileResult = "images/xls.png";
-      break;
-    case "application/vnd.ms-powerpoint": // ppt
-      fileResult = "images/ppt.png";
-      break;
-    case "application/x-msdownload": // ppt
-      fileResult = "images/exe.png";
-      break;
-    case "application/vnd.openxmlformats-officedocument.presentationml.presentation": //pptx // ppt
-      fileResult = "images/ppt.png";
-      break;
-    case "text/plain":
-      fileResult = "images/txt.png";
-      break;
-    case "text/html":
-      fileResult = "images/html.png";
-      break;
-    case "text/css":
-      fileResult = "images/css.png";
-      break;
-    case "text/javascript":
-      fileResult = "images/js.png";
-      break;
+  fileResult = file.type.includes("image")
+    ? file.url
+    : "images/otherFile.png" && file.type.includes("audio")
+    ? "images/music.png"
+    : "images/" && file.type.includes("video")
+    ? "images/videos.png"
+    : "images/otherFile.png" && file.type.includes("pdf")
+    ? "images/pdf.png"
+    : "images/otherFile.png" && file.type.includes("wordprocessingml.document")
+    ? "images/docs.png"
+    : "images/otherFile.png" &&
+      file.type.includes("vnd.oasis.opendocument.text")
+    ? "images/docs.png"
+    : "images/otherFile.png" && file.type.includes("msword")
+    ? "images/docs.png"
+    : "images/otherFile.png" && file.type.includes("spreadsheetml.sheet")
+    ? "images/xls.png"
+    : "images/otherFile.png" && file.type.includes("powerpoint")
+    ? "images/ppt.png"
+    : "otherFile.png" && file.type.includes("presentationml.presentation")
+    ? "images/ppt.png"
+    : "images/otherFile.png" && file.type.includes("plain")
+    ? "images/txt.png"
+    : "images/otherFile.png" && file.type.includes("html")
+    ? "images/html.png"
+    : "images/otherFile.png" && file.type.includes(" css")
+    ? "images/css.png"
+    : "images/otherFile.png" && file.type.includes("javascript")
+    ? "images/js.png"
+    : "images/otherFile.png" && file.type.includes("compressed")
+    ? "images/zip.png"
+    : "images/otherFile.png" && file.type.includes("csv")
+    ? "images/xls.png"
+    : "images/otherFile.png";
 
-    default:
-      fileResult = "images/otherFile.png";
-  }
+  // switch (file.type) {
+  //   case "image/jpeg":
+  //     fileResult = file.url;
+  //     break;
+  //   case "image/png":
+  //     fileResult = file.url;
+  //     break;
+  //   case "image/jfif":
+  //     fileResult = file.url;
+  //     break;
+  //   case "video/mp4":
+  //     fileResult = "images/videos.png";
+  //     break;
+  //   case "video/x-matroska":
+  //     fileResult = "images/video.png";
+  //     break;
+  //   case "video/webm":
+  //     fileResult = "images/video.png";
+  //     break;
+  //   case "audio/mpeg":
+  //     fileResult = "images/music.png";
+  //     break;
+  //   case "audio/wav":
+  //     fileResult = "images/music.png";
+  //     break;
+  //   case "audio/x-m4a":
+  //     fileResult = "images/music.png";
+  //     break;
+  //   case "audio/mp3":
+  //     fileResult = "images/music.png";
+  //     break;
+  //   case "application/x-zip-compressed":
+  //     fileResult = "images/zip.png";
+  //     break;
+  //   case "application/pdf":
+  //     fileResult = "images/pdf.png";
+  //     break;
+  //   case "application/msword":
+  //     fileResult = "images/docs.png";
+  //     break;
+  //   case "application/vnd.oasis.opendocument.text": //odt
+  //     fileResult = "images/docs.png";
+  //     break;
+  //   case "application/vnd.openxmlformats-officedocument.wordprocessingml.document": //word
+  //     fileResult = "images/docs.png";
+  //     break;
+  //   case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": //word
+  //     fileResult = "images/xls.png";
+  //     break;
+  //   case "application/vnd.ms-powerpoint": // ppt
+  //     fileResult = "images/ppt.png";
+  //     break;
+  //   case "application/x-msdownload": // ppt
+  //     fileResult = "images/exe.png";
+  //     break;
+  //   case "application/vnd.openxmlformats-officedocument.presentationml.presentation": //pptx // ppt
+  //     fileResult = "images/ppt.png";
+  //     break;
+  //   case "text/plain":
+  //     fileResult = "images/txt.png";
+  //     break;
+  //   case "text/html":
+  //     fileResult = "images/html.png";
+  //     break;
+  //   case "text/css":
+  //     fileResult = "images/css.png";
+  //     break;
+  //   case "text/javascript":
+  //     fileResult = "images/js.png";
+  //     break;
+
+  //   default:
+  //     fileResult = "images/otherFile.png";
+  // }
 
   const action = (
     <React.Fragment>
@@ -228,7 +276,7 @@ export default function File({ file, fromTrash }) {
               noWrap
               fontSize={14}
               sx={{
-                width: "50%",
+                width: "45%",
               }}
             >
               {file.name}

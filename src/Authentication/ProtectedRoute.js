@@ -4,6 +4,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import Layout from "../Layouts/Layout";
 import Login from "./Login/Login";
 import AddButton from "../components/AddButton/AddButton.jsx";
+import Home from "../pages/Home/Home";
 
 const ProtectedRoute = () => {
   const { currentUser } = useContext(AuthContext);
@@ -14,7 +15,8 @@ const ProtectedRoute = () => {
       <AddButton />
     </Layout>
   ) : (
-    <Login />
+    // <Login />
+    <Home />
   );
 };
 

@@ -47,15 +47,20 @@ export default function Trash() {
           <Divider
             sx={{ display: { sm: "none" }, visibility: { sm: "hidden" } }}
           />
-          {trashFile.length > 0 ||
-            (trashFolder.length > 0 && (
-              <div className="trash-notice">
-                <Typography sx={{ width: { xs: "60%" }, fontSize: { xs: 14 } }}>
-                  Items in trash are deleted forever after 30 days
-                </Typography>
-                <Button>Empty Trash</Button>
-              </div>
-            ))}
+          <div className={`trash-notice ${mode}`}>
+            <Typography sx={{ width: { xs: "60%" }, fontSize: { xs: 14 } }}>
+              Items in trash are deleted forever after 30 days
+            </Typography>
+            <Button variant="text">
+              <Typography
+                noWrap
+                fontSize={14}
+                sx={{ width: { xs: "70%", sm: "100%" } }}
+              >
+                empty trash
+              </Typography>
+            </Button>
+          </div>
           {!trashFile.length > 0 && !trashFolder.length > 0 ? (
             <div className="trash">
               <img src="/images/trash.png" alt="" />

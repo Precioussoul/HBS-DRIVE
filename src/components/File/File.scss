@@ -17,9 +17,12 @@ $white-shadow: rgb(120 120 120 / 64%) 0px 5px 15px;
   @media (max-width: 400px) {
     width: 150px;
   }
-  // @media (min-width: 401px) and (max-width: 991px) {
-  //   font-size: 160px;
-  // }
+  @media (max-width: 330px) {
+    width: 120px;
+  }
+  @media (min-width: 401px) and (max-width: 1500px) {
+    width: 162px;
+  }
 
   &:hover {
     // box-shadow: rgba(255, 255, 255, 0.1) 2px 1px 1px 0px inset,

@@ -514,11 +514,13 @@ function Layout(props) {
           sx={{
             p: 2,
             width: {
-              xs: "100%",
+              xs: "99%",
               lg: `calc(100% - ${customWidthMd}px)`,
               xl: `calc(100% - ${customWidthXL}px)`,
             },
+            overflow: "hidden !important",
           }}
+          className="layout-mobile"
         >
           <Toolbar />
           <>
