@@ -1,8 +1,7 @@
 import { AddToDrive } from "@mui/icons-material";
 import { Button, TextField, Typography } from "@mui/material";
 import { Box, margin } from "@mui/system";
-import React, { useContext, useState } from "react";
-import { color } from "../../theme";
+import React, { useContext, useEffect, useState } from "react";
 import "./Login.scss";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -23,6 +22,11 @@ const Login = () => {
     setLoading(true);
     loginUser(email, password, setError, setLoading, navigate);
   };
+
+  useEffect(() => {
+    setPassword("test123");
+    setEmail("hbs@demo123.com");
+  }, []);
 
   return (
     <Box
@@ -53,6 +57,7 @@ const Login = () => {
             label={"Email"}
             type={"email"}
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -63,6 +68,7 @@ const Login = () => {
             label={"Password"}
             type={"password"}
             value={password}
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>

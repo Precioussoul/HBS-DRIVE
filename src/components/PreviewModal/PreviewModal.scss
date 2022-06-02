@@ -6,7 +6,11 @@
 .photo-viewer-container > img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: cover;
+  object-fit: contain;
+
+  @media (max-width: 600px) {
+    object-fit: auto;
+  }
 }
 
 .pg-viewer-wrapper {

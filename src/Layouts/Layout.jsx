@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { color } from "../theme";
 import "./Layout.scss";
@@ -27,11 +27,8 @@ import {
   Settings,
   StarOutline,
   Menu,
-  AddToDrive,
   CloudUpload,
   CreateNewFolder,
-  PauseCircle,
-  PlayCircle,
 } from "@mui/icons-material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 

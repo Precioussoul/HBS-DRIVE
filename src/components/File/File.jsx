@@ -1,6 +1,5 @@
 import {
   CheckCircleOutlined,
-  CloudDownload,
   CloudDownloadOutlined,
   DeleteForever,
   DeleteOutlined,
@@ -13,8 +12,6 @@ import {
   VisibilityOutlined,
 } from "@mui/icons-material";
 import {
-  Alert,
-  Box,
   Button,
   Divider,
   IconButton,
@@ -23,8 +20,7 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -173,81 +169,6 @@ export default function File({ file, fromTrash }) {
     ? "images/xls.png"
     : "images/otherFile.png";
 
-  // switch (file.type) {
-  //   case "image/jpeg":
-  //     fileResult = file.url;
-  //     break;
-  //   case "image/png":
-  //     fileResult = file.url;
-  //     break;
-  //   case "image/jfif":
-  //     fileResult = file.url;
-  //     break;
-  //   case "video/mp4":
-  //     fileResult = "images/videos.png";
-  //     break;
-  //   case "video/x-matroska":
-  //     fileResult = "images/video.png";
-  //     break;
-  //   case "video/webm":
-  //     fileResult = "images/video.png";
-  //     break;
-  //   case "audio/mpeg":
-  //     fileResult = "images/music.png";
-  //     break;
-  //   case "audio/wav":
-  //     fileResult = "images/music.png";
-  //     break;
-  //   case "audio/x-m4a":
-  //     fileResult = "images/music.png";
-  //     break;
-  //   case "audio/mp3":
-  //     fileResult = "images/music.png";
-  //     break;
-  //   case "application/x-zip-compressed":
-  //     fileResult = "images/zip.png";
-  //     break;
-  //   case "application/pdf":
-  //     fileResult = "images/pdf.png";
-  //     break;
-  //   case "application/msword":
-  //     fileResult = "images/docs.png";
-  //     break;
-  //   case "application/vnd.oasis.opendocument.text": //odt
-  //     fileResult = "images/docs.png";
-  //     break;
-  //   case "application/vnd.openxmlformats-officedocument.wordprocessingml.document": //word
-  //     fileResult = "images/docs.png";
-  //     break;
-  //   case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": //word
-  //     fileResult = "images/xls.png";
-  //     break;
-  //   case "application/vnd.ms-powerpoint": // ppt
-  //     fileResult = "images/ppt.png";
-  //     break;
-  //   case "application/x-msdownload": // ppt
-  //     fileResult = "images/exe.png";
-  //     break;
-  //   case "application/vnd.openxmlformats-officedocument.presentationml.presentation": //pptx // ppt
-  //     fileResult = "images/ppt.png";
-  //     break;
-  //   case "text/plain":
-  //     fileResult = "images/txt.png";
-  //     break;
-  //   case "text/html":
-  //     fileResult = "images/html.png";
-  //     break;
-  //   case "text/css":
-  //     fileResult = "images/css.png";
-  //     break;
-  //   case "text/javascript":
-  //     fileResult = "images/js.png";
-  //     break;
-
-  //   default:
-  //     fileResult = "images/otherFile.png";
-  // }
-
   const action = (
     <React.Fragment>
       <Button color="secondary" size="small" onClick={handleCloseNotify}>
@@ -269,7 +190,12 @@ export default function File({ file, fromTrash }) {
       {file && (
         <div className={`file ${mode}`}>
           <div className="file-information">
-            <a href={file.url} target="_blank" className="file-img">
+            <a
+              href={file.url}
+              target="_blank"
+              rel="noreferrer"
+              className="file-img"
+            >
               <img src={fileResult} alt={file.name} />
             </a>
             <Typography

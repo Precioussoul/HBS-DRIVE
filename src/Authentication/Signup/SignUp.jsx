@@ -58,20 +58,6 @@ const SignUp = () => {
         color: mode === "dark" ? "text.color" : "inherit",
       }}
     >
-      {/* <Typography
-        variant="h6"
-        component={"span"}
-        color={color.primaryColor2}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "20px",
-          fontSize: 30,
-        }}
-      >
-        <AddToDrive sx={{ color: color.primaryColor2, fontSize: 60 }} />
-        HBS Drive
-      </Typography> */}
       <div className="hbs-logo">
         <img src="/images/hbs-logo.png" alt="Hbs Drive" />
       </div>
@@ -85,6 +71,7 @@ const SignUp = () => {
             label={"Email"}
             type={"email"}
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -96,6 +83,7 @@ const SignUp = () => {
             type={"password"}
             placeholder="password must be atleast 6 character"
             value={password}
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -106,6 +94,7 @@ const SignUp = () => {
             type={"password"}
             placeholder="password must be atleast 6 character"
             value={confirmPassword}
+            required
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>

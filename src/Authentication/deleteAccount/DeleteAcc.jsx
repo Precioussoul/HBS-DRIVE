@@ -1,12 +1,4 @@
-import { Tune } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Divider,
-  Modal,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Modal, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../App";
@@ -26,7 +18,7 @@ const DeleteAcc = () => {
     try {
       deleteUserAccount(currentUser).then(() => {
         navigate("/login");
-        // deleteAccountFolder(currentUser);
+        deleteAccountFolder(currentUser);
       });
     } catch (err) {
       console.log(err);
@@ -61,6 +53,7 @@ const DeleteAcc = () => {
           onClick={handleOpen}
           sx={{
             bgcolor: "red",
+            fontSize: { xs: "12px", sm: "inherit" },
           }}
           variant="contained"
         >

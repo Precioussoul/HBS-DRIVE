@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Box, Button, Modal } from "@mui/material";
 import FileViewer from "react-file-viewer";
 import PDFViewer from "pdf-viewer-reactjs";
@@ -37,63 +37,6 @@ export default function PreviewModal({
     : newFile.type && newFile.type.includes("csv")
     ? "csv"
     : newFile.type;
-  console.log("fileresult", fileResult);
-
-  // switch (newFile.type) {
-  //   case "image/jpeg":
-  //     fileResult = "jpeg";
-  //     break;
-  //   case "image/png":
-  //     fileResult = "png";
-  //     break;
-  //   case "image/jfif":
-  //     fileResult = "jpeg";
-  //     break;
-  //   case "video/mp4":
-  //     fileResult = "mp4";
-  //     break;
-  //   case "video/x-matroska":
-  //     fileResult = "mkv";
-  //     break;
-  //   case "audio/mpeg":
-  //     fileResult = "mp3";
-  //     break;
-  //   case "audio/mp3":
-  //     fileResult = "mp3";
-  //     break;
-  //   case "audio/wav":
-  //     fileResult = "wav";
-  //     break;
-  //   case "audio/x-m4a":
-  //     fileResult = "mp3";
-  //     break;
-
-  //   case "application/pdf":
-  //     fileResult = "pdf";
-  //     break;
-  //   case "application/msword":
-  //     fileResult = " docx";
-  //     break;
-  //   case "application/vnd.oasis.opendocument.text": //odt
-  //     fileResult = " docx";
-  //     break;
-  //   case "application/vnd.openxmlformats-officedocument.wordprocessingml.document": //word
-  //     fileResult = "docx";
-  //     break;
-  //   case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": //word
-  //     fileResult = "xslx";
-  //     break;
-  //   case "application/vnd.ms-powerpoint": // ppt
-  //     fileResult = "ppt";
-  //     break;
-
-  //   case "application/vnd.openxmlformats-officedocument.presentationml.presentation": //pptx // ppt
-  //     fileResult = "ppt";
-  //     break;
-
-  //   default:
-  //     fileResult = "OtherType";
-  // }
 
   const file = newFile.url;
   const type = fileResult;
@@ -137,8 +80,8 @@ export default function PreviewModal({
       <Box
         className="forDocOnly"
         sx={{
-          width: { xs: "95vw", sm: "800px" },
-          height: { xs: "50vh", sm: "600px" },
+          width: { xs: "90vw", sm: "60vw", xl: "50vw" },
+          height: { xs: "50vh", sm: "50vh" },
           backgroundColor: "inherit",
           overflowY: "scroll",
         }}

@@ -1,11 +1,9 @@
-import { AddToDrive } from "@mui/icons-material";
-import { Button, TextField, Typography } from "@mui/material";
-import { Box, margin } from "@mui/system";
+import { Button, TextField } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useContext, useState } from "react";
-import { color } from "../../theme";
 import "./UpdateProfile.scss";
 import { AuthContext } from "../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../App";
 
 const UpdateProfile = () => {

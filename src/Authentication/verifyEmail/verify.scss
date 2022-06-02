@@ -11,10 +11,11 @@ $black-shadow: rgb(0 120 120 / 64%) 0px 5px 15px;
     background-color: #121212;
     box-shadow: $black-shadow;
   }
-  @media (max-width: 330px) {
-    width: 300px;
+
+  @media (max-width: 390px) {
+    width: 330px;
   }
-  @media (min-width: 331px) and (max-width: 600px) {
+  @media (min-width: 391px) and (max-width: 600px) {
     width: 370px;
   }
 
@@ -22,7 +23,7 @@ $black-shadow: rgb(0 120 120 / 64%) 0px 5px 15px;
     font-size: 20px;
     text-align: center;
 
-    @media (max-width: 330px) {
+    @media (max-width: 375px) {
       font-size: 18px;
     }
   }

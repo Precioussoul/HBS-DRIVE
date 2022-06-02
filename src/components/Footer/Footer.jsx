@@ -73,7 +73,7 @@ export default function Footer({ mode, setMode }) {
               onChange={() => setMode(mode === "light" ? "dark" : "light")}
               checked={mode === "dark" ? true : false}
             />
-            <p>Dark Mode</p>
+            <p>{mode === "dark" ? "Dark Mode" : "Light Mode"}</p>
           </li>
         </ul>
       </div>

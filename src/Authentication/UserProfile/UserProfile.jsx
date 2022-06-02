@@ -1,25 +1,10 @@
-import { AddToDrive } from "@mui/icons-material";
-import {
-  Alert,
-  Box,
-  Button,
-  Snackbar,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { blue } from "@mui/material/colors";
+import { Button, TextField } from "@mui/material";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../App";
 import { AuthContext } from "../../contexts/AuthContext";
-import {
-  avatarURL,
-  result,
-  resultUrl,
-  storage,
-  uploadAvatar,
-} from "../../firebase/firebase";
+import { storage } from "../../firebase/firebase";
 import { color } from "../../theme";
 import "./userProfile.scss";
 
@@ -31,14 +16,9 @@ const UserProfile = () => {
   const { currentUser, updateUserProfile } = useContext(AuthContext);
   const { mode } = useContext(ThemeContext);
   const [message, setMessage] = useState("");
-  const [photo, setPhoto] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-
-  const handleClose = () => {
-    setLoading(false);
-  };
 
   //   save files to cloud
   const avatarRef = ref(storage, `avatar/${currentUser.uid}/${file.name}`);
@@ -118,7 +98,12 @@ const UserProfile = () => {
           />
           <div className="div-upload">
             <div className="img-upl">
-              <img src={photo !== "" ? photo : "images/camera.png"} alt="" />
+              <img
+                src={
+                  file !== "" ? URL.createObjectURL(file) : "images/camera.png"
+                }
+                alt=""
+              />
             </div>
             <div className="upload-btns">
               <Button
@@ -150,6 +135,7 @@ const UserProfile = () => {
               textAlign: "end",
               width: { xs: "50%" },
               margin: "auto",
+              fontSize: { xs: "12px", sm: "inherit" },
               bgcolor: color.primaryColor1,
             }}
           >
