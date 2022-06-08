@@ -98,40 +98,36 @@ You may also see any lint errors in the console.
 
 **My Drive**:
 
-- User will able to see all his posts and post of the people he/she follow.
-- Feed can be sort based on `recent` and `trending` posts.
-- User/Home and Explore feed has `infinite scroll`.
+- User will able to see all his files uploaded and folder created
+- File can be liked and deleted and files links can be shared
+- File can be previewed and also previewed in new tab with single click
 
 **Recents**
 
-- All the new users posts will be shown over here.
+- All the new users files and folders will be shown over here.
 
 **Search**
 
-- User can search other users and follow them if not followed.
+- User can search for files and folder quickly
 - Implemented `debounce` for search.
 
 **Favorites/Starred**
 
-- User can `add`, `like/unlike` `edit`, `delete`, and `bookmark` a post.
-- Each post can be viewed on single page where user can comment and can edit or delete the comment.
-- Post can consist of text, image or gifs.
+ - All the new users favorite/ starred files and folders will be shown over here.
 
 **Trash**
+ - All the new users deleted files and folders will be shown over here.
 
-- User can `add`, `like/unlike` `edit`, `delete`, and `bookmark` a post.
-- Each post can be viewed on single page where user can comment and can edit or delete the comment.
-- Post can consist of text, image or gifs.
 
 **Profile Settings**
 
-- User can view there profile or any other users profile.
+- User can view there profile 
 - Each user can edit there profile.
-- From someones profile logged in user can follow there following or follower users.
+
 
 **Authentication**
 
-- myspace has login, signup and logout feature.
+- HBS DRIVE has login, signup and logout feature.
 - A new user can also login using test credentials.
 - For Signup, form validation is done for all the fields.
 
