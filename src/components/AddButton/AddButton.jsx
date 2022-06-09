@@ -206,6 +206,7 @@ export default function AddButton() {
                 type="file"
                 id="fileup"
                 className="file-up"
+                multiple
                 onChange={handleMultipleFileUpload}
               />
             </li>

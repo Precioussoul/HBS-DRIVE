@@ -58,33 +58,33 @@ export const singleRef = {
 const storageRef = ref(storage);
 const filesRef = ref(storage, "files/");
 
-export const deleteAccountFolder = (currentUser) => {
-  const listRef = ref(storage, `files/${currentUser.uid}`);
+// export const deleteAccountFolder = (currentUser) => {
+//   const listRef = ref(storage, `files/${currentUser.uid}`);
 
-  // Find all the prefixes and items.
-  listAll(listRef)
-    .then((res) => {
-      res.prefixes.forEach((folderRef) => {
-        // All the prefixes under listRef.
-        console.log("listRef", folderRef);
-        // You may call listAll() recursively on them.
-        listAll(folderRef).then((resp) => {
-          resp.prefixes.forEach((file) => {
-            console.log("file", file);
-          });
-        });
-      });
-      res.items.forEach((itemRef) => {
-        // All the items under listRef.'
-        console.log("itemRef", itemRef);
-        const newRef = ref(storage, itemRef);
-        console.log("newRef", newRef);
-      });
-    })
-    .catch((error) => {
-      // Uh-oh, an error occurred!
-    });
-};
+//   // Find all the prefixes and items.
+//   listAll(listRef)
+//     .then((res) => {
+//       res.prefixes.forEach((folderRef) => {
+//         // All the prefixes under listRef.
+//         console.log("listRef", folderRef);
+//         // You may call listAll() recursively on them.
+//         listAll(folderRef).then((resp) => {
+//           resp.prefixes.forEach((file) => {
+//             console.log("file", file);
+//           });
+//         });
+//       });
+//       res.items.forEach((itemRef) => {
+//         // All the items under listRef.'
+//         console.log("itemRef", itemRef);
+//         const newRef = ref(storage, itemRef);
+//         console.log("newRef", newRef);
+//       });
+//     })
+//     .catch((error) => {
+//       // Uh-oh, an error occurred!
+//     });
+// };
 
 // const deleteFile = (pathToFile, fileName) => {
 //   const ref = ref(storage, pathToFile);

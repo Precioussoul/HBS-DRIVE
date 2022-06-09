@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../App";
 import { AuthContext } from "../../contexts/AuthContext";
-import { deleteAccountFolder } from "../../firebase/firebase";
 import { color } from "../../theme";
 import "./deleteAcc.scss";
 
@@ -18,7 +17,6 @@ const DeleteAcc = () => {
     try {
       deleteUserAccount(currentUser).then(() => {
         navigate("/login");
-        deleteAccountFolder(currentUser);
       });
     } catch (err) {
       console.log(err);
