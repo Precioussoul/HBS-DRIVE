@@ -142,7 +142,7 @@ You may also see any lint errors in the console.
     <img alt="hbs drive mobile" src="public/images/hbs-mob.png" width="auto" height="auto" />
      <img alt="hbs drive mobile" src="public/images/hbs-mob-app.png" width="auto" height="auto" />
 
-  <img alt="hbs drive desktop" src="public/images/hbs-desk.png" width="auto" height="auto" />
+  <img alt="hbs drive desktop" src="public/images/hbs-desk-dark.png" width="auto" height="auto" />
 </div>
 
 ## 👨‍💻 Connect with me
@@ -151,6 +151,8 @@ You may also see any lint errors in the console.
 <a href="https://www.linkedin.com/in/sofiyullah-abdullah/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/></a>
 © 2022 GitHub, Inc.
  
+## Creator and Author of this project
+<a href="https://www.linkedin.com/in/sofiyullah-abdullah">Sofiyullah Abdullah<a/>
 
 ## Learn More
 
